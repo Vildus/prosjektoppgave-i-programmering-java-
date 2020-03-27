@@ -6,9 +6,4 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FileSaverTest {
 
-    @Test
-    public void testFile() {
-
-    }
-
 }
