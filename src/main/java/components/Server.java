@@ -15,4 +15,8 @@ public class Server {
         System.out.println("Hei vilde");
     }
 
+    public int getPrice(int i) {
+        return i; //Hilsen Vilde
+    }
+
 }
