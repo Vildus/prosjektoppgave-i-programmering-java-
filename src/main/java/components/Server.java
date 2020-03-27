@@ -18,7 +18,7 @@ public class Server {
     }
 
     public void morradi() {
-        System.out.println("er kul as heisan");
+        System.out.println("er kul as ploppsann");
     }
 
     public void heipådeg() {
