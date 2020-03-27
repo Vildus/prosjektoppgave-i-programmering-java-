@@ -12,6 +12,9 @@ public class Component {
     }
 
     public double getPrice() {
+    if (price > 0) {
+    this.price = price;
+    
         return price;
     }
 
