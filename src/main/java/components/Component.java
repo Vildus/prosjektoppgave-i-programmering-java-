@@ -6,7 +6,27 @@ public class Component {
 
 
     public Component(double price, String type) {
+        this.setPrice(price);
+        this.setType(type);
+        this.type = type;
+    }
+
+    public double getPrice() {
+    if (price > 0) {
+    this.price = price;
+    
+        return price;
+    }
+
+    public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
         this.type = type;
     }
 }
