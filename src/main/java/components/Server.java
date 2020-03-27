@@ -9,7 +9,12 @@ public class Server {
         this.price = price;
         this.name = name;
     }
-    pihioubhiuyg
+    public void hei(){
+        System.out.println("Hei vilde");
+    }
 
+    public int getPrice(int i) {
+        return i; //nei det er ikke riktig
+    }
 
 }
