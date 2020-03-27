@@ -21,4 +21,8 @@ public class Server {
         //skriv noe her
     }
 
+    public void heipådeg() {
+        //gjør noe her
+    }
+
 }
