@@ -6,7 +6,8 @@ public class Component {
 
 
     public Component(double price, String type) {
-        this.price = price;
+        this.setPrice(price);
+        this.setType(type);
         this.type = type;
     }
 
