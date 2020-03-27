@@ -17,4 +17,8 @@ public class Server {
         return i; //hei om dette er riktig
     }
 
+    public void morradi() {
+        //skriv noe her
+    }
+
 }
