@@ -14,7 +14,7 @@ public class Server {
     }
 
     public int getPrice(int i) {
-        return i; //nei det er ikke riktig
+        return i; //hei om dette er riktig
     }
 
 }
