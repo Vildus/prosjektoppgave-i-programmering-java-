@@ -9,4 +9,7 @@ public class Server {
         this.price = price;
         this.name = name;
     }
+    pihioubhiuyg
+
+
 }
