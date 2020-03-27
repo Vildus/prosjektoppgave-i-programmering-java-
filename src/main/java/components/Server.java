@@ -11,4 +11,8 @@ public class Server {
         this.price = price;
         this.name = name;
     }
+    public void hei(){
+        System.out.println("Hei vilde");
+    }
+
 }
