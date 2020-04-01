@@ -19,4 +19,9 @@ public class Component {
         return "Dette går ikke" ;
 
     }
+
+
+    public String RandomShit(){
+        return "Shit!";
+    }
 }
