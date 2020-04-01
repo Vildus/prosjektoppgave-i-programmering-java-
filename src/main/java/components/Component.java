@@ -16,7 +16,7 @@ public class Component {
     public String leggTil(){
 
 
-        return "Dette går ikke" ;
+        return "Dette går går" ;
 
     }
 
