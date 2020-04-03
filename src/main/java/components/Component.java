@@ -1,5 +1,7 @@
 package components;
 
+import validation.InvalidPriceException;
+
 import java.io.Serializable;
 
 public abstract class Component implements Serializable {
@@ -7,7 +9,6 @@ public abstract class Component implements Serializable {
     private String model;
     private double price;
     private int articleNumber;
-
 
 
     public Component(String brand, String model, double price, int articleNumber) {
@@ -40,6 +41,9 @@ public abstract class Component implements Serializable {
     }
 
     public void setPrice(double price) {
+        if (price <= 0) {
+            throw new InvalidPriceException("Price must be above 0");
+        }
         this.price = price;
     }
 
