@@ -13,6 +13,6 @@ public class FileOpenObj implements InterfaceFileOpen {
         InputStream in = Files.newInputStream(filePath);
         ObjectInputStream oin = new ObjectInputStream(in);
         Object component = oin.readObject();
-        return (List<?>) component;
+        return (List<?>) component; //må caste
     }
 }
