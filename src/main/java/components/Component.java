@@ -1,12 +1,20 @@
 package components;
 
-public class Component {
+public abstract class Component {
+    private String brand;
+    private String model;
     private double price;
-    private String type;
+    private int articleNumber;
 
 
-    public Component(double price, String type) {
+
+    public Component(String brand, String model, double price, int articleNumber) {
+        this.brand = brand;
+        this.model = model;
         this.price = price;
-        this.type = type;
+        this.articleNumber = articleNumber;
     }
+
+    public abstract String getCategory();
+
 }
