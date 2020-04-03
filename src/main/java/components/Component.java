@@ -1,6 +1,8 @@
 package components;
 
-public abstract class Component {
+import java.io.Serializable;
+
+public abstract class Component implements Serializable {
     private String brand;
     private String model;
     private double price;
