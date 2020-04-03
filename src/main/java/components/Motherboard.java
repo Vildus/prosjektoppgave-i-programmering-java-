@@ -5,7 +5,7 @@ public class Motherboard extends Component {
 
     public Motherboard(String brand, String model, double price, int articleNumber, String sizeCategory) {
         super(brand, model, price, articleNumber);
-        this.sizeCategory = sizeCategory
+        this.sizeCategory = sizeCategory;
     }
 
     @Override
