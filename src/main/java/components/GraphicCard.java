@@ -4,8 +4,8 @@ public class GraphicCard extends Component {
     private int memory; //i megabyte
 
 
-    public GraphicCard(String brand, String model, double price, int articleNumber, int memory) {
-        super(brand, model, price, articleNumber);
+    public GraphicCard(String brand, String model, int memory) {
+        super(brand, model);
         this.memory = memory;
     }
 

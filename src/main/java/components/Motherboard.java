@@ -3,8 +3,8 @@ package components;
 public class Motherboard extends Component {
     private String sizeCategory;
 
-    public Motherboard(String brand, String model, double price, int articleNumber, String sizeCategory) {
-        super(brand, model, price, articleNumber);
+    public Motherboard(String brand, String model, String sizeCategory) {
+        super(brand, model);
         this.sizeCategory = sizeCategory;
     }
 

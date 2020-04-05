@@ -5,8 +5,8 @@ public class PowerSupply extends Component {
     private double inputVoltage;
     private double outputVoltage;
 
-    public PowerSupply(String brand, String model, double price, int articleNumber, int effect, double inputVoltage, double outputVoltage) {
-        super(brand, model, price, articleNumber);
+    public PowerSupply(String brand, String model, int effect, double inputVoltage, double outputVoltage) {
+        super(brand, model);
         this.effect = effect;
         this.inputVoltage = inputVoltage;
         this.outputVoltage = outputVoltage;

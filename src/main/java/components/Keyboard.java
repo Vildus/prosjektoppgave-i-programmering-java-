@@ -3,8 +3,8 @@ package components;
 public class Keyboard extends Component {
     private String interfaceType; //USB eller bluetooth
 
-    public Keyboard(String brand, String model, double price, int articleNumber, String interfaceType) {
-        super(brand, model, price, articleNumber);
+    public Keyboard(String brand, String model, String interfaceType) {
+        super(brand, model);
         this.interfaceType = interfaceType;
     }
 

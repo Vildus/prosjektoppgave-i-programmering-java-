@@ -3,8 +3,8 @@ package components;
 public class RAM extends Component {
     private int memory;
 
-    public RAM(String brand, String model, double price, int articleNumber, int memory) {
-        super(brand, model, price, articleNumber);
+    public RAM(String brand, String model, int memory) {
+        super(brand, model);
         this.memory = memory;
     }
 

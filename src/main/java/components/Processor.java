@@ -4,8 +4,8 @@ public class Processor extends Component {
     private int processorCount;
     private double clockRate;
 
-    public Processor(String brand, String model, double price, int articleNumber, int processorCount, double clockRate) {
-        super(brand, model, price, articleNumber);
+    public Processor(String brand, String model, int processorCount, double clockRate) {
+        super(brand, model);
         this.processorCount = processorCount;
         this.clockRate = clockRate;
     }

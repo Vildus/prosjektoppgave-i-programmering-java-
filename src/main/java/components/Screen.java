@@ -3,8 +3,8 @@ package components;
 public class Screen extends Component {
     private int screenSize; // in inch (tommer)
 
-    public Screen(String brand, String model, double price, int articleNumber, int screenSize) {
-        super(brand, model, price, articleNumber);
+    public Screen(String brand, String model, int screenSize) {
+        super(brand, model);
         this.screenSize = screenSize;
     }
 
