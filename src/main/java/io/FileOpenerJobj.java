@@ -1,4 +1,6 @@
-package filehandling;
+package io;
+
+import io.InterfaceFileOpen;
 
 import java.io.IOException;
 import java.io.InputStream;
