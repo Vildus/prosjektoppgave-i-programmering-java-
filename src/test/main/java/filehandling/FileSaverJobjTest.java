@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileSaveObjTest {
+class FileSaverJobjTest {
 
     @Test
     void saveFile() {
@@ -20,7 +20,7 @@ class FileSaveObjTest {
         componentList.add(new ?(//data));
 
         Path filePath = Path.of(URI.create(/*path location*/""));
-        FileSaveObj fileSaver = new FileSaveObj();
+        FileSaverJobj fileSaver = new FileSaverJobj();
         try {
             fileSaver.saveFile(filePath, componentList);
         } catch (IOException e) {

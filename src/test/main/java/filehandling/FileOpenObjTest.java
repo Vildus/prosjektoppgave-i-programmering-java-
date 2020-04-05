@@ -6,7 +6,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileOpenObjTest {
-    FileOpenObj fileOpener = new FileOpenObj();
+    FileOpenerJobj fileOpener = new FileOpenerJobj();
     List<?> componentList;
         try {
         componentList = fileOpener.readFile(filePath);

@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-public class FileOpenObj implements InterfaceFileOpen {
+public class FileOpenerJobj implements InterfaceFileOpen {
     @Override
     public List<?> readFile(Path filePath) throws IOException, ClassNotFoundException {
         InputStream in = Files.newInputStream(filePath);
