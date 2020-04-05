@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderFileOpener implements InterfaceFileOpener {
+public class OrderFileOpener {
 
-    @Override
-    public List<OrderLine> readFile(Path filePath) throws IOException, ClassNotFoundException {
+    public List<OrderLine> readFile(Path filePath) throws IOException {
         List<String> lines = Files.readAllLines(filePath);
         List<OrderLine> items = new ArrayList<>();
 

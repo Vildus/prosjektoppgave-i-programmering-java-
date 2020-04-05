@@ -1,17 +1,14 @@
 package io;
 
-import inventory.Item;
 import purchase.OrderLine;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderFileSaver implements InterfaceFileSaver {
+public class OrderFileSaver {
 
-    @Override
     public <E> void saveFile(Path filePath, List<E> items) throws IOException {
         Files.write(filePath, this.toCSV((ArrayList<OrderLine>) items).getBytes("utf-8"));
     }
