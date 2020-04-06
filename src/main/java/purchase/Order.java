@@ -2,18 +2,19 @@ package purchase;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Order {
     private int orderNumber;
     //eventuelt kundenummer
     private Date date;
 
-    private ArrayList<OrderLine> lines;
+    private List<OrderLine> lines;
 
-    public Order(int orderNumber, ArrayList<OrderLine> lines) {
+    public Order(int orderNumber, Date date, List<OrderLine> lines) {
         this.orderNumber = orderNumber;
         this.lines = lines;
-        this.date = new Date();
+        this.date = date;
     }
 
     public int getOrderNumber() {
@@ -24,8 +25,20 @@ public class Order {
         return this.date;
     }
 
-    public ArrayList<OrderLine> getLines() {
+    public List<OrderLine> getLines() {
         return this.lines;
+    }
+
+    @Override
+    public String toString() {
+        ArrayList<String> strLines = new ArrayList<>();
+        for (OrderLine line : this.lines) {
+            strLines.add(line.toString());
+        }
+        return String.format("Order number: %d, date: %s\n%s",
+                this.orderNumber,
+                this.getDate().toString(),
+                String.join("\n", strLines));
     }
 
     //For hver gang vi lagrer en ny ordre så lagres en ny linje i orders
