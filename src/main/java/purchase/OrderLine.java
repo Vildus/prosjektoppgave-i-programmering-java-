@@ -24,6 +24,14 @@ public class OrderLine {
         return this.pricePerUnit;
     }
 
+    @Override
+    public String toString() {
+        return String.format("Article number: %d, amount: %d, price per unit: %.2f",
+                this.articleNumber,
+                this.amount,
+                this.pricePerUnit);
+    }
+
     //inneholder flere ordrelinjer
     //en ordrelinje må ha en referanse til artikkelnummeret som er kjøpt (art nummer er unikt)
     //en dato når kjøpt

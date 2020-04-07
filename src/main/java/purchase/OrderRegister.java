@@ -1,18 +1,30 @@
 package purchase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderRegister {
-    private ArrayList<Order> orders;
+    private List<Order> orders;
 
-    public OrderRegister(ArrayList<Order> orders) {
-        this.orders = orders;
+    public OrderRegister() {
+        this.orders = new ArrayList<>();
     }
 
-    public ArrayList<Order> getOrders() {
+    public List<Order> getOrders() {
         return this.orders;
     }
 
-    //vil kun ha en instans av denne
-    //order.csv
+    public void addOrder(Order order) {
+        this.orders.add(order);
+    }
+
+    @Override
+    public String toString() {
+        ArrayList<String> strOrders = new ArrayList<>();
+        for (Order order : this.orders) {
+            strOrders.add(order.toString());
+        }
+        return String.format("%s",
+                String.join("\n", strOrders));
+    }
 }
