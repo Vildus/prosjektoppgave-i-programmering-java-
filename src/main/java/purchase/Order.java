@@ -8,7 +8,6 @@ public class Order {
     private int orderNumber;
     //eventuelt kundenummer
     private Date date;
-
     private List<OrderLine> lines;
 
     public Order(int orderNumber, Date date, List<OrderLine> lines) {
