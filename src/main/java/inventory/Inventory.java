@@ -1,8 +1,5 @@
 package inventory;
 
-import components.Component;
-import components.Mouse;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -18,4 +15,14 @@ public class Inventory implements Serializable {
         this.items.remove(item);
     }
 
+    public Item findItemByArticleNumber(int articleNumber) {
+        for (Item item : this.items) {
+            if (item.getArticleNumber() == articleNumber) {
+                return item;
+            }
+        }
+        return null;
+    }
 }
+
+//TODO: Ikke kunne legge til to varer med samme artikkelnummer
