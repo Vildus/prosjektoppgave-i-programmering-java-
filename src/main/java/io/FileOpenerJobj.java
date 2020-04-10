@@ -15,3 +15,11 @@ public class FileOpenerJobj {
         return (List<?>) component; //må caste
     }
 }
+
+//vareregister reposotory (på engelsk)
+//Følge samme metoder som orderRepostory (Save og Read)
+// Husk at alt må være serializable
+// Lage tester på samme måte.
+//Path - directory på samme måte
+
+
