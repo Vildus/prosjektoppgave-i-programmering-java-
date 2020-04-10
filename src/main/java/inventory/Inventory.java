@@ -1,14 +1,13 @@
 package inventory;
 
-import components.Component;
-import components.Mouse;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Inventory implements Serializable {
 
-    private ArrayList<Item> items;
+    private List<Item> items;
 
     public Inventory(){
         this.items = new ArrayList<>();
@@ -22,7 +21,7 @@ public class Inventory implements Serializable {
         this.items.remove(item);
     }
 
-    public ArrayList<Item> getItems(){
+    public List<Item> getItems(){
         return this.items;
     }
 
