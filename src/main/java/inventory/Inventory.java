@@ -10,6 +10,10 @@ public class Inventory implements Serializable {
 
     private ArrayList<Item> items;
 
+    public Inventory(){
+        this.items = new ArrayList<>();
+    }
+
     public void addItem(Item item) {
         this.items.add(item);
     }
@@ -17,5 +21,11 @@ public class Inventory implements Serializable {
     public void removeItem(Item item) {
         this.items.remove(item);
     }
+
+    public ArrayList<Item> getItems(){
+        return this.items;
+    }
+
+
 
 }
