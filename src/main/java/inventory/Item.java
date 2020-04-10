@@ -1,8 +1,8 @@
 package inventory;
 
+import components.Component;
 import validation.InvalidPriceException;
 
-import java.awt.*;
 import java.io.Serializable;
 
 public class Item implements Serializable {
@@ -18,6 +18,7 @@ public class Item implements Serializable {
         this.setPrice(price);
         this.articleNumber = articleNumber;
     }
+
 
     public int getInStock() {
         return this.inStock;
