@@ -33,7 +33,7 @@ public class Item implements Serializable {
 
     public void setPrice(double price) {
         if (price <= 0) {
-            throw new InvalidPriceException("Price must be above 0");
+            throw new InvalidPriceArgumentException("Price must be above 0");
         }
         this.price = price;
     }

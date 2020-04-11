@@ -1,8 +1,8 @@
 package inventory;
 
-public class InvalidPriceException extends IllegalArgumentException{
+public class InvalidPriceArgumentException extends IllegalArgumentException{
 
-    public InvalidPriceException(String message) {
+    public InvalidPriceArgumentException(String message) {
         super("Invalid Price" + message); //Her kan man skrive senere: Pris må være over 0. Pris kan
         //ikke inneholde bokstaver
     }
