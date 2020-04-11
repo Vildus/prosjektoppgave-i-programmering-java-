@@ -1,4 +1,4 @@
-package validation;
+package inventory;
 
 public class InvalidPriceException extends IllegalArgumentException{
 

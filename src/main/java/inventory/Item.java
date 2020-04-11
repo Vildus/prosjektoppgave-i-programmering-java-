@@ -1,7 +1,6 @@
 package inventory;
 
 import components.Component;
-import validation.InvalidPriceException;
 
 import java.io.Serializable;
 

@@ -1,7 +1,5 @@
 package components;
 
-import validation.InvalidPriceException;
-
 import java.io.Serializable;
 
 public abstract class Component implements Serializable {
