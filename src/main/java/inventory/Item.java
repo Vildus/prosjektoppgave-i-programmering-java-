@@ -19,7 +19,6 @@ public class Item implements Serializable {
         this.articleNumber = articleNumber;
     }
 
-
     public int getInStock() {
         return this.inStock;
     }
