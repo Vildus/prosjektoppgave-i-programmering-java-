@@ -24,6 +24,9 @@ public class Item implements Serializable {
 
     // en måte å sette en stock på!
     public void setInStock(int inStock) {
+        if (inStock < 0) {
+            throw new InvalidInStockArgumentException("In stock cannot be lower than 0");
+        }
         this.inStock = inStock;
     }
 
