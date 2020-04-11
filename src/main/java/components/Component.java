@@ -20,6 +20,9 @@ public abstract class Component implements Serializable {
     }
 
     public void setBrand(String brand) {
+        if (brand.isBlank()) {
+            throw new IllegalBrandArgumentException("Brand cannot be empty");
+        }
         this.brand = brand;
     }
 
@@ -28,6 +31,9 @@ public abstract class Component implements Serializable {
     }
 
     public void setModel(String model) {
+        if (model.isBlank()) {
+            throw new IllegalModelArgumentException("Model cannot be empty");
+        }
         this.model = model;
     }
 
