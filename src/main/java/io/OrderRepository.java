@@ -7,6 +7,7 @@ import utils.DateStringConverter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +27,7 @@ public class OrderRepository {
     // Lager en path fordi det er den samme pathen vi skal lese og skrive fra. Da slipper vi
     // å skrive den to ganger og minsker risiko for stavefeil i strengen "orders.csv"
     private Path getOrderRegisterPath() {
-        return Path.of(this.directory.toString(), "orders.csv");
+        return Paths.get(this.directory.toString(), "orders.csv");
     }
 
     public void saveOrderRegister(OrderRegister orderRegister) throws IOException {
@@ -74,7 +75,7 @@ public class OrderRepository {
     // Lager en path fordi det er den samme pathen vi skal lese og skrive fra. Da slipper vi
     // å skrive den to ganger og minsker risiko for stavefeil i strengen "order_%d.csv"
     private Path getOrderLinesPath(int orderNumber) {
-        return Path.of(this.directory.toString(), String.format("order_%d.csv", orderNumber));
+        return Paths.get(this.directory.toString(), String.format("order_%d.csv", orderNumber));
     }
 
     private void saveOrderLines(int orderNumber, List<OrderLine> lines) throws IOException {

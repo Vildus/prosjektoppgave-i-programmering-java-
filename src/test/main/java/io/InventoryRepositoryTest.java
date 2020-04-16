@@ -74,4 +74,3 @@ class InventoryRepositoryTest {
         return dir;
     }
 }
-
