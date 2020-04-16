@@ -1,4 +1,4 @@
-/*package io;
+package io;
 
 import components.*;
 import inventory.Inventory;
@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 class InventoryRepositoryTest {
 
@@ -40,7 +41,7 @@ class InventoryRepositoryTest {
             InventoryRepository inventoryRepository = new InventoryRepository(inventoryRepositoryDirectory);
             inventoryRepository.saveInventory(inventory);
         } catch (IOException e) {
-            e.printStackTrace();
+            fail(e);
         }
     }
 
@@ -55,7 +56,7 @@ class InventoryRepositoryTest {
             inventoryRepository.saveInventory(inventory1);
             inventory2 = inventoryRepository.ReadInventory();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            fail(e);
             return;
         }
         assertEquals(inventory1, inventory2);
@@ -73,5 +74,3 @@ class InventoryRepositoryTest {
         return dir;
     }
 }
-
- */

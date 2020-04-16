@@ -1,7 +1,6 @@
 package inventory;
 
 import components.Component;
-import validation.InvalidPriceException;
 
 import java.io.Serializable;
 
@@ -25,6 +24,9 @@ public class Item implements Serializable {
 
     // en måte å sette en stock på!
     public void setInStock(int inStock) {
+        if (inStock < 0) {
+            throw new InvalidInStockArgumentException("In stock cannot be lower than 0");
+        }
         this.inStock = inStock;
     }
 
@@ -34,7 +36,7 @@ public class Item implements Serializable {
 
     public void setPrice(double price) {
         if (price <= 0) {
-            throw new InvalidPriceException("Price must be above 0");
+            throw new InvalidPriceArgumentException("Price must be above 0");
         }
         this.price = price;
     }
