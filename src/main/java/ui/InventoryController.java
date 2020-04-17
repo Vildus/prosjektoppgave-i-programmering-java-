@@ -3,6 +3,7 @@ package ui;
 import components.Component;
 import components.Keyboard;
 import components.Mouse;
+import components.RAM;
 import inventory.Inventory;
 import inventory.Item;
 import io.InventoryRepository;
@@ -62,16 +63,6 @@ public class InventoryController {
     @FXML
     private TextField txtFilter;
 
-    @FXML
-    void txtFilterKeyTyped(KeyEvent event) {
-        String search = this.txtFilter.getText();
-        if (search.isEmpty()) {
-            this.tvInventory.getItems().setAll(this.inventory.getItems());
-        } else {
-            this.tvInventory.getItems().setAll(inventory.filter(search));
-        }
-    }
-
 
     //TODO: Lage en path. global path.
 
@@ -105,10 +96,10 @@ public class InventoryController {
                 "Harddisc",
                 "Keyboard",
                 "Motherboard",
-                "Mouse",
+                Mouse.TYPE,
                 "Power Supply",
                 "processor",
-                "RAM",
+                RAM.TYPE,
                 "Screen");
     }
 
@@ -167,6 +158,24 @@ public class InventoryController {
         this.tvInventory.getItems().setAll(this.inventory.getItems());
     }
 
+    @FXML
+    private void txtFilterKeyTyped(KeyEvent event) {
+        String search = this.txtFilter.getText();
+        if (search.isEmpty()) {
+            this.tvInventory.getItems().setAll(this.inventory.getItems());
+        } else {
+            this.tvInventory.getItems().setAll(inventory.filter(search));
+        }
+    }
+
+    @FXML
+    private void cbCreateNewItemAction(ActionEvent e) {
+        String componentType = cbCreateNewItem.getSelectionModel().getSelectedItem().toString();
+        Scene addItemScene = this.createAddItemScene(componentType);
+        this.stage.setTitle(String.format("Add item: %s", componentType));
+        this.stage.setScene(addItemScene);
+    }
+
     private Scene createEditItemScene(Item item) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("editItem.fxml"));
@@ -181,6 +190,19 @@ public class InventoryController {
             // TODO: handle somehow
             return null;
         }
+    }
 
+    private Scene createAddItemScene(String componentType) {
+        try {
+            AddItemController addItemController = new AddItemController(componentType, () -> {
+                System.out.println("Close window");
+                this.stage.setTitle("Main scene");
+                this.stage.setScene(this.tvInventory.getScene());
+            });
+            return new Scene(addItemController.getRoot(), 900, 1100);
+        } catch (Exception e) {
+            // TODO: handle somehow
+            return null;
+        }
     }
 }
