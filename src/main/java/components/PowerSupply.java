@@ -1,6 +1,7 @@
 package components;
 
 public class PowerSupply extends Component {
+    public static final String TYPE = "Power Supply";
     private int effect; //i vatt
     private double inputVoltage;
     private double outputVoltage;
@@ -14,7 +15,7 @@ public class PowerSupply extends Component {
 
     @Override
     public String getCategory() {
-        return "Power Supply";
+        return TYPE;
     }
 
     public int getEffect() {
