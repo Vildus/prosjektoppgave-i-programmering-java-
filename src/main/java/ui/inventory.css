@@ -1,0 +1,83 @@
+.root {
+    -fx-background-color: #e2d8b8;
+}
+
+.textField {
+    -fx-background-color: #8d9863;
+    -fx-color: black;
+    -fx-font-size: 16px;
+}
+
+.tableView {
+    -fx-background-color: #8d9863;
+}
+
+.colCategory {
+    -fx-font-size: 16px;
+    -fx-color: black;
+    -fx-background-color: #8d9863;
+}
+
+
+.colArticleNumber {
+    -fx-font-size: 16px;
+    -fx-color: black;
+    -fx-background-color: #8d9863;
+}
+
+.colBrand {
+    -fx-font-size: 16px;
+    -fx-color: black;
+    -fx-background-color: #8d9863;
+}
+
+.colModel {
+    -fx-font-size: 16px;
+    -fx-color: black;
+    -fx-background-color: #8d9863;
+}
+
+.colPrice {
+    -fx-font-size: 16px;
+    -fx-color: black;
+    -fx-background-color: #8d9863;
+}
+
+.colInStock {
+    -fx-font-size: 16px;
+    -fx-color: black;
+    -fx-background-color: #8d9863;
+}
+
+.colEdit {
+    -fx-font-size: 16px;
+    -fx-color: grey;
+    -fx-background-color: #8d9863;
+}
+/*
+      <TableView fx:id="tvInventory" layoutX="96.0" layoutY="190.0" prefHeight="442.0" prefWidth="722.0" styleClass="tableView">
+        <columns>
+          <TableColumn fx:id="colCategory" prefWidth="120.0" text="Category" styleClass="colCategory"/>
+          <TableColumn fx:id="colArticleNumber" prefWidth="120.0" text="Article number" styleClass="colArticleNumber"/>
+            <TableColumn fx:id="colBrand" prefWidth="120.0" text="Brand" styleClass="colBrand"/>
+            <TableColumn fx:id="colModel" prefWidth="120.0" text="Model" styleClass="colModel"/>
+            <TableColumn fx:id="colPrice" prefWidth="80.0" text="Price NOK" styleClass="colPrice"/>
+            <TableColumn fx:id="colInStock" minWidth="50.0" prefWidth="70.0" text="InStock" styleClass="colInStock"/>
+            <TableColumn fx:id="colEdit" prefWidth="90.0" text="Edit" styleClass="colEdit"/>
+            */
+
+/*
+
+#855815 = brun
+#876f2c
+#898446
+#8d9863
+#94ab82 = lys
+
+
+#a16028
+#a47935
+#a69048
+#a7a761
+#a8bd7e
+*/
