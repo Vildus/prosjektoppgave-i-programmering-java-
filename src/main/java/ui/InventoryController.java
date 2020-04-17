@@ -6,6 +6,7 @@ import components.Mouse;
 import inventory.Inventory;
 import inventory.Item;
 import io.InventoryRepository;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +21,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
-
 public class InventoryController {
 
     private Stage stage;
@@ -28,6 +28,9 @@ public class InventoryController {
     private Inventory inventory;
 
     private InventoryRepository inventoryRepository;
+
+    @FXML
+    private ComboBox<String> cbCreateNewItem;
 
     @FXML
     private TableView<Item> tvInventory;
@@ -97,9 +100,23 @@ public class InventoryController {
         this.inventory.addItem(item2);
     }
 
+    private void initializeComboBox() {
+        this.cbCreateNewItem.getItems().setAll("Graphic Card",
+                "Harddisc",
+                "Keyboard",
+                "Motherboard",
+                "Mouse",
+                "Power Supply",
+                "processor",
+                "RAM",
+                "Screen");
+    }
+
+
     @FXML
     public void initialize() {
         this.initializeTableView();
+        this.initializeComboBox();
     }
 
     private void initializeTableView() {
@@ -164,5 +181,6 @@ public class InventoryController {
             // TODO: handle somehow
             return null;
         }
+
     }
 }
