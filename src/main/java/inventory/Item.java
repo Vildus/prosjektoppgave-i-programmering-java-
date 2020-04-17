@@ -18,6 +18,18 @@ public class Item implements Serializable {
         this.articleNumber = articleNumber;
     }
 
+    public String getComponentBrand() {
+        return this.component.getBrand();
+    }
+
+    public String getComponentModel() {
+        return this.component.getModel();
+    }
+
+    public String getComponentCategory() {
+        return this.component.getCategory();
+    }
+
     public int getInStock() {
         return this.inStock;
     }
