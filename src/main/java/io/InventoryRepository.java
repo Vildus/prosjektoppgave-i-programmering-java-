@@ -1,4 +1,3 @@
-
 package io;
 
 import inventory.Inventory;
@@ -54,4 +53,3 @@ public class InventoryRepository {
         return (Inventory) inventory;
     }
 }
-
