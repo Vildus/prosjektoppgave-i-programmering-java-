@@ -5,6 +5,7 @@ import components.Keyboard;
 import components.Mouse;
 import components.RAM;
 import inventory.Inventory;
+import inventory.Inventory;
 import inventory.Item;
 import io.InventoryRepository;
 
@@ -63,6 +64,16 @@ public class InventoryController {
     @FXML
     private TextField txtFilter;
 
+    @FXML
+    void txtFilterKeyTyped(KeyEvent event) {
+        String search = this.txtFilter.getText();
+        if (search.isEmpty()) {
+            this.tvInventory.getItems().setAll(this.inventory.getItems());
+        } else {
+            this.tvInventory.getItems().setAll(inventory.filter(search));
+        }
+    }
+
 
     //TODO: Lage en path. global path.
 
@@ -96,10 +107,10 @@ public class InventoryController {
                 "Harddisc",
                 "Keyboard",
                 "Motherboard",
-                Mouse.TYPE,
+                "Mouse",
                 "Power Supply",
                 "processor",
-                RAM.TYPE,
+                "RAM",
                 "Screen");
     }
 
@@ -109,6 +120,35 @@ public class InventoryController {
         this.initializeTableView();
         this.initializeComboBox();
     }
+
+    private void initializeTableView() {
+        // her binder vi opp getComponentCategory til cellen i tabellen
+        this.colCategory.setCellValueFactory(new PropertyValueFactory<>("componentCategory"));
+        this.colArticleNumber.setCellValueFactory(new PropertyValueFactory<>("articleNumber"));
+        this.colBrand.setCellValueFactory(new PropertyValueFactory<>("componentBrand"));
+        this.colModel.setCellValueFactory(new PropertyValueFactory<>("componentModel"));
+        this.colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        this.colInStock.setCellValueFactory(new PropertyValueFactory<>("inStock"));
+
+        InventoryController self = this;
+
+        // Lager knapp inne i tableview-celler hvor det er data. Kode tatt fra nettet - skjønner den ikke selv men det funker :p
+        //google it!
+        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
+            @Override
+            public TableCell<Item, Void> call(final TableColumn<Item, Void> param) {
+                final TableCell<Item, Void> cell = new TableCell<Item, Void>() {
+
+                    private final Button btn = new Button("Edit");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Item item = this.getTableView().getItems().get(getIndex());
+                            Scene editItemScene = self.createEditItemScene(item);
+                            self.stage.setTitle(String.format("Edit item: %d", item.getArticleNumber()));
+                            self.stage.setScene(editItemScene);
+                        });
+                    }
 
     private void initializeTableView() {
         // her binder vi opp getComponentCategory til cellen i tabellen
@@ -190,6 +230,7 @@ public class InventoryController {
             // TODO: handle somehow
             return null;
         }
+
     }
 
     private Scene createAddItemScene(String componentType) {
