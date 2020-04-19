@@ -1,4 +1,4 @@
-package io;
+/*package io;
 
 import components.*;
 import inventory.Inventory;
@@ -74,3 +74,5 @@ class InventoryRepositoryTest {
         return dir;
     }
 }
+
+ */
