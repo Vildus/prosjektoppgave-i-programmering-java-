@@ -1,8 +1,14 @@
 package inventory;
 
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import ui.FilterTableViewItemPredicate;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Inventory implements Serializable {
 
@@ -32,6 +38,14 @@ public class Inventory implements Serializable {
         }
         return null;
     }
+
+
+    public List<Item> filter(String search) {
+        //Leser strømmen til strømmen ikke returnerer noe mer og konverter til obeservable arraylist
+        Stream<Item> filteredStream = items.stream().filter(new FilterTableViewItemPredicate(search));
+        return filteredStream.collect(Collectors.toCollection(ArrayList::new));
+    }
+
 }
 
 //TODO: Ikke kunne legge til to varer med samme artikkelnummer
