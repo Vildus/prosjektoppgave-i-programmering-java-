@@ -1,6 +1,7 @@
 package components;
 
 public class Motherboard extends Component {
+    public static final String TYPE = "Motherboard";
     private String sizeCategory;
 
     public Motherboard(String brand, String model, String sizeCategory) {
@@ -10,7 +11,7 @@ public class Motherboard extends Component {
 
     @Override
     public String getCategory() {
-        return "Motherboard";
+        return TYPE;
     }
 
     public String getSizeCategory() {

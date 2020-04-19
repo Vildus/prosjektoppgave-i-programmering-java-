@@ -1,6 +1,8 @@
 package components;
 
 public class RAM extends Component {
+    public static final String TYPE = "RAM";
+
     private int memory;
 
     public RAM(String brand, String model, int memory) {
@@ -10,7 +12,7 @@ public class RAM extends Component {
 
     @Override
     public String getCategory() {
-        return "RAM";
+        return TYPE;
     }
 
     public int getMemory() {
