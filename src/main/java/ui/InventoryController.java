@@ -3,6 +3,8 @@ package ui;
 import components.Component;
 import components.Keyboard;
 import components.Mouse;
+import components.RAM;
+import inventory.Inventory;
 import inventory.Inventory;
 import inventory.Item;
 import io.InventoryRepository;
@@ -148,6 +150,35 @@ public class InventoryController {
                         });
                     }
 
+    private void initializeTableView() {
+        // her binder vi opp getComponentCategory til cellen i tabellen
+        this.colCategory.setCellValueFactory(new PropertyValueFactory<>("componentCategory"));
+        this.colArticleNumber.setCellValueFactory(new PropertyValueFactory<>("articleNumber"));
+        this.colBrand.setCellValueFactory(new PropertyValueFactory<>("componentBrand"));
+        this.colModel.setCellValueFactory(new PropertyValueFactory<>("componentModel"));
+        this.colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        this.colInStock.setCellValueFactory(new PropertyValueFactory<>("inStock"));
+
+        InventoryController self = this;
+
+        // Lager knapp inne i tableview-celler hvor det er data. Kode tatt fra nettet - skjønner den ikke selv men det funker :p
+        //google it!
+        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
+            @Override
+            public TableCell<Item, Void> call(final TableColumn<Item, Void> param) {
+                final TableCell<Item, Void> cell = new TableCell<Item, Void>() {
+
+                    private final Button btn = new Button("Edit");
+
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Item item = this.getTableView().getItems().get(getIndex());
+                            Scene editItemScene = self.createEditItemScene(item);
+                            self.stage.setTitle(String.format("Edit item: %d", item.getArticleNumber()));
+                            self.stage.setScene(editItemScene);
+                        });
+                    }
+
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -167,6 +198,24 @@ public class InventoryController {
         this.tvInventory.getItems().setAll(this.inventory.getItems());
     }
 
+    @FXML
+    private void txtFilterKeyTyped(KeyEvent event) {
+        String search = this.txtFilter.getText();
+        if (search.isEmpty()) {
+            this.tvInventory.getItems().setAll(this.inventory.getItems());
+        } else {
+            this.tvInventory.getItems().setAll(inventory.filter(search));
+        }
+    }
+
+    @FXML
+    private void cbCreateNewItemAction(ActionEvent e) {
+        String componentType = cbCreateNewItem.getSelectionModel().getSelectedItem().toString();
+        Scene addItemScene = this.createAddItemScene(componentType);
+        this.stage.setTitle(String.format("Add item: %s", componentType));
+        this.stage.setScene(addItemScene);
+    }
+
     private Scene createEditItemScene(Item item) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("editItem.fxml"));
@@ -182,5 +231,19 @@ public class InventoryController {
             return null;
         }
 
+    }
+
+    private Scene createAddItemScene(String componentType) {
+        try {
+            AddItemController addItemController = new AddItemController(componentType, () -> {
+                System.out.println("Close window");
+                this.stage.setTitle("Main scene");
+                this.stage.setScene(this.tvInventory.getScene());
+            });
+            return new Scene(addItemController.getRoot(), 900, 1100);
+        } catch (Exception e) {
+            // TODO: handle somehow
+            return null;
+        }
     }
 }
