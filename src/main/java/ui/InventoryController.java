@@ -1,9 +1,6 @@
 package ui;
 
-import components.Component;
-import components.Keyboard;
-import components.Mouse;
-import components.RAM;
+import components.*;
 import inventory.Inventory;
 import inventory.Inventory;
 import inventory.Item;
@@ -93,15 +90,15 @@ public class InventoryController {
     }
 
     private void initializeComboBox() {
-        this.cbCreateNewItem.getItems().setAll("Graphic Card",
-                "Harddisc",
-                "Keyboard",
-                "Motherboard",
-                "Mouse",
-                "Power Supply",
-                "processor",
-                "RAM",
-                "Screen");
+        this.cbCreateNewItem.getItems().setAll(GraphicCard.TYPE,
+                Harddisc.TYPE,
+                Keyboard.TYPE,
+                Motherboard.TYPE,
+                Mouse.TYPE,
+                PowerSupply.TYPE,
+                Processor.TYPE,
+                RAM.TYPE,
+                Screen.TYPE);
     }
 
 
