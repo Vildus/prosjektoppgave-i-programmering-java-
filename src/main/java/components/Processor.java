@@ -1,6 +1,7 @@
 package components;
 
 public class Processor extends Component {
+    public static final String TYPE = "Processor";
     private int processorCount;
     private double clockRate;
 
@@ -13,7 +14,7 @@ public class Processor extends Component {
 
     @Override
     public String getCategory() {
-        return "Processor";
+        return TYPE;
     }
 
     public int getProcessorCount() {

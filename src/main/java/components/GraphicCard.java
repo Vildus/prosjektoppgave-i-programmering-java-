@@ -1,6 +1,7 @@
 package components;
 
 public class GraphicCard extends Component {
+    public static final String TYPE = "Graphic Card";
     private int memory; //i megabyte
 
 
@@ -11,7 +12,7 @@ public class GraphicCard extends Component {
 
     @Override
     public String getCategory() {
-        return "Graphic Card";
+        return TYPE;
     }
 
     public int getMemory() {

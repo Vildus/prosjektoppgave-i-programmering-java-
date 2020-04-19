@@ -1,6 +1,8 @@
 package components;
 
 public class Mouse extends Component {
+    public static final String TYPE = "Mouse";
+
     private String interfaceType; // USB eller bluetooth
 
     public Mouse(String brand, String model, String interfaceType) {
@@ -10,7 +12,7 @@ public class Mouse extends Component {
 
     @Override
     public String getCategory() {
-        return "Mouse";
+        return TYPE;
     }
 
     public String getInterfaceType() {

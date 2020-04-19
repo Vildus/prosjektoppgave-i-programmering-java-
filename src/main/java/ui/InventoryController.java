@@ -1,7 +1,6 @@
 package ui;
 
 import components.Component;
-import components.Keyboard;
 import components.Mouse;
 import components.RAM;
 import inventory.Inventory;
