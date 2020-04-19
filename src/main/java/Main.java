@@ -21,7 +21,7 @@ public class Main extends Application {
     }
 
     //kommenterer ut de linjene som ikke er spesifikke for din. Og legger til sin scene
-    private Scene createMainScene(Stage primaryStage) throws IOException {
+    private Scene createMainScene(Stage primaryStage) throws IOException, ClassNotFoundException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/customer.fxml"));
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/inventory.fxml"));
         loader.setController(new InventoryController(primaryStage));
