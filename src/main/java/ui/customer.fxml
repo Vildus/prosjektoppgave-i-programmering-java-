@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="646.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CustomerController">
+<AnchorPane prefHeight="646.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CustomerController">
    <children>
       <TableView fx:id="tvCustomerInventory" layoutX="20.0" layoutY="121.0" prefHeight="435.0" prefWidth="758.0">
         <columns>
@@ -21,13 +21,13 @@
         </columns>
       </TableView>
       <Button layoutX="653.0" layoutY="583.0" mnemonicParsing="false" onAction="#btnAddToBasket" text="Add to basket" />
-      <HBox layoutX="-3.0" prefHeight="60.0" prefWidth="800.0" spacing="10.0">
+      <HBox fx:id="hbNav" layoutX="-3.0" prefHeight="60.0" prefWidth="800.0" spacing="10.0">
          <children>
             <Button mnemonicParsing="false" onAction="#navGraphicCard" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Graphic Card" textOverrun="CLIP" />
             <Button mnemonicParsing="false" onAction="#navHarddisc" prefHeight="75.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="Harddisc" />
             <Button mnemonicParsing="false" onAction="#navKeyboard" prefHeight="60.0" prefWidth="151.0" styleClass="menu-bar" stylesheets="@customer.css" text="Keyboard" />
             <Button mnemonicParsing="false" onAction="#navMotherboard" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Motherboard" />
-            <Button mnemonicParsing="false" onAction="#navMouse" prefHeight="75.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="Mouse" />
+            <Button mnemonicParsing="false" onAction="#navMouse" prefHeight="72.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="Mouse" />
             <Button mnemonicParsing="false" onAction="#navPowerSupply" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Power Supply" />
             <Button mnemonicParsing="false" onAction="#navProcessor" prefHeight="75.0" prefWidth="155.0" styleClass="menu-bar" stylesheets="@customer.css" text="Processor" />
             <Button mnemonicParsing="false" onAction="#navRAM" prefHeight="75.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="RAM" />
