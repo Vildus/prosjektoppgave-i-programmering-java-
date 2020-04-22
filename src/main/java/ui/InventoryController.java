@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 
 public class InventoryController {
@@ -67,7 +68,7 @@ public class InventoryController {
 
 
     //TODO: Lage en path. global path.
-
+// Legge til denne i koden til sluttbruker main.
     public InventoryController(Stage stage) throws ClassNotFoundException, IOException {
         this.inventoryRepository = new InventoryRepository();
         try {
@@ -158,16 +159,16 @@ public class InventoryController {
 
         colEdit.setCellFactory(cellFactory);
 
-        this.tvInventory.getItems().setAll(this.inventory.getItems());
+        this.updateTableViewItems(this.inventory.getItems());
     }
 
     @FXML
     private void txtFilterKeyTyped(KeyEvent event) {
         String search = this.txtFilter.getText();
         if (search.isEmpty()) {
-            this.tvInventory.getItems().setAll(this.inventory.getItems());
+            this.updateTableViewItems(this.inventory.getItems());
         } else {
-            this.tvInventory.getItems().setAll(inventory.filter(search));
+            this.updateTableViewItems(inventory.filter(search));
         }
     }
 
@@ -179,16 +180,19 @@ public class InventoryController {
         this.stage.setScene(addItemScene);
     }
 
+    private void updateTableViewItems(List<Item> items) {
+        this.tvInventory.getItems().setAll(items);
+    }
+
     private Scene createEditItemScene(Item item) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("editItem.fxml"));
             EditItemController editItemController = new EditItemController(item, () -> {
                 System.out.println("Close window");
                 this.stage.setTitle("Main scene");
                 this.stage.setScene(this.tvInventory.getScene());
+                this.updateTableViewItems(this.inventory.getItems());
             });
-            loader.setController(editItemController);
-            return new Scene(loader.load(), 900, 1100);
+            return new Scene(editItemController.getRoot(), 900, 1100);
         } catch (Exception e) {
             // TODO: handle somehow
             return null;
@@ -202,6 +206,7 @@ public class InventoryController {
                 System.out.println("Close window");
                 this.stage.setTitle("Main scene");
                 this.stage.setScene(this.tvInventory.getScene());
+                this.updateTableViewItems(this.inventory.getItems());
             });
             return new Scene(addItemController.getRoot(), 900, 1100);
         } catch (Exception e) {

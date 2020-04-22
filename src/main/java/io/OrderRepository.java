@@ -5,6 +5,7 @@ import purchase.OrderLine;
 import purchase.OrderRegister;
 import utils.DateStringConverter;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,6 +25,16 @@ public class OrderRepository {
         this.dateStringConverter = new DateStringConverter("dd/MM/yyyy HH:mm:ss");
     }
 
+    public OrderRepository() throws IOException {
+        String cwd = System.getProperty("user.dir");
+        Path storePath = Paths.get(cwd, "datastore");
+        try {
+            Files.createDirectory(storePath);
+        } catch (FileAlreadyExistsException e) {
+            // This is ok - datastore dir already created
+        }
+        this.directory = storePath;
+    }
     // Lager en path fordi det er den samme pathen vi skal lese og skrive fra. Da slipper vi
     // å skrive den to ganger og minsker risiko for stavefeil i strengen "orders.csv"
     private Path getOrderRegisterPath() {

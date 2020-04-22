@@ -98,7 +98,7 @@ public class AddItemController {
         this.btnAddItem = new Button("Add to inventory");
         this.btnAddItem.setOnAction(this::addItemToInventory);
         int rowCount = this.getRowCount();
-        this.gridPane.add(this.btnAddItem, 2, rowCount);
+        this.gridPane.add(this.btnAddItem, 1, rowCount - 1);
     }
 
     //TODO: Hva gjør man med qty-input? Legger til på item.InStock?
@@ -195,7 +195,7 @@ public class AddItemController {
         //skulle sendt inn en metode måtte det vært en lamda
         this.btnClose.setOnAction(this::handleCancel);
         int rowCount = this.getRowCount();
-        this.gridPane.add(this.btnClose, 1, rowCount + 2);
+        this.gridPane.add(this.btnClose, 2, rowCount + 1);
     }
 
 
