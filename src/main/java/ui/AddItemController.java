@@ -19,7 +19,7 @@ import java.io.IOException;
 
 
 public class AddItemController {
-    
+
     private String componentType;
 
     private Inventory inventory;
@@ -83,7 +83,6 @@ public class AddItemController {
         this.componentType = componentType;
         this.inventoryRepository = inventoryRepository;
         this.inventory = inventory;
-        this.closer = closer;
         this.initVBox();
         this.initGridPane();
         this.initCloseButton();
