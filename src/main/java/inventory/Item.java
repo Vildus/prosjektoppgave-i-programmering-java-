@@ -7,7 +7,6 @@ import java.io.Serializable;
 public class Item implements Serializable {
 
     private Component component;
-
     private double price;
     private int articleNumber;
     private int inStock;
