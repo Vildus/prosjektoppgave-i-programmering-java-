@@ -372,16 +372,16 @@ public class AddItemController {
     }
 
     private void initProcessorInput() {
-        this.txtModel = this.createLabelInputGridPane("Processor count", 5);
-        this.txtModel = this.createLabelInputGridPane("Processor clock rate", 6);
+        this.txtProcessorCount = this.createLabelInputGridPane("Processor count", 5);
+        this.txtProcessorClockRate = this.createLabelInputGridPane("Processor clock rate", 6);
     }
 
     private void initRAMInput() {
-        this.txtModel = this.createLabelInputGridPane("Memory", 5);
+        this.txtRAMMemory = this.createLabelInputGridPane("Memory", 5);
     }
 
     private void initScreenInput() {
-        this.txtModel = this.createLabelInputGridPane("Screen size", 5);
+        this.txtScreenSize = this.createLabelInputGridPane("Screen size", 5);
     }
 
     private TextField createLabelInputGridPane(String label, int row) {
