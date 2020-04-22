@@ -8,12 +8,14 @@ import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +29,7 @@ public class InventoryController {
 
     private InventoryRepository inventoryRepository;
 
+    private Scene customerScene;
 
     @FXML
     private ComboBox<String> cbCreateNewItem;
@@ -61,11 +64,6 @@ public class InventoryController {
     @FXML
     private TextField txtFilter;
 
-    @FXML
-    void signOutOfInventory(ActionEvent event) {
-
-    }
-
 
     //TODO: Lage en path. global path.
 // Legge til denne i koden til sluttbruker main.
@@ -77,7 +75,7 @@ public class InventoryController {
             this.inventory = new Inventory(); //Hvis den ikke finner en fil med et vareregister så vil vi ha et tomt inventory
             this.testFillInventory();
         } //Hvis det ikke finnes noe path så vil vi lage et nytt
-
+        this.customerScene = this.createCustomerScene();
         this.stage = stage;
     }
 
@@ -95,7 +93,20 @@ public class InventoryController {
     }
 
     private void initializeComboBox() {
-        this.cbCreateNewItem.getItems().setAll(GraphicCard.TYPE,
+        this.cbCreateNewItem.setPromptText("Add new item to inventory");
+        this.cbCreateNewItem.setButtonCell(new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("Add new item to inventory");
+                } else {
+                    setText(item);
+                }
+            }
+        });
+        this.cbCreateNewItem.getItems().setAll(
+                GraphicCard.TYPE,
                 Harddisc.TYPE,
                 Keyboard.TYPE,
                 Motherboard.TYPE,
@@ -180,8 +191,25 @@ public class InventoryController {
         this.stage.setScene(addItemScene);
     }
 
+
+    @FXML
+    void signOut(ActionEvent event) {
+        this.stage.setTitle("Data store");
+        this.stage.setScene(this.customerScene);
+    }
+
     private void updateTableViewItems(List<Item> items) {
         this.tvInventory.getItems().setAll(items);
+    }
+
+    private Scene createCustomerScene() {
+        try {
+            Parent parent = FXMLLoader.load(getClass().getResource("customer.fxml"));
+            return new Scene(parent, 900, 1100);
+        } catch (IOException e) {
+            //If this happens it means that something is seriously wrong
+            throw new RuntimeException();
+        }
     }
 
     private Scene createEditItemScene(Item item) {
@@ -207,6 +235,7 @@ public class InventoryController {
                 this.stage.setTitle("Main scene");
                 this.stage.setScene(this.tvInventory.getScene());
                 this.updateTableViewItems(this.inventory.getItems());
+                this.cbCreateNewItem.setValue(null);
             });
             return new Scene(addItemController.getRoot(), 900, 1100);
         } catch (Exception e) {

@@ -19,6 +19,7 @@ public class Inventory implements Serializable {
     }
 
     public void addItem(Item item) {
+        // TODO: check if article number exists - and if it does - throw ArticleNumberAlreadyExistsException
         this.items.add(item);
     }
 
