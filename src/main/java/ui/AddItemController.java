@@ -19,7 +19,7 @@ import java.io.IOException;
 
 
 public class AddItemController {
-    
+
     private String componentType;
 
     private Inventory inventory;
