@@ -23,7 +23,7 @@ public class EditItemController {
     private VBox vb;
 
     TextField txtPrice;
-    TextField txtQty;
+    TextField txtInStock;
 
 
     // This means we cannot create an Edit item controller without an item
@@ -64,97 +64,33 @@ public class EditItemController {
     }
 
 
+    //TODO: Implementer metoden under når man trykker på oppdater
+
     private void updateItem(ActionEvent actionEvent) {
-
-        // endre alt under. Trenger kun å oppdatere pris og antall
-        //ComponentInput
-
-        /*
-        Component component;
-        String brand = this.txtBrand.getText();
-        String model = this.txtModel.getText();
-
         //Item input
         Item item;
-        double price = Double.parseDouble(this.txtPrice.getText());
-        int articleNumber = Integer.parseInt(this.txtArticleNumber.getText());
 
-        switch (componentType) {
-            case GraphicCard.TYPE:
-                int graphicCardMemory = Integer.parseInt(this.txtGraphicCardMemory.getText());
-                component = new GraphicCard(brand, model, graphicCardMemory);
-                break;
-
-            case Harddisc.TYPE:
-                String harddiscType = this.txtHarddiscType.getText();
-                component = new Harddisc(brand, model, harddiscType);
-                break;
-
-            case Keyboard.TYPE:
-                String keyboardInterfaceType = txtKeyBoardInterfaceType.getText();
-                component = new Keyboard(brand, model, keyboardInterfaceType);
-                break;
-
-            case Motherboard.TYPE:
-                String motherboardSizeCategory = txtMotherboardSizeCategory.getText();
-                component = new Motherboard(brand, model, motherboardSizeCategory);
-                break;
-
-            case Mouse.TYPE:
-                String mouseInterfaceType = txtMouseInterfaceType.getText();
-                component = new Mouse(brand, model, mouseInterfaceType);
-                break;
-
-            case PowerSupply.TYPE:
-                int effect = Integer.parseInt(txtPowerSupplyEffect.getText());
-                double inputVoltage = Double.parseDouble(txtPowerSupplyInputVoltage.getText());
-                double outputVoltage = Double.parseDouble(txtPowerSupplyOutputVoltage.getText());
-                component = new PowerSupply(brand, model, effect, inputVoltage, outputVoltage);
-                break;
-
-            case Processor.TYPE:
-                int processorCount = Integer.parseInt(txtProcessorCount.getText());
-                double processorClockRate = Double.parseDouble(txtProcessorClockRate.getText());
-                component = new Processor(brand, model, processorCount, processorClockRate);
-                break;
-
-            case RAM.TYPE:
-                int ramMemory = Integer.parseInt(txtRAMMemory.getText());
-                component = new RAM(brand, model, ramMemory);
-                break;
-
-            case Screen.TYPE:
-                int screenSize = Integer.parseInt(txtScreenSize.getText());
-                component = new Screen(brand, model, screenSize);
-                break;
-
-            default:
-                throw new RuntimeException(String.format("Unknown component type: %s", this.componentType));
-        }
-
+        double price;
         try {
-            item = new Item(component, price, articleNumber);
-        } catch (InvalidPriceArgumentException e) {
-            //TODO: si ifra til bruker
+            price = Double.parseDouble(this.txtPrice.getText());
+        } catch (NumberFormatException e) {
+            //TODO: handle somehow
             return;
         }
 
-        int qty = Integer.parseInt(txtQty.getText());
-        item.setInStock(qty);
-
-        this.inventory.addItem(item);
+        int insStock;
         try {
-            this.inventoryRepository.save(this.inventory);
-        } catch (IOException e) {
-            //TODO: si ifra til bruker
+            insStock = Integer.parseInt(this.txtInStock.getText());
+        } catch (NumberFormatException e) {
+            //TODO: Handle somehow
             return;
         }
+
+        this.item.setPrice(price);
+        this.item.setInStock(insStock);
 
         this.closer.close();
-
-         */
     }
-
 
 
     private void initVBox() {
@@ -169,7 +105,7 @@ public class EditItemController {
         this.gridPane.setPrefHeight(400);
         this.gridPane.setHgap(10);
         this.gridPane.setVgap(10);
-        this.initLabelFields();
+        this.initInputFields();
         this.vb.getChildren().add(this.gridPane);
     }
 
@@ -180,9 +116,12 @@ public class EditItemController {
         return textField;
     }
 
-    private void initLabelFields() {
+    private void initInputFields() {
         this.txtPrice = this.createLabelInputGridPane("Price", 0);
-        this.txtQty = this.createLabelInputGridPane("Quantity", 1);
+        this.txtInStock = this.createLabelInputGridPane("In stock", 1);
+
+        this.txtPrice.setText("" + item.getPrice());
+        this.txtInStock.setText("" + item.getInStock());
     }
 
     private int getRowCount() {
