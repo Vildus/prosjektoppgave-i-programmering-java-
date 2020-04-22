@@ -2,17 +2,29 @@ package ui;
 
 import inventory.Item;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
-// https://stackoverflow.com/questions/30814258/javafx-pass-parameters-while-instantiating-controller-class
 
 public class EditItemController {
-    @FXML
+
     Button btnClose;
+    Button btnUpdate;
 
     private Item item;
     private SceneCloser closer;
+    private GridPane gridPane;
+    private VBox vb;
+
+    TextField txtPrice;
+    TextField txtQty;
+
 
     // This means we cannot create an Edit item controller without an item
     // as it does not make sense to have a "view" (javafx view) without an item to edit
@@ -20,14 +32,174 @@ public class EditItemController {
     public EditItemController(Item item, SceneCloser closer) {
         this.item = item;
         this.closer = closer;
+        this.initVBox();
+        this.initGridPane();
+        this.initCloseButton();
+        this.initUpdateItemButton();
     }
 
-    @FXML
-    public void initialize() {
-        btnClose.setOnAction(this::handleClose);
+    public Parent getRoot() {
+        return this.vb;
+    }
+
+
+    private void initCloseButton() {
+        this.btnClose = new Button("Close");
+        //Syntaks for å hente referanse til en metode. Kan ikke sende metode inni metode(SetonAction er en metode). Hvis man
+        //skulle sendt inn en metode måtte det vært en lamda
+        this.btnClose.setOnAction(this::handleClose);
+        int rowCount = this.getRowCount();
+        this.gridPane.add(this.btnClose, 2, rowCount + 1);
     }
 
     private void handleClose(ActionEvent e) {
         this.closer.close();
     }
+
+    private void initUpdateItemButton() {
+        this.btnUpdate = new Button("Update item");
+        this.btnUpdate.setOnAction(this::updateItem);
+        int rowCount = this.getRowCount();
+        this.gridPane.add(this.btnUpdate, 1, rowCount - 1);
+    }
+
+
+    private void updateItem(ActionEvent actionEvent) {
+
+        // endre alt under. Trenger kun å oppdatere pris og antall
+        //ComponentInput
+
+        /*
+        Component component;
+        String brand = this.txtBrand.getText();
+        String model = this.txtModel.getText();
+
+        //Item input
+        Item item;
+        double price = Double.parseDouble(this.txtPrice.getText());
+        int articleNumber = Integer.parseInt(this.txtArticleNumber.getText());
+
+        switch (componentType) {
+            case GraphicCard.TYPE:
+                int graphicCardMemory = Integer.parseInt(this.txtGraphicCardMemory.getText());
+                component = new GraphicCard(brand, model, graphicCardMemory);
+                break;
+
+            case Harddisc.TYPE:
+                String harddiscType = this.txtHarddiscType.getText();
+                component = new Harddisc(brand, model, harddiscType);
+                break;
+
+            case Keyboard.TYPE:
+                String keyboardInterfaceType = txtKeyBoardInterfaceType.getText();
+                component = new Keyboard(brand, model, keyboardInterfaceType);
+                break;
+
+            case Motherboard.TYPE:
+                String motherboardSizeCategory = txtMotherboardSizeCategory.getText();
+                component = new Motherboard(brand, model, motherboardSizeCategory);
+                break;
+
+            case Mouse.TYPE:
+                String mouseInterfaceType = txtMouseInterfaceType.getText();
+                component = new Mouse(brand, model, mouseInterfaceType);
+                break;
+
+            case PowerSupply.TYPE:
+                int effect = Integer.parseInt(txtPowerSupplyEffect.getText());
+                double inputVoltage = Double.parseDouble(txtPowerSupplyInputVoltage.getText());
+                double outputVoltage = Double.parseDouble(txtPowerSupplyOutputVoltage.getText());
+                component = new PowerSupply(brand, model, effect, inputVoltage, outputVoltage);
+                break;
+
+            case Processor.TYPE:
+                int processorCount = Integer.parseInt(txtProcessorCount.getText());
+                double processorClockRate = Double.parseDouble(txtProcessorClockRate.getText());
+                component = new Processor(brand, model, processorCount, processorClockRate);
+                break;
+
+            case RAM.TYPE:
+                int ramMemory = Integer.parseInt(txtRAMMemory.getText());
+                component = new RAM(brand, model, ramMemory);
+                break;
+
+            case Screen.TYPE:
+                int screenSize = Integer.parseInt(txtScreenSize.getText());
+                component = new Screen(brand, model, screenSize);
+                break;
+
+            default:
+                throw new RuntimeException(String.format("Unknown component type: %s", this.componentType));
+        }
+
+        try {
+            item = new Item(component, price, articleNumber);
+        } catch (InvalidPriceArgumentException e) {
+            //TODO: si ifra til bruker
+            return;
+        }
+
+        int qty = Integer.parseInt(txtQty.getText());
+        item.setInStock(qty);
+
+        this.inventory.addItem(item);
+        try {
+            this.inventoryRepository.save(this.inventory);
+        } catch (IOException e) {
+            //TODO: si ifra til bruker
+            return;
+        }
+
+        this.closer.close();
+
+         */
+    }
+
+
+
+    private void initVBox() {
+        this.vb = new VBox();
+        this.vb.setPadding(new Insets(80, 50, 50, 80));
+        //vb.setSpacing(10); mellom elementene
+    }
+
+    private void initGridPane() {
+        this.gridPane = new GridPane();
+        this.gridPane.setPrefWidth(600);
+        this.gridPane.setPrefHeight(400);
+        this.gridPane.setHgap(10);
+        this.gridPane.setVgap(10);
+        this.initLabelFields();
+        this.vb.getChildren().add(this.gridPane);
+    }
+
+    private TextField createLabelInputGridPane(String label, int row) {
+        this.gridPane.add(new Label(label), 0, row);
+        TextField textField = new TextField();
+        this.gridPane.add(textField, 1, row);
+        return textField;
+    }
+
+    private void initLabelFields() {
+        this.txtPrice = this.createLabelInputGridPane("Price", 0);
+        this.txtQty = this.createLabelInputGridPane("Quantity", 1);
+    }
+
+    private int getRowCount() {
+        int numRows = this.gridPane.getRowConstraints().size();
+        for (int i = 0; i < this.gridPane.getChildren().size(); i++) {
+            Node child = this.gridPane.getChildren().get(i);
+            if (child.isManaged()) {
+                Integer rowIndex = GridPane.getRowIndex(child);
+                if (rowIndex != null) {
+                    numRows = Math.max(numRows, rowIndex + 1);
+                }
+            }
+        }
+        return numRows;
+    }
+
 }
+
+
+
