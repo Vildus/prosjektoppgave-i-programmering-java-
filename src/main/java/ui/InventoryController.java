@@ -1,10 +1,6 @@
 package ui;
 
-import components.Component;
-import components.Keyboard;
-import components.Mouse;
-import components.RAM;
-import inventory.Inventory;
+import components.*;
 import inventory.Inventory;
 import inventory.Item;
 import io.InventoryRepository;
@@ -18,7 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -30,6 +25,7 @@ public class InventoryController {
     private Inventory inventory;
 
     private InventoryRepository inventoryRepository;
+
 
     @FXML
     private ComboBox<String> cbCreateNewItem;
@@ -64,6 +60,11 @@ public class InventoryController {
     @FXML
     private TextField txtFilter;
 
+    @FXML
+    void signOutOfInventory(ActionEvent event) {
+
+    }
+
 
     //TODO: Lage en path. global path.
 
@@ -93,15 +94,15 @@ public class InventoryController {
     }
 
     private void initializeComboBox() {
-        this.cbCreateNewItem.getItems().setAll("Graphic Card",
-                "Harddisc",
-                "Keyboard",
-                "Motherboard",
-                "Mouse",
-                "Power Supply",
-                "processor",
-                "RAM",
-                "Screen");
+        this.cbCreateNewItem.getItems().setAll(GraphicCard.TYPE,
+                Harddisc.TYPE,
+                Keyboard.TYPE,
+                Motherboard.TYPE,
+                Mouse.TYPE,
+                PowerSupply.TYPE,
+                Processor.TYPE,
+                RAM.TYPE,
+                Screen.TYPE);
     }
 
 
@@ -197,7 +198,7 @@ public class InventoryController {
 
     private Scene createAddItemScene(String componentType) {
         try {
-            AddItemController addItemController = new AddItemController(componentType, () -> {
+            AddItemController addItemController = new AddItemController(componentType, this.inventory, this.inventoryRepository, () -> {
                 System.out.println("Close window");
                 this.stage.setTitle("Main scene");
                 this.stage.setScene(this.tvInventory.getScene());
