@@ -83,6 +83,7 @@ public class AddItemController {
         this.componentType = componentType;
         this.inventoryRepository = inventoryRepository;
         this.inventory = inventory;
+        this.closer = closer;
         this.initVBox();
         this.initGridPane();
         this.initCloseButton();
