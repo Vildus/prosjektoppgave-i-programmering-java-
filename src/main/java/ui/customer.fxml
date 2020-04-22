@@ -3,24 +3,25 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="646.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CustomerController">
+<AnchorPane prefHeight="646.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.CustomerController">
    <children>
       <TableView fx:id="tvCustomerInventory" layoutX="20.0" layoutY="121.0" prefHeight="435.0" prefWidth="758.0">
         <columns>
-          <TableColumn fx:id="colCategory" prefWidth="75.0" text="Category" />
-          <TableColumn fx:id="colArticleNumber" prefWidth="101.0" text="Article Number" />
-            <TableColumn fx:id="colBrand" prefWidth="122.0" text="Brand" />
-            <TableColumn fx:id="colModel" prefWidth="233.0" text="Model" />
-            <TableColumn fx:id="colPrice" prefWidth="98.0" text="Price" />
-            <TableColumn fx:id="colQty" prefWidth="112.0" text="Qty" />
+          <TableColumn fx:id="colCategory" text="Category" />
+          <TableColumn fx:id="colArticleNumber" text="Article Number" />
+            <TableColumn fx:id="colBrand" text="Brand" />
+            <TableColumn fx:id="colModel" text="Model" />
+            <TableColumn fx:id="colPrice" text="Price" />
+            <TableColumn fx:id="colQty" text="Qty" />
         </columns>
       </TableView>
-      <Button layoutX="653.0" layoutY="583.0" mnemonicParsing="false" onAction="#btnAddToBasket" text="Add to basket" />
+      <Button layoutX="654.0" layoutY="583.0" mnemonicParsing="false" onAction="#btnAddToBasket" text="Go to basket" />
       <HBox fx:id="hbNav" layoutX="-3.0" prefHeight="60.0" prefWidth="800.0" spacing="10.0">
          <children>
             <Button mnemonicParsing="false" onAction="#navGraphicCard" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Graphic Card" textOverrun="CLIP" />
@@ -42,5 +43,6 @@
          </padding>
       </HBox>
       <Button layoutX="720.0" layoutY="84.0" mnemonicParsing="false" onAction="#btnAdmin" text="Admin" />
+      <Label fx:id="lblNotifyMessage" layoutX="230.0" layoutY="583.0" prefHeight="27.0" prefWidth="395.0" />
    </children>
 </AnchorPane>

@@ -3,13 +3,25 @@ package ui;
 import components.*;
 import inventory.Inventory;
 import inventory.Item;
+import inventory.ItemAlreadyExcistException;
 import io.InventoryRepository;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.util.Callback;
+import purchase.ItemAvailableStockException;
+import purchase.ShoppingBag;
+
+import java.io.IOException;
 
 
 public class CustomerController {
@@ -19,6 +31,15 @@ public class CustomerController {
     private Item item;
 
     private InventoryRepository inventoryRepository;
+
+    private GridPane gridPane;
+
+    private ShoppingBag shoppingBag;
+
+    private Stage stage;
+
+    @FXML
+    private Label lblNotifyMessage;
 
     @FXML
     private HBox hbNav;
@@ -42,17 +63,29 @@ public class CustomerController {
     private TableColumn<Item, Double> colPrice;
 
     @FXML
-    private TableColumn<Item, Integer> colQty;
+    private TableColumn<Item, Void> colQty;
+
 
     @FXML
-    void btnAddToBasket(ActionEvent event) {
+    void btnAddToBasket(ActionEvent event) throws IOException {
+        Parent basketParent = FXMLLoader.load(getClass().getResource("basket.fxml"));
+        Scene basketScene = new Scene(basketParent);
 
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(basketScene);
+        window.show();
     }
 
     @FXML
-    void btnAdmin(ActionEvent event) {
+    void btnAdmin(ActionEvent event) throws IOException {
+        Parent adminParent = FXMLLoader.load(getClass().getResource("inventory.fxml")); //funker med editItem.fxml
+        Scene adminScene = new Scene(adminParent);
 
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        window.setScene(adminScene);
+        window.show();
     }
+
 
     @FXML
     void navGraphicCard(ActionEvent event) {
@@ -115,8 +148,9 @@ public class CustomerController {
 
     @FXML
     private void initialize() {
-        this.testFillInventory();
+        this.testFillInventory(); // denne må byttes ut med en ordentlig instans av inventory.
         this.initializeTableView();
+        this.shoppingBag = new ShoppingBag(this.inventory);
     }
 
 
@@ -128,7 +162,6 @@ public class CustomerController {
             }
         }
     }
-
 
     private void testFillInventory() {
         inventory = new Inventory();
@@ -172,8 +205,12 @@ public class CustomerController {
         Item item8 = new Item(component8, 1000, 7564739);
         item8.setInStock(56);
         this.inventory.addItem(item8);
-    }
 
+        Component component9 = new GraphicCard("HP", "Elite gaming", 250);
+        Item item9 = new Item(component9, 2000, 1325535);
+        item9.setInStock(12);
+        this.inventory.addItem(item9);
+    }
 
     private void initializeTableView() {
         // her binder vi opp getComponentCategory til cellen i tabellen
@@ -182,6 +219,85 @@ public class CustomerController {
         this.colBrand.setCellValueFactory(new PropertyValueFactory<>("componentBrand"));
         this.colModel.setCellValueFactory(new PropertyValueFactory<>("componentModel"));
         this.colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        CustomerController self = this;
+
+        // Lager knapp inne i tableview-celler hvor det er data. Kode tatt fra nettet - skjønner den ikke selv men det funker :p
+        //google it!
+        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
+            @Override
+            public TableCell<Item, Void> call(final TableColumn<Item, Void> param) {
+                final TableCell<Item, Void> cell = new TableCell<Item, Void>() {
+
+                    private final TextField txtQty = new TextField("1");
+
+
+                    private final Button btnBuy = new Button("Buy");
+
+                    {
+                        btnBuy.setOnAction((ActionEvent event) -> {
+                            System.out.println("hei");
+                            int parseQty = Integer.parseInt(txtQty.getText());
+                            Item item = this.getTableView().getItems().get(getIndex());
+                            try {
+                                shoppingBag.setItem(item, parseQty);
+                                lblNotifyMessage.setText(parseQty + " item with articlenumber: " + item.getArticleNumber() + " added to basket");
+                                System.out.println("Item er lagt til"); //denne linjen kan fjernes når handlekurven er laget
+                            } catch (ItemAvailableStockException e) {
+                                lblNotifyMessage.setText("Out of Stock!");
+                                //TODO: Handle somehow
+                            }
+
+                        });
+                    }
+
+                    private final GridPane gridPane = new GridPane();
+
+                    {
+                        gridPane.setHgap(5);
+                        gridPane.add(txtQty, 0, 1);
+                        gridPane.add(btnBuy, 1, 1);
+                    }
+
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            this.setGraphic(null);
+                        } else {
+
+                            this.setGraphic(gridPane);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+        colQty.setCellFactory(cellFactory);
     }
+
+
+
+
+    /*private Scene createShoppingBagScene(Item item, int qty ) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("shoppingBag.fxml"));
+            ShoppingBagController shoppingBagController = new ShoppingbagController(item, qty () -> {
+                System.out.println("Close window");
+                this.stage.setTitle("Main scene");
+                this.stage.setScene(this.tvCustomerInventory.getScene());
+            });
+            loader.setController(shoppingBagController);
+            return new Scene(loader.load(), 900, 1100);
+        } catch (Exception e) {
+            // TODO: handle somehow
+            return null;
+        }
+    }*/
+
+
+
 
 }
