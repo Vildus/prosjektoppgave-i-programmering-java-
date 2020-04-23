@@ -1,10 +1,7 @@
 package ui;
 
 import components.*;
-import inventory.InvalidPriceArgumentException;
 import inventory.Inventory;
-import inventory.Item;
-import inventory.ItemAlreadyExistsException;
 import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -16,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 
 public class AddItemController {
 
@@ -105,7 +101,6 @@ public class AddItemController {
     }
 
     private void addItemToInventory(ActionEvent actionEvent) {
-
     }
 
 
