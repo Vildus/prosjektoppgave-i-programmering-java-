@@ -21,7 +21,7 @@
         </columns>
       </TableView>
       <TextField fx:id="txtFilter" layoutX="45.0" layoutY="176.0" onKeyTyped="#txtFilterKeyTyped" promptText="Search" styleClass="textField" />
-      <ComboBox fx:id="cbCreateNewItem" layoutX="45.0" layoutY="76.0" prefHeight="51.0" prefWidth="212.0" onAction="#cbCreateNewItemAction" promptText="Add new item to inventory" />
-      <Button layoutX="773.0" layoutY="23.0" mnemonicParsing="false" onAction="#signOutOfInventory" text="Sign out" />
+      <ComboBox fx:id="cbCreateNewItem" layoutX="45.0" layoutY="76.0" onAction="#cbCreateNewItemAction" prefHeight="51.0" prefWidth="212.0" />
+      <Button layoutX="773.0" layoutY="23.0" mnemonicParsing="false" onAction="#signOut" text="Sign out" />
    </children>
 </AnchorPane>

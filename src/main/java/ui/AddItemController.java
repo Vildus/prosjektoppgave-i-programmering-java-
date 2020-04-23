@@ -17,7 +17,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-
 public class AddItemController {
 
     private String componentType;
@@ -75,6 +74,8 @@ public class AddItemController {
 
     Button btnAddItem;
 
+    Label lblInfo;
+
 
     // This means we cannot create an item controller without a componentType
     // as it does not make sense to have a "view" (javafx view) without a componentType to edit
@@ -88,6 +89,7 @@ public class AddItemController {
         this.initGridPane();
         this.initCloseButton();
         this.initAddItemButton();
+        this.initInfoLabel();
     }
 
     public Parent getRoot() {
@@ -104,88 +106,171 @@ public class AddItemController {
     //TODO: Hva gjør man med qty-input? Legger til på item.InStock?
 
     private void addItemToInventory(ActionEvent actionEvent) {
-        //ComponentInput
+        //Component input
         Component component;
         String brand = this.txtBrand.getText();
         String model = this.txtModel.getText();
 
         //Item input
         Item item;
-        double price = Double.parseDouble(this.txtPrice.getText());
-        int articleNumber = Integer.parseInt(this.txtArticleNumber.getText());
+        double price;
+        int articleNumber;
 
-        switch (componentType) {
-            case GraphicCard.TYPE:
-                int graphicCardMemory = Integer.parseInt(this.txtGraphicCardMemory.getText());
-                component = new GraphicCard(brand, model, graphicCardMemory);
-                break;
+        try {
+            price = Double.parseDouble(this.txtPrice.getText());
+        } catch (NumberFormatException e) {
+            this.lblInfo.setText("The price can only contain digits");
+            return;
+        }
 
-            case Harddisc.TYPE:
-                String harddiscType = this.txtHarddiscType.getText();
-                component = new Harddisc(brand, model, harddiscType);
-                break;
+        try {
+            articleNumber = Integer.parseInt(this.txtArticleNumber.getText());
+        } catch (NumberFormatException e) {
+            this.lblInfo.setText("The article number can only contain digits");
+            return;
+        }
 
-            case Keyboard.TYPE:
-                String keyboardInterfaceType = txtKeyBoardInterfaceType.getText();
-                component = new Keyboard(brand, model, keyboardInterfaceType);
-                break;
+        try {
+            switch (componentType) {
+                case GraphicCard.TYPE:
+                    int graphicCardMemory;
+                    try {
+                        graphicCardMemory = Integer.parseInt(this.txtGraphicCardMemory.getText());
+                    } catch (NumberFormatException e) {
+                        this.lblInfo.setText("Graphic card memory can only contain digits");
+                        return;
+                    }
+                    component = new GraphicCard(brand, model, graphicCardMemory);
+                    break;
 
-            case Motherboard.TYPE:
-                String motherboardSizeCategory = txtMotherboardSizeCategory.getText();
-                component = new Motherboard(brand, model, motherboardSizeCategory);
-                break;
+                case Harddisc.TYPE:
+                    String harddiscType = this.txtHarddiscType.getText();
+                    component = new Harddisc(brand, model, harddiscType);
+                    break;
 
-            case Mouse.TYPE:
-                String mouseInterfaceType = txtMouseInterfaceType.getText();
-                component = new Mouse(brand, model, mouseInterfaceType);
-                break;
+                case Keyboard.TYPE:
+                    String keyboardInterfaceType = txtKeyBoardInterfaceType.getText();
+                    component = new Keyboard(brand, model, keyboardInterfaceType);
+                    break;
 
-            case PowerSupply.TYPE:
-                int effect = Integer.parseInt(txtPowerSupplyEffect.getText());
-                double inputVoltage = Double.parseDouble(txtPowerSupplyInputVoltage.getText());
-                double outputVoltage = Double.parseDouble(txtPowerSupplyOutputVoltage.getText());
-                component = new PowerSupply(brand, model, effect, inputVoltage, outputVoltage);
-                break;
+                case Motherboard.TYPE:
+                    String motherboardSizeCategory = txtMotherboardSizeCategory.getText();
+                    component = new Motherboard(brand, model, motherboardSizeCategory);
+                    break;
 
-            case Processor.TYPE:
-                int processorCount = Integer.parseInt(txtProcessorCount.getText());
-                double processorClockRate = Double.parseDouble(txtProcessorClockRate.getText());
-                component = new Processor(brand, model, processorCount, processorClockRate);
-                break;
+                case Mouse.TYPE:
+                    String mouseInterfaceType = txtMouseInterfaceType.getText();
+                    component = new Mouse(brand, model, mouseInterfaceType);
+                    break;
 
-            case RAM.TYPE:
-                int ramMemory = Integer.parseInt(txtRAMMemory.getText());
-                component = new RAM(brand, model, ramMemory);
-                break;
+                case PowerSupply.TYPE:
+                    int effect;
+                    try {
+                        effect = Integer.parseInt(txtPowerSupplyEffect.getText());
+                    } catch (NumberFormatException e) {
+                        this.lblInfo.setText("Effect can only contain digits");
+                        return;
+                    }
 
-            case Screen.TYPE:
-                int screenSize = Integer.parseInt(txtScreenSize.getText());
-                component = new Screen(brand, model, screenSize);
-                break;
+                    double inputVoltage;
+                    try {
+                        inputVoltage = Double.parseDouble(txtPowerSupplyInputVoltage.getText());
+                    } catch (NumberFormatException e) {
+                        this.lblInfo.setText("Input voltage can only contain digits");
+                        return;
+                    }
 
-            default:
-                throw new RuntimeException(String.format("Unknown component type: %s", this.componentType));
+                    double outputVoltage;
+                    try {
+                        outputVoltage = Double.parseDouble(txtPowerSupplyOutputVoltage.getText());
+                    } catch (NumberFormatException e) {
+                        this.lblInfo.setText("Output voltage can only contain digits");
+                        return;
+                    }
+                    component = new PowerSupply(brand, model, effect, inputVoltage, outputVoltage);
+                    break;
+
+                case Processor.TYPE:
+                    int processorCount;
+                    try {
+                        processorCount = Integer.parseInt(txtProcessorCount.getText());
+                    } catch (NumberFormatException e) {
+                        this.lblInfo.setText("Count can only contain digits");
+                        return;
+                    }
+
+                    double processorClockRate;
+                    try {
+                        processorClockRate = Double.parseDouble(txtProcessorClockRate.getText());
+                    } catch (NumberFormatException e) {
+                        this.lblInfo.setText("Clock rate can only contain digits");
+                        return;
+                    }
+                    component = new Processor(brand, model, processorCount, processorClockRate);
+                    break;
+
+                case RAM.TYPE:
+                    int ramMemory;
+                    try {
+                        ramMemory = Integer.parseInt(txtRAMMemory.getText());
+                    } catch (NumberFormatException e) {
+                        this.lblInfo.setText("Memory can only contain digits");
+                        return;
+                    }
+                    component = new RAM(brand, model, ramMemory);
+                    break;
+
+                case Screen.TYPE:
+                    int screenSize;
+                    try {
+                        screenSize = Integer.parseInt(txtScreenSize.getText());
+                    } catch (NumberFormatException e) {
+                        this.lblInfo.setText("Screen size can only contain digits");
+                        return;
+                    }
+                    component = new Screen(brand, model, screenSize);
+                    break;
+
+                default:
+                    throw new RuntimeException(String.format("Unknown component type: %s", this.componentType));
+            }
+
+        } catch (IllegalBrandArgumentException e) {
+            this.lblInfo.setText("The field cannot be left blank. You must enter in the brand");
+            return;
+        } catch (IllegalModelArgumentException e) {
+            this.lblInfo.setText("The field cannot be left blank. You must enter in the Model");
+            return;
         }
 
         try {
             item = new Item(component, price, articleNumber);
         } catch (InvalidPriceArgumentException e) {
-            //TODO: si ifra til bruker
+            this.lblInfo.setText("The price must be higher than 0");
             return;
         }
 
-        int qty = Integer.parseInt(txtQty.getText());
-        item.setInStock(qty);
+        try {
+            int qty = Integer.parseInt(txtQty.getText());
+            item.setInStock(qty);
+        } catch (Exception e) {
+            this.lblInfo.setText("Quantity must be a digit");
+            return;
+        }
 
         this.inventory.addItem(item);
+
         try {
             this.inventoryRepository.save(this.inventory);
         } catch (IOException e) {
+            this.lblInfo.setText("Failed to save file");
+            // Hva annet kan man si? Man får jo ikke gjort noe? MIkael!!
             //TODO: si ifra til bruker
             return;
         }
 
         this.closer.close();
+
     }
 
 
@@ -196,6 +281,12 @@ public class AddItemController {
         this.btnClose.setOnAction(this::handleCancel);
         int rowCount = this.getRowCount();
         this.gridPane.add(this.btnClose, 2, rowCount + 1);
+    }
+
+    private void initInfoLabel() {
+        this.lblInfo = new Label();
+        this.lblInfo.autosize();
+        this.vb.getChildren().add(this.lblInfo);
     }
 
 
@@ -281,16 +372,16 @@ public class AddItemController {
     }
 
     private void initProcessorInput() {
-        this.txtModel = this.createLabelInputGridPane("Processor count", 5);
-        this.txtModel = this.createLabelInputGridPane("Processor clock rate", 6);
+        this.txtProcessorCount = this.createLabelInputGridPane("Processor count", 5);
+        this.txtProcessorClockRate = this.createLabelInputGridPane("Processor clock rate", 6);
     }
 
     private void initRAMInput() {
-        this.txtModel = this.createLabelInputGridPane("Memory", 5);
+        this.txtRAMMemory = this.createLabelInputGridPane("Memory", 5);
     }
 
     private void initScreenInput() {
-        this.txtModel = this.createLabelInputGridPane("Screen size", 5);
+        this.txtScreenSize = this.createLabelInputGridPane("Screen size", 5);
     }
 
     private TextField createLabelInputGridPane(String label, int row) {

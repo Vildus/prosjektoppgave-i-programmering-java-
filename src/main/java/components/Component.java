@@ -9,8 +9,8 @@ public abstract class Component implements Serializable {
 
 
     public Component(String brand, String model) {
-        this.brand = brand;
-        this.model = model;
+        this.setBrand(brand);
+        this.setModel(model);
     }
 
     public abstract String getCategory();
