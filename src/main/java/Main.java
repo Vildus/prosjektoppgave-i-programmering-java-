@@ -1,4 +1,5 @@
 
+import inventory.ItemAlreadyExistsException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,7 +23,7 @@ public class Main extends Application {
     }
 
     //kommenterer ut de linjene som ikke er spesifikke for din. Og legger til sin scene
-    private Scene createMainScene(Stage primaryStage) throws IOException, ClassNotFoundException {
+    private Scene createMainScene(Stage primaryStage) throws IOException, ClassNotFoundException, ItemAlreadyExistsException {
         //FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/customer.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/inventory.fxml"));
         loader.setController(new InventoryController(primaryStage));

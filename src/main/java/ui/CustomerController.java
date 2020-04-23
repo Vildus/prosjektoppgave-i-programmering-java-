@@ -3,9 +3,8 @@ package ui;
 import components.*;
 import inventory.Inventory;
 import inventory.Item;
-import inventory.ItemAlreadyExcistException;
+import inventory.ItemAlreadyExistsException;
 import io.InventoryRepository;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -147,7 +146,7 @@ public class CustomerController {
     }
 
     @FXML
-    private void initialize() {
+    private void initialize() throws ItemAlreadyExistsException {
         this.testFillInventory(); // denne må byttes ut med en ordentlig instans av inventory.
         this.initializeTableView();
         this.shoppingBag = new ShoppingBag(this.inventory);
@@ -163,7 +162,7 @@ public class CustomerController {
         }
     }
 
-    private void testFillInventory() {
+    private void testFillInventory() throws ItemAlreadyExistsException {
         inventory = new Inventory();
         //Hvis inventory er tomt så fylles inventory med dette test-inventory
         Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
@@ -177,32 +176,32 @@ public class CustomerController {
         this.inventory.addItem(item2);
 
         Component component3 = new Harddisc("HP", "Elite", "HDD");
-        Item item3 = new Item(component3, 600, 7564739);
+        Item item3 = new Item(component3, 600, 7564738);
         item3.setInStock(14);
         this.inventory.addItem(item3);
 
         Component component4 = new Motherboard("HP", "Elite gaming", "Small");
-        Item item4 = new Item(component4, 1200, 7564739);
+        Item item4 = new Item(component4, 1200, 7564745);
         item4.setInStock(60);
         this.inventory.addItem(item4);
 
         Component component5 = new PowerSupply("HP", "Elite gaming", 2, 123.5, 123.4);
-        Item item5 = new Item(component5, 1200, 7564739);
+        Item item5 = new Item(component5, 1200, 7564730);
         item5.setInStock(30);
         this.inventory.addItem(item5);
 
         Component component6 = new Processor("HP", "Elite gaming", 10, 20.5);
-        Item item6 = new Item(component6, 1200, 7564739);
+        Item item6 = new Item(component6, 1200, 7564734);
         item6.setInStock(10);
         this.inventory.addItem(item6);
 
         Component component7 = new RAM("HP", "Elite gaming", 100);
-        Item item7 = new Item(component7, 1200, 7564739);
+        Item item7 = new Item(component7, 1200, 7564767);
         item7.setInStock(2);
         this.inventory.addItem(item7);
 
         Component component8 = new Screen("HP", "Elite gaming", 50);
-        Item item8 = new Item(component8, 1000, 7564739);
+        Item item8 = new Item(component8, 1000, 7564778);
         item8.setInStock(56);
         this.inventory.addItem(item8);
 
@@ -296,8 +295,6 @@ public class CustomerController {
             return null;
         }
     }*/
-
-
 
 
 }
