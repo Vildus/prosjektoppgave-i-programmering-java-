@@ -1,7 +1,5 @@
 package inventory;
 
-import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
 import ui.FilterTableViewItemPredicate;
 
 import java.io.Serializable;
@@ -18,8 +16,10 @@ public class Inventory implements Serializable {
         this.items = new ArrayList<>();
     }
 
-    public void addItem(Item item) {
-        // TODO: check if article number exists - and if it does - throw ArticleNumberAlreadyExistsException
+    public void addItem(Item item) throws ItemAlreadyExistsException {
+        if (this.findItemByArticleNumber(item.getArticleNumber()) != null) {
+            throw new ItemAlreadyExistsException(item.getArticleNumber());
+        }
         this.items.add(item);
     }
 

@@ -3,6 +3,7 @@ package ui;
 import components.*;
 import inventory.Inventory;
 import inventory.Item;
+import inventory.ItemAlreadyExistsException;
 import io.InventoryRepository;
 
 import javafx.event.ActionEvent;
@@ -67,7 +68,7 @@ public class InventoryController {
 
     //TODO: Lage en path. global path.
 // Legge til denne i koden til sluttbruker main.
-    public InventoryController(Stage stage) throws ClassNotFoundException, IOException {
+    public InventoryController(Stage stage) throws ClassNotFoundException, IOException, ItemAlreadyExistsException {
         this.inventoryRepository = new InventoryRepository();
         try {
             this.inventory = this.inventoryRepository.read();
@@ -79,7 +80,7 @@ public class InventoryController {
         this.stage = stage;
     }
 
-    private void testFillInventory() {
+    private void testFillInventory() throws ItemAlreadyExistsException {
         //Hvis inventory er tomt så fylles inventory med dette test-inventory
         Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
         Item item1 = new Item(component1, 120, 7234567);

@@ -5,6 +5,7 @@ import components.Keyboard;
 import components.Mouse;
 import inventory.Inventory;
 import inventory.Item;
+import inventory.ItemAlreadyExistsException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,14 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class ShoppingBagTest {
     Inventory inventory;
 
-    public ShoppingBagTest() {
+    public ShoppingBagTest() throws ItemAlreadyExistsException {
         this.inventory = this.createTestInventory();
     }
 
 
     //Legge til varer i shopping bagen. Regne ut totalpris, fjerne og justere antall?
 
-    private Inventory createTestInventory() {
+    private Inventory createTestInventory() throws ItemAlreadyExistsException {
         Inventory inventory = new Inventory();
         Component component1 = new Mouse("Dell", "1", "USB");
         Item item1 = new Item(component1, 120.0, 7234567);
