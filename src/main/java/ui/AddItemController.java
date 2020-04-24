@@ -106,7 +106,7 @@ public class AddItemController {
     }
 
 
-    private void addItemToInventory(ActionEvent actionEvent) throws ItemAlreadyExistsException {
+    private void addItemToInventory(ActionEvent actionEvent) {
         //Component input
         Component component;
         String brand = this.txtBrand.getText();
@@ -259,7 +259,11 @@ public class AddItemController {
             return;
         }
 
-        this.inventory.addItem(item);
+        try {
+            this.inventory.addItem(item);
+        } catch (ItemAlreadyExistsException e) {
+            this.lblInfo.setText("An item with this article number exists already. To update price or quantity for an item that already exists go back to inventory");
+        }
 
         try {
             this.inventoryRepository.save(this.inventory);
