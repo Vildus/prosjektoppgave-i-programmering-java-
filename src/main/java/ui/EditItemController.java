@@ -24,6 +24,7 @@ public class EditItemController {
 
     TextField txtPrice;
     TextField txtInStock;
+    Label lblInfo;
 
 
     // This means we cannot create an Edit item controller without an item
@@ -34,6 +35,7 @@ public class EditItemController {
         this.closer = closer;
         this.initVBox();
         this.initGridPane();
+        this.initLabelInfo();
         this.initCloseButton();
         this.initUpdateItemButton();
     }
@@ -74,7 +76,7 @@ public class EditItemController {
         try {
             price = Double.parseDouble(this.txtPrice.getText());
         } catch (NumberFormatException e) {
-            //TODO: handle somehow
+            this.lblInfo.setText("The price must be a number");
             return;
         }
 
@@ -82,7 +84,7 @@ public class EditItemController {
         try {
             insStock = Integer.parseInt(this.txtInStock.getText());
         } catch (NumberFormatException e) {
-            //TODO: Handle somehow
+            this.lblInfo.setText("In stock must be a number");
             return;
         }
 
@@ -122,6 +124,12 @@ public class EditItemController {
 
         this.txtPrice.setText("" + item.getPrice());
         this.txtInStock.setText("" + item.getInStock());
+    }
+
+    private void initLabelInfo() {
+        this.lblInfo = new Label();
+        this.lblInfo.setWrapText(true);
+        this.vb.getChildren().add(this.lblInfo);
     }
 
     private int getRowCount() {
