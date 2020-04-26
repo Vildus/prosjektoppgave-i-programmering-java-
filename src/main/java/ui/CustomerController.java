@@ -8,14 +8,12 @@ import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import purchase.ItemAvailableStockException;
 import purchase.ShoppingBag;
@@ -35,7 +33,7 @@ public class CustomerController {
 
     private ShoppingBag shoppingBag;
 
-    private Stage stage;
+    private SceneChanger sceneChanger;
 
     @FXML
     private Label lblNotifyMessage;
@@ -64,25 +62,27 @@ public class CustomerController {
     @FXML
     private TableColumn<Item, Void> colQty;
 
+    public CustomerController(SceneChanger sceneChanger) {
+        this.sceneChanger = sceneChanger;
+    }
+
 
     @FXML
-    void btnAddToBasket(ActionEvent event) throws IOException {
-        Parent basketParent = FXMLLoader.load(getClass().getResource("basket.fxml"));
-        Scene basketScene = new Scene(basketParent);
+    void btnAddToBasket(ActionEvent event) {
+        //Dette funker ikke. Man kan ikke legge på IO-Exception i signaturen på et ActionEvent, det matcher ikke fxml'en
+        //Når denne metoden kalles skal vi legge til items i basket og kalle på metoden "createBasketScene" - som ikke har blitt laget enda
+        //Parent basketParent = FXMLLoader.load(getClass().getResource("basket.fxml"));
+        //Scene basketScene = new Scene(basketParent);
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(basketScene);
-        window.show();
+        //Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        //window.setScene(basketScene);
+        //window.show();
     }
 
     @FXML
-    void btnAdmin(ActionEvent event) throws IOException {
-        Parent adminParent = FXMLLoader.load(getClass().getResource("inventory.fxml")); //funker med editItem.fxml
-        Scene adminScene = new Scene(adminParent);
-
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(adminScene);
-        window.show();
+    void btnAdmin(ActionEvent event)  {
+        Scene scene = this.createLoginSuperUserScene();
+        this.sceneChanger.change("Sign in", scene);
     }
 
 
@@ -277,7 +277,32 @@ public class CustomerController {
     }
 
 
+    private Scene createLoginSuperUserScene() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSuperUser.fxml"));
+        LoginSuperUserController loginSuperUserController = new LoginSuperUserController(() -> {
+            this.sceneChanger.change("Inventory", this.createInventoryScene());
+        }, () -> {
+            this.sceneChanger.change("Data Store", this.tvCustomerInventory.getScene());
+        });
+        loader.setController(loginSuperUserController);
+        try {
+            return new Scene(loader.load(), 1000, 600);
+        } catch (IOException e) {
+            //If this happens it means that something is seriously wrong
+            throw new RuntimeException();
+        }
+    }
 
+
+    private Scene createInventoryScene() {
+        try {
+            Parent parent = FXMLLoader.load(getClass().getResource("inventory.fxml"));
+            return new Scene(parent, 1000, 600);
+        } catch (IOException e) {
+            //If this happens it means that something is seriously wrong
+            throw new RuntimeException();
+        }
+    }
 
     /*private Scene createShoppingBagScene(Item item, int qty ) {
 

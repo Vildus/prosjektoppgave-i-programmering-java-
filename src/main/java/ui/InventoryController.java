@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.FileNotFoundException;
@@ -24,7 +23,9 @@ import java.util.List;
 
 public class InventoryController {
 
-    private Stage stage;
+    public final String TITLE = "Inventory";
+
+    private SceneChanger sceneChanger;
 
     private Inventory inventory;
 
@@ -67,8 +68,8 @@ public class InventoryController {
 
 
     //TODO: Lage en path. global path.
-// Legge til denne i koden til sluttbruker main.
-    public InventoryController(Stage stage) throws ClassNotFoundException, IOException, ItemAlreadyExistsException {
+
+    public InventoryController(SceneChanger sceneChanger) throws ClassNotFoundException, IOException, ItemAlreadyExistsException {
         this.inventoryRepository = new InventoryRepository();
         try {
             this.inventory = this.inventoryRepository.read();
@@ -77,7 +78,7 @@ public class InventoryController {
             this.testFillInventory();
         } //Hvis det ikke finnes noe path så vil vi lage et nytt
         this.customerScene = this.createCustomerScene();
-        this.stage = stage;
+        this.sceneChanger = sceneChanger;
     }
 
     private void testFillInventory() throws ItemAlreadyExistsException {
@@ -149,8 +150,7 @@ public class InventoryController {
                         btn.setOnAction((ActionEvent event) -> {
                             Item item = this.getTableView().getItems().get(getIndex());
                             Scene editItemScene = self.createEditItemScene(item);
-                            self.stage.setTitle(String.format("Edit item: %d", item.getArticleNumber()));
-                            self.stage.setScene(editItemScene);
+                            self.sceneChanger.change(String.format("Edit item: %d", item.getArticleNumber()), editItemScene);
                         });
                     }
 
@@ -188,15 +188,12 @@ public class InventoryController {
     private void cbCreateNewItemAction(ActionEvent e) {
         String componentType = cbCreateNewItem.getSelectionModel().getSelectedItem().toString();
         Scene addItemScene = this.createAddItemScene(componentType);
-        this.stage.setTitle(String.format("Add item: %s", componentType));
-        this.stage.setScene(addItemScene);
+        this.sceneChanger.change(String.format("Add item: %s", componentType), addItemScene);
     }
-
 
     @FXML
     void signOut(ActionEvent event) {
-        this.stage.setTitle("Data store");
-        this.stage.setScene(this.customerScene);
+        this.sceneChanger.change("Data store", this.customerScene);
     }
 
     private void updateTableViewItems(List<Item> items) {
@@ -216,9 +213,7 @@ public class InventoryController {
     private Scene createEditItemScene(Item item) {
         try {
             EditItemController editItemController = new EditItemController(item, () -> {
-                System.out.println("Close window");
-                this.stage.setTitle("Main scene");
-                this.stage.setScene(this.tvInventory.getScene());
+                this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(this.inventory.getItems());
             });
             return new Scene(editItemController.getRoot(), 900, 1100);
@@ -232,9 +227,7 @@ public class InventoryController {
     private Scene createAddItemScene(String componentType) {
         try {
             AddItemController addItemController = new AddItemController(componentType, this.inventory, this.inventoryRepository, () -> {
-                System.out.println("Close window");
-                this.stage.setTitle("Main scene");
-                this.stage.setScene(this.tvInventory.getScene());
+                this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(this.inventory.getItems());
                 this.cbCreateNewItem.setValue(null);
             });
