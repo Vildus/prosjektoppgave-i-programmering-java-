@@ -11,7 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -61,6 +63,9 @@ public class InventoryController {
 
     @FXML
     private TextField txtFilter;
+
+    @FXML
+    private Label lblInfo;
 
 
     //TODO: Lage en path. global path.
@@ -144,14 +149,42 @@ public class InventoryController {
             public TableCell<Item, Void> call(final TableColumn<Item, Void> param) {
                 final TableCell<Item, Void> cell = new TableCell<Item, Void>() {
 
-                    private final Button btn = new Button("Edit");
+                    private final Button btnEdit = new Button("Edit");
 
                     {
-                        btn.setOnAction((ActionEvent event) -> {
+                        btnEdit.setOnAction((ActionEvent event) -> {
                             Item item = this.getTableView().getItems().get(getIndex());
                             Scene editItemScene = self.createEditItemScene(item);
                             self.sceneChanger.change(String.format("Edit item: %d", item.getArticleNumber()), editItemScene);
                         });
+                    }
+
+                    private final Button btnDelete = new Button("Delete");
+
+                    {
+                        btnDelete.setOnAction((ActionEvent event) -> {
+                            Item item = this.getTableView().getItems().get(getIndex());
+                            self.inventory.removeItem(item);
+                            self.updateTableViewItems(self.inventory.getItems());
+                            try {
+                                self.inventoryRepository.save(self.inventory);
+                            } catch (IOException e) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Error Dialog");
+                                alert.setHeaderText("Failed to save file");
+                                alert.setContentText("Ooops, there was an error! The file could not be saved");
+
+                                alert.showAndWait();
+                            }
+                        });
+                    }
+
+                    private final GridPane gridPane = new GridPane();
+
+                    {
+                        gridPane.setHgap(5);
+                        gridPane.add(btnEdit, 0, 1);
+                        gridPane.add(btnDelete, 1, 1);
                     }
 
 
@@ -161,7 +194,7 @@ public class InventoryController {
                         if (empty) {
                             this.setGraphic(null);
                         } else {
-                            this.setGraphic(btn);
+                            this.setGraphic(gridPane);
                         }
                     }
                 };
@@ -186,10 +219,11 @@ public class InventoryController {
 
     @FXML
     private void cbCreateNewItemAction(ActionEvent e) {
-        String componentType = cbCreateNewItem.getSelectionModel().getSelectedItem().toString();
+        String componentType = cbCreateNewItem.getSelectionModel().getSelectedItem();
         Scene addItemScene = this.createAddItemScene(componentType);
         this.sceneChanger.change(String.format("Add item: %s", componentType), addItemScene);
     }
+
 
     @FXML
     void signOut(ActionEvent event) {
