@@ -3,19 +3,15 @@ package ui;
 import components.*;
 import inventory.Inventory;
 import inventory.Item;
-import inventory.ItemAlreadyExistsException;
 import io.InventoryRepository;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Callback;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -69,7 +65,7 @@ public class InventoryController {
 
     //TODO: Lage en path. global path.
 
-    public InventoryController(SceneChanger sceneChanger) throws ClassNotFoundException, IOException, ItemAlreadyExistsException {
+    public InventoryController(SceneChanger sceneChanger) throws ClassNotFoundException, IOException {
         this.inventoryRepository = new InventoryRepository();
         try {
             this.inventory = this.inventoryRepository.read();
@@ -77,21 +73,25 @@ public class InventoryController {
             this.inventory = new Inventory(); //Hvis den ikke finner en fil med et vareregister så vil vi ha et tomt inventory
             this.testFillInventory();
         } //Hvis det ikke finnes noe path så vil vi lage et nytt
-        this.customerScene = this.createCustomerScene();
         this.sceneChanger = sceneChanger;
+        this.customerScene = this.createCustomerScene();
     }
 
-    private void testFillInventory() throws ItemAlreadyExistsException {
+    private void testFillInventory() {
         //Hvis inventory er tomt så fylles inventory med dette test-inventory
-        Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
-        Item item1 = new Item(component1, 120, 7234567);
-        item1.setInStock(6);
-        this.inventory.addItem(item1);
+        try {
+            Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
+            Item item1 = new Item(component1, 120, 7234567);
+            item1.setInStock(6);
+            this.inventory.addItem(item1);
 
-        Component component2 = new Keyboard("HP", "Elite gaming mouse", "USB");
-        Item item2 = new Item(component2, 500, 7564739);
-        item2.setInStock(10);
-        this.inventory.addItem(item2);
+            Component component2 = new Keyboard("HP", "Elite gaming mouse", "USB");
+            Item item2 = new Item(component2, 500, 7564739);
+            item2.setInStock(10);
+            this.inventory.addItem(item2);
+        } catch (Exception e) {
+            //Test. Slett!
+        }
     }
 
     private void initializeComboBox() {
@@ -202,13 +202,16 @@ public class InventoryController {
 
     private Scene createCustomerScene() {
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource("customer.fxml"));
-            return new Scene(parent, 900, 1100);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("customer.fxml"));
+            CustomerController customerController = new CustomerController(this.sceneChanger);
+            loader.setController(customerController);
+            return new Scene(loader.load(), 1000, 800);
         } catch (IOException e) {
-            //If this happens it means that something is seriously wrong
+            //If this happens it means that fxml is corrupt or not found
             throw new RuntimeException();
         }
     }
+
 
     private Scene createEditItemScene(Item item) {
         try {
@@ -216,7 +219,7 @@ public class InventoryController {
                 this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(this.inventory.getItems());
             });
-            return new Scene(editItemController.getRoot(), 900, 1100);
+            return new Scene(editItemController.getRoot(), 500, 300);
         } catch (Exception e) {
             // TODO: handle somehow
             return null;
