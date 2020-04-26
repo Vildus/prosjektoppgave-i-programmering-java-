@@ -47,6 +47,15 @@ public class Inventory implements Serializable {
         return filteredStream.collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public List<Item> getItemsByComponentCategory(String category) {
+        List<Item> itemsByCategory = new ArrayList<>();
+        for (Item item : this.items) {
+            if (item.getComponentCategory().equals(category)) {
+                itemsByCategory.add(item);
+            }
+        }
+        return itemsByCategory;
+    }
 }
 
 //TODO: Ikke kunne legge til to varer med samme artikkelnummer

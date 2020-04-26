@@ -6,8 +6,6 @@ public abstract class Component implements Serializable {
     private String brand;
     private String model;
 
-
-
     public Component(String brand, String model) {
         this.setBrand(brand);
         this.setModel(model);

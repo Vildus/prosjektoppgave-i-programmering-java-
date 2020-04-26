@@ -1,21 +1,20 @@
 package components;
 
-public class Harddisc extends Component {
-    public static final String TYPE = "Harddisc";
+public class HardDisk extends Component {
+    public static final String CATEGORY = "HardDisk";
     private String type; //HDD eller SDD
 
-    public Harddisc(String brand, String model, String type) {
+    public HardDisk(String brand, String model, String type) {
         super(brand, model);
         this.type = type;
     }
 
-    @Override
-    public String getCategory() {
-        return TYPE;
-    }
-
     public String getType() {
         return this.type;
+    }
+
+    public String getCategory() {
+        return CATEGORY;
     }
 
     public void setType(String type) {

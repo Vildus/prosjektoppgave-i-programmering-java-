@@ -56,10 +56,7 @@ public class InventoryController {
     private TableColumn<Item, Integer> colInStock;
 
     @FXML
-    private TableColumn<Item, Void> colEdit;
-
-    @FXML
-    private TableColumn<Item, Void> colDelete;
+    private TableColumn<Item, Void> colEditDelete;
 
     @FXML
     private TextField txtFilter;
@@ -113,15 +110,15 @@ public class InventoryController {
             }
         });
         this.cbCreateNewItem.getItems().setAll(
-                GraphicCard.TYPE,
-                Harddisc.TYPE,
-                Keyboard.TYPE,
-                Motherboard.TYPE,
-                Mouse.TYPE,
-                PowerSupply.TYPE,
-                Processor.TYPE,
-                RAM.TYPE,
-                Screen.TYPE);
+                GraphicCard.CATEGORY,
+                HardDisk.CATEGORY,
+                Keyboard.CATEGORY,
+                Motherboard.CATEGORY,
+                Mouse.CATEGORY,
+                PowerSupply.CATEGORY,
+                Processor.CATEGORY,
+                RAM.CATEGORY,
+                Screen.CATEGORY);
     }
 
 
@@ -202,7 +199,7 @@ public class InventoryController {
             }
         };
 
-        colEdit.setCellFactory(cellFactory);
+        colEditDelete.setCellFactory(cellFactory);
 
         this.updateTableViewItems(this.inventory.getItems());
     }
@@ -219,10 +216,10 @@ public class InventoryController {
 
     @FXML
     private void cbCreateNewItemAction(ActionEvent e) {
-        String componentType = cbCreateNewItem.getSelectionModel().getSelectedItem();
-        if (componentType != null) {
-            Scene addItemScene = this.createAddItemScene(componentType);
-            this.sceneChanger.change(String.format("Add item: %s", componentType), addItemScene);
+        String category = cbCreateNewItem.getSelectionModel().getSelectedItem();
+        if (category != null) {
+            Scene addItemScene = this.createAddItemScene(category);
+            this.sceneChanger.change(String.format("Add item: %s", category), addItemScene);
         }
     }
 
@@ -263,9 +260,9 @@ public class InventoryController {
 
     }
 
-    private Scene createAddItemScene(String componentType) {
+    private Scene createAddItemScene(String category) {
         try {
-            AddItemController addItemController = new AddItemController(componentType, this.inventory, this.inventoryRepository, () -> {
+            AddItemController addItemController = new AddItemController(category, this.inventory, this.inventoryRepository, () -> {
                 this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(this.inventory.getItems());
                 this.cbCreateNewItem.setValue(null);

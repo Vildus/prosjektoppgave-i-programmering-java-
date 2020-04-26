@@ -28,7 +28,7 @@
         <HBox fx:id="hbNav" layoutX="-3.0" prefHeight="60.0" prefWidth="927.0" spacing="10.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#navGraphicCard" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Graphic Card" textOverrun="CLIP" />
-                <Button mnemonicParsing="false" onAction="#navHarddisc" prefHeight="75.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="Harddisc" />
+                <Button mnemonicParsing="false" onAction="#navHardDisk" prefHeight="75.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="Hard Disk" />
                 <Button mnemonicParsing="false" onAction="#navKeyboard" prefHeight="60.0" prefWidth="151.0" styleClass="menu-bar" stylesheets="@customer.css" text="Keyboard" />
                 <Button mnemonicParsing="false" onAction="#navMotherboard" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Motherboard" />
                 <Button mnemonicParsing="false" onAction="#navMouse" prefHeight="72.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="Mouse" />
