@@ -8,7 +8,6 @@ import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -80,7 +79,7 @@ public class CustomerController {
     }
 
     @FXML
-    void btnAdmin(ActionEvent event)  {
+    void btnAdmin(ActionEvent event) {
         Scene scene = this.createLoginSuperUserScene();
         this.sceneChanger.change("Sign in", scene);
     }
@@ -278,17 +277,17 @@ public class CustomerController {
 
 
     private Scene createLoginSuperUserScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSuperUser.fxml"));
-        LoginSuperUserController loginSuperUserController = new LoginSuperUserController(() -> {
-            this.sceneChanger.change("Inventory", this.createInventoryScene());
-        }, () -> {
-            this.sceneChanger.change("Data Store", this.tvCustomerInventory.getScene());
-        });
-        loader.setController(loginSuperUserController);
         try {
-            return new Scene(loader.load(), 1000, 600);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSuperUser.fxml"));
+            LoginSuperUserController loginSuperUserController = new LoginSuperUserController(() -> {
+                this.sceneChanger.change("Inventory", this.createInventoryScene());
+            }, () -> {
+                this.sceneChanger.change("Data Store", this.tvCustomerInventory.getScene());
+            });
+            loader.setController(loginSuperUserController);
+            return new Scene(loader.load(), 500, 600);
         } catch (IOException e) {
-            //If this happens it means that something is seriously wrong
+            //If this happens it means that fxml is corrupt or not found
             throw new RuntimeException();
         }
     }
@@ -296,10 +295,15 @@ public class CustomerController {
 
     private Scene createInventoryScene() {
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource("inventory.fxml"));
-            return new Scene(parent, 1000, 600);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
+            InventoryController inventoryController = new InventoryController(this.sceneChanger);
+            loader.setController(inventoryController);
+            return new Scene(loader.load(), 1000, 800);
         } catch (IOException e) {
-            //If this happens it means that something is seriously wrong
+            //If this happens it means that fxml is corrupt or not found
+            throw new RuntimeException();
+        } catch (ClassNotFoundException e) {
+            //This means that something is wrong with serialized jobj file
             throw new RuntimeException();
         }
     }
