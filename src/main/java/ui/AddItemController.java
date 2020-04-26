@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -21,7 +22,7 @@ import java.io.IOException;
 
 public class AddItemController {
 
-    private String componentType;
+    private String componentCategory;
 
     private Inventory inventory;
 
@@ -79,11 +80,11 @@ public class AddItemController {
     Label lblInfo;
 
 
-    // This means we cannot create an item controller without a componentType
-    // as it does not make sense to have a "view" (javafx view) without a componentType to edit
+    // This means we cannot create an item controller without a copmonent category
+    // as it does not make sense to have a "view" (javafx view) without a component category to edit
     // this also means we cannot declare the controller in the fxml file / no "fx:controller=ui/EditItemController"
-    public AddItemController(String componentType, Inventory inventory, InventoryRepository inventoryRepository, SceneCloser closer) {
-        this.componentType = componentType;
+    public AddItemController(String componentCategory, Inventory inventory, InventoryRepository inventoryRepository, SceneCloser closer) {
+        this.componentCategory = componentCategory;
         this.inventoryRepository = inventoryRepository;
         this.inventory = inventory;
         this.closer = closer;
@@ -132,8 +133,8 @@ public class AddItemController {
         }
 
         try {
-            switch (componentType) {
-                case GraphicCard.TYPE:
+            switch (componentCategory) {
+                case GraphicCard.CATEGORY:
                     int graphicCardMemory;
                     try {
                         graphicCardMemory = Integer.parseInt(this.txtGraphicCardMemory.getText());
@@ -144,27 +145,27 @@ public class AddItemController {
                     component = new GraphicCard(brand, model, graphicCardMemory);
                     break;
 
-                case Harddisc.TYPE:
+                case HardDisk.CATEGORY:
                     String harddiscType = this.txtHarddiscType.getText();
-                    component = new Harddisc(brand, model, harddiscType);
+                    component = new HardDisk(brand, model, harddiscType);
                     break;
 
-                case Keyboard.TYPE:
+                case Keyboard.CATEGORY:
                     String keyboardInterfaceType = txtKeyBoardInterfaceType.getText();
                     component = new Keyboard(brand, model, keyboardInterfaceType);
                     break;
 
-                case Motherboard.TYPE:
+                case Motherboard.CATEGORY:
                     String motherboardSizeCategory = txtMotherboardSizeCategory.getText();
                     component = new Motherboard(brand, model, motherboardSizeCategory);
                     break;
 
-                case Mouse.TYPE:
+                case Mouse.CATEGORY:
                     String mouseInterfaceType = txtMouseInterfaceType.getText();
                     component = new Mouse(brand, model, mouseInterfaceType);
                     break;
 
-                case PowerSupply.TYPE:
+                case PowerSupply.CATEGORY:
                     int effect;
                     try {
                         effect = Integer.parseInt(txtPowerSupplyEffect.getText());
@@ -191,7 +192,7 @@ public class AddItemController {
                     component = new PowerSupply(brand, model, effect, inputVoltage, outputVoltage);
                     break;
 
-                case Processor.TYPE:
+                case Processor.CATEGORY:
                     int processorCount;
                     try {
                         processorCount = Integer.parseInt(txtProcessorCount.getText());
@@ -210,7 +211,7 @@ public class AddItemController {
                     component = new Processor(brand, model, processorCount, processorClockRate);
                     break;
 
-                case RAM.TYPE:
+                case RAM.CATEGORY:
                     int ramMemory;
                     try {
                         ramMemory = Integer.parseInt(txtRAMMemory.getText());
@@ -221,7 +222,7 @@ public class AddItemController {
                     component = new RAM(brand, model, ramMemory);
                     break;
 
-                case Screen.TYPE:
+                case Screen.CATEGORY:
                     int screenSize;
                     try {
                         screenSize = Integer.parseInt(txtScreenSize.getText());
@@ -233,7 +234,7 @@ public class AddItemController {
                     break;
 
                 default:
-                    throw new RuntimeException(String.format("Unknown component type: %s", this.componentType));
+                    throw new RuntimeException(String.format("Unknown component type: %s", this.componentCategory));
             }
 
         } catch (IllegalBrandArgumentException e) {
@@ -262,15 +263,23 @@ public class AddItemController {
         try {
             this.inventory.addItem(item);
         } catch (ItemAlreadyExistsException e) {
-            this.lblInfo.setText("An item with this article number exists already. To update price or quantity for an item that already exists go back to inventory");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("An item with this article number exists already");
+            alert.setContentText("To update price or quantity for an item that already exists go back to inventory");
+            alert.showAndWait();
+            return;
         }
 
         try {
             this.inventoryRepository.save(this.inventory);
         } catch (IOException e) {
             this.lblInfo.setText("Failed to save file");
-            // Hva annet kan man si? Man får jo ikke gjort noe? MIkael!!
-            //TODO: si ifra til bruker
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText("Failed to save file");
+            alert.setContentText("Ooops, there was an error! The file could not be saved");
+            alert.showAndWait();
             return;
         }
 
@@ -308,32 +317,32 @@ public class AddItemController {
         this.gridPane.setVgap(10);
         this.initCommonInput();
 
-        switch (componentType) {
-            case GraphicCard.TYPE:
+        switch (componentCategory) {
+            case GraphicCard.CATEGORY:
                 this.initGraphicCardInput();
                 break;
-            case Harddisc.TYPE:
+            case HardDisk.CATEGORY:
                 this.initHarddiscInput();
                 break;
-            case Keyboard.TYPE:
+            case Keyboard.CATEGORY:
                 this.initKeyboardInput();
                 break;
-            case Motherboard.TYPE:
+            case Motherboard.CATEGORY:
                 this.initMotherboardInput();
                 break;
-            case Mouse.TYPE:
+            case Mouse.CATEGORY:
                 this.initMouseInput();
                 break;
-            case PowerSupply.TYPE:
+            case PowerSupply.CATEGORY:
                 this.initPowerSupplyInput();
                 break;
-            case Processor.TYPE:
+            case Processor.CATEGORY:
                 this.initProcessorInput();
                 break;
-            case RAM.TYPE:
+            case RAM.CATEGORY:
                 this.initRAMInput();
                 break;
-            case Screen.TYPE:
+            case Screen.CATEGORY:
                 this.initScreenInput();
                 break;
         }

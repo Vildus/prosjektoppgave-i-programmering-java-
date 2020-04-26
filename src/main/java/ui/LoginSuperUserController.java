@@ -50,7 +50,7 @@ public class LoginSuperUserController {
         if (this.txtUserName.getText().matches(userName) && this.txtPassword.getText().matches(password)) {
             this.loginCallback.login();
         } else {
-            this.lblInfo.setText("User name or password was wrong. Please try again (Hint: try \"super\" as user name and \"user\" as password");
+            this.lblInfo.setText("User name or password was wrong. Hint: try \"super\" as user name and \"user\" as password");
         }
     }
 

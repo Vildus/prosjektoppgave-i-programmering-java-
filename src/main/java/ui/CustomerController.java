@@ -8,10 +8,10 @@ import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
@@ -19,13 +19,12 @@ import purchase.ItemAvailableStockException;
 import purchase.ShoppingBag;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class CustomerController {
 
     private Inventory inventory;
-
-    private Item item;
 
     private InventoryRepository inventoryRepository;
 
@@ -80,7 +79,7 @@ public class CustomerController {
     }
 
     @FXML
-    void btnAdmin(ActionEvent event)  {
+    void btnAdmin(ActionEvent event) {
         Scene scene = this.createLoginSuperUserScene();
         this.sceneChanger.change("Sign in", scene);
     }
@@ -88,61 +87,47 @@ public class CustomerController {
 
     @FXML
     void navGraphicCard(ActionEvent event) {
-        String componentType = GraphicCard.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(GraphicCard.CATEGORY);
     }
 
-
     @FXML
-    void navHarddisc(ActionEvent event) {
-        String componentType = Harddisc.TYPE;
-        this.getComponentFromNavBar(componentType);
+    void navHardDisk(ActionEvent event) {
+        this.filterTabelViewByComponentCategory(HardDisk.CATEGORY);
     }
 
     @FXML
     void navKeyboard(ActionEvent event) {
-        String componentType = Keyboard.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(Keyboard.CATEGORY);
     }
-
 
     @FXML
     void navMotherboard(ActionEvent event) {
-        String componentType = Motherboard.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(Motherboard.CATEGORY);
     }
-
 
     @FXML
     void navMouse(ActionEvent event) {
-        String componentType = Mouse.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(Mouse.CATEGORY);
     }
 
     @FXML
     void navPowerSupply(ActionEvent event) {
-        String componentType = PowerSupply.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(PowerSupply.CATEGORY);
     }
 
     @FXML
     void navProcessor(ActionEvent event) {
-        String componentType = Processor.TYPE;
-        this.getComponentFromNavBar(componentType);
-
+        this.filterTabelViewByComponentCategory(Processor.CATEGORY);
     }
 
     @FXML
     void navRAM(ActionEvent event) {
-        String componentType = RAM.TYPE;
-        this.getComponentFromNavBar(componentType);
-
+        this.filterTabelViewByComponentCategory(RAM.CATEGORY);
     }
 
     @FXML
     void navScreen(ActionEvent event) {
-        String componentType = Screen.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(Screen.CATEGORY);
     }
 
     @FXML
@@ -153,13 +138,9 @@ public class CustomerController {
     }
 
 
-    //Her lagde jeg en metode så man slipper å skrive for-løkken under alle knappene i navbaren
-    private void getComponentFromNavBar(String componentType) {
-        for (int i = 0; i < this.inventory.getItems().size(); i++) {
-            if (inventory.getItems().get(i).getComponentCategory().equals(componentType)) {
-                this.tvCustomerInventory.getItems().setAll(inventory.getItems().get(i), item);
-            }
-        }
+    private void filterTabelViewByComponentCategory(String category) {
+        List<Item> items = this.inventory.getItemsByComponentCategory(category);
+        this.tvCustomerInventory.getItems().setAll(items);
     }
 
     private void testFillInventory() throws ItemAlreadyExistsException {
@@ -170,12 +151,13 @@ public class CustomerController {
         item1.setInStock(6);
         this.inventory.addItem(item1);
 
+
         Component component2 = new Keyboard("HP", "Elite gaming", "USB");
         Item item2 = new Item(component2, 500, 7564739);
         item2.setInStock(10);
         this.inventory.addItem(item2);
 
-        Component component3 = new Harddisc("HP", "Elite", "HDD");
+        Component component3 = new HardDisk("HP", "Elite", "HDD");
         Item item3 = new Item(component3, 600, 7564738);
         item3.setInStock(14);
         this.inventory.addItem(item3);
@@ -209,6 +191,16 @@ public class CustomerController {
         Item item9 = new Item(component9, 2000, 1325535);
         item9.setInStock(12);
         this.inventory.addItem(item9);
+
+        Component component10 = new Mouse("Dell", "Mus", "USB");
+        Item item10 = new Item(component1, 120, 72345690);
+        item1.setInStock(6);
+        this.inventory.addItem(item10);
+
+        Component component11 = new GraphicCard("HP", "gaming", 250);
+        Item item11 = new Item(component11, 20, 1325785);
+        item11.setInStock(12);
+        this.inventory.addItem(item11);
     }
 
     private void initializeTableView() {
@@ -253,7 +245,11 @@ public class CustomerController {
                     private final GridPane gridPane = new GridPane();
 
                     {
+                        ColumnConstraints col50 = new ColumnConstraints();
+                        col50.setPercentWidth(50);
+
                         gridPane.setHgap(5);
+                        gridPane.getColumnConstraints().addAll(col50, col50);
                         gridPane.add(txtQty, 0, 1);
                         gridPane.add(btnBuy, 1, 1);
                     }
@@ -278,17 +274,17 @@ public class CustomerController {
 
 
     private Scene createLoginSuperUserScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSuperUser.fxml"));
-        LoginSuperUserController loginSuperUserController = new LoginSuperUserController(() -> {
-            this.sceneChanger.change("Inventory", this.createInventoryScene());
-        }, () -> {
-            this.sceneChanger.change("Data Store", this.tvCustomerInventory.getScene());
-        });
-        loader.setController(loginSuperUserController);
         try {
-            return new Scene(loader.load(), 1000, 600);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSuperUser.fxml"));
+            LoginSuperUserController loginSuperUserController = new LoginSuperUserController(() -> {
+                this.sceneChanger.change("Inventory", this.createInventoryScene());
+            }, () -> {
+                this.sceneChanger.change("Data Store", this.tvCustomerInventory.getScene());
+            });
+            loader.setController(loginSuperUserController);
+            return new Scene(loader.load(), 500, 600);
         } catch (IOException e) {
-            //If this happens it means that something is seriously wrong
+            //If this happens it means that fxml is corrupt or not found
             throw new RuntimeException();
         }
     }
@@ -296,10 +292,15 @@ public class CustomerController {
 
     private Scene createInventoryScene() {
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource("inventory.fxml"));
-            return new Scene(parent, 1000, 600);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
+            InventoryController inventoryController = new InventoryController(this.sceneChanger);
+            loader.setController(inventoryController);
+            return new Scene(loader.load(), 1000, 800);
         } catch (IOException e) {
-            //If this happens it means that something is seriously wrong
+            //If this happens it means that fxml is corrupt or not found
+            throw new RuntimeException();
+        } catch (ClassNotFoundException e) {
+            //This means that something is wrong with serialized jobj file
             throw new RuntimeException();
         }
     }

@@ -23,7 +23,7 @@ public class Main extends Application {
 
     //kommenterer ut de linjene som ikke er spesifikke for din. Og legger til sin scene
     private Scene createMainScene(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/inventory.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/customer.fxml"));
         loader.setController(new CustomerController(((title, scene) -> {
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
