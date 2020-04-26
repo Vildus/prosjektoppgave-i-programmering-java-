@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import purchase.ItemAvailableStockException;
 import purchase.ShoppingBag;
@@ -287,7 +286,7 @@ public class CustomerController {
         });
         loader.setController(loginSuperUserController);
         try {
-            return new Scene(loader.load(), 900, 1100);
+            return new Scene(loader.load(), 1000, 600);
         } catch (IOException e) {
             //If this happens it means that something is seriously wrong
             throw new RuntimeException();
@@ -298,7 +297,7 @@ public class CustomerController {
     private Scene createInventoryScene() {
         try {
             Parent parent = FXMLLoader.load(getClass().getResource("inventory.fxml"));
-            return new Scene(parent, 900, 1100);
+            return new Scene(parent, 1000, 600);
         } catch (IOException e) {
             //If this happens it means that something is seriously wrong
             throw new RuntimeException();

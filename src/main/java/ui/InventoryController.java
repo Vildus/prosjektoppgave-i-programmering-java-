@@ -68,7 +68,7 @@ public class InventoryController {
 
 
     //TODO: Lage en path. global path.
-// Legge til denne i koden til sluttbruker main.
+
     public InventoryController(SceneChanger sceneChanger) throws ClassNotFoundException, IOException, ItemAlreadyExistsException {
         this.inventoryRepository = new InventoryRepository();
         try {
