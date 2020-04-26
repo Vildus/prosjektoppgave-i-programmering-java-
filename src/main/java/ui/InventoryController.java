@@ -220,8 +220,10 @@ public class InventoryController {
     @FXML
     private void cbCreateNewItemAction(ActionEvent e) {
         String componentType = cbCreateNewItem.getSelectionModel().getSelectedItem();
-        Scene addItemScene = this.createAddItemScene(componentType);
-        this.sceneChanger.change(String.format("Add item: %s", componentType), addItemScene);
+        if (componentType != null) {
+            Scene addItemScene = this.createAddItemScene(componentType);
+            this.sceneChanger.change(String.format("Add item: %s", componentType), addItemScene);
+        }
     }
 
 
