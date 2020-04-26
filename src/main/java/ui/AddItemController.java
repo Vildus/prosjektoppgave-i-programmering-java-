@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -262,7 +263,12 @@ public class AddItemController {
         try {
             this.inventory.addItem(item);
         } catch (ItemAlreadyExistsException e) {
-            this.lblInfo.setText("An item with this article number exists already. To update price or quantity for an item that already exists go back to inventory");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("An item with this article number exists already");
+            alert.setContentText("To update price or quantity for an item that already exists go back to inventory");
+            alert.showAndWait();
+            return;
         }
 
         try {
