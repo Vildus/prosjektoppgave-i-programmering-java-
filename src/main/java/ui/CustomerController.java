@@ -67,7 +67,10 @@ public class CustomerController {
 
 
     @FXML
-    void btnAddToBasket(ActionEvent event) {
+    void btnAddToShoppingBag(ActionEvent event) {
+        //Scene scene = this.createShoppingBagScene();
+        //this.sceneChanger.change("Shopping bag", scene);
+
         //Dette funker ikke. Man kan ikke legge på IO-Exception i signaturen på et ActionEvent, det matcher ikke fxml'en
         //Når denne metoden kalles skal vi legge til items i basket og kalle på metoden "createBasketScene" - som ikke har blitt laget enda
         //Parent basketParent = FXMLLoader.load(getClass().getResource("basket.fxml"));
@@ -232,7 +235,7 @@ public class CustomerController {
                             Item item = this.getTableView().getItems().get(getIndex());
                             try {
                                 shoppingBag.setItem(item, parseQty);
-                                lblNotifyMessage.setText(parseQty + " item with articlenumber: " + item.getArticleNumber() + " added to basket");
+                                lblNotifyMessage.setText(String.format("%d item with articlenumber: %d added to shopping bag", parseQty, item.getArticleNumber()));
                                 System.out.println("Item er lagt til"); //denne linjen kan fjernes når handlekurven er laget
                             } catch (ItemAvailableStockException e) {
                                 lblNotifyMessage.setText("Out of Stock!");
@@ -304,13 +307,14 @@ public class CustomerController {
             throw new RuntimeException();
         }
     }
+}
 
-    /*private Scene createShoppingBagScene(Item item, int qty ) {
+
+   /* private Scene createShoppingBagScene(Item item, int qty ) {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("shoppingBag.fxml"));
             ShoppingBagController shoppingBagController = new ShoppingbagController(item, qty () -> {
-                System.out.println("Close window");
                 this.stage.setTitle("Main scene");
                 this.stage.setScene(this.tvCustomerInventory.getScene());
             });
@@ -320,7 +324,10 @@ public class CustomerController {
             // TODO: handle somehow
             return null;
         }
-    }*/
+    }
+
+    */
 
 
-}
+
+
