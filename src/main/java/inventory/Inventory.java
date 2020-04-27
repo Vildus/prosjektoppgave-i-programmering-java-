@@ -1,7 +1,5 @@
 package inventory;
 
-import javafx.collections.FXCollections;
-import javafx.fxml.FXML;
 import ui.FilterTableViewItemPredicate;
 
 import java.io.Serializable;
@@ -18,8 +16,10 @@ public class Inventory implements Serializable {
         this.items = new ArrayList<>();
     }
 
-    public void addItem(Item item) {
-        // TODO: check if article number exists - and if it does - throw ArticleNumberAlreadyExistsException
+    public void addItem(Item item) throws ItemAlreadyExistsException {
+        if (this.findItemByArticleNumber(item.getArticleNumber()) != null) {
+            throw new ItemAlreadyExistsException(item.getArticleNumber());
+        }
         this.items.add(item);
     }
 
@@ -47,6 +47,15 @@ public class Inventory implements Serializable {
         return filteredStream.collect(Collectors.toCollection(ArrayList::new));
     }
 
+    public List<Item> getItemsByComponentCategory(String category) {
+        List<Item> itemsByCategory = new ArrayList<>();
+        for (Item item : this.items) {
+            if (item.getComponentCategory().equals(category)) {
+                itemsByCategory.add(item);
+            }
+        }
+        return itemsByCategory;
+    }
 }
 
 //TODO: Ikke kunne legge til to varer med samme artikkelnummer

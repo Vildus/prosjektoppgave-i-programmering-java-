@@ -3,32 +3,28 @@ package ui;
 import components.*;
 import inventory.Inventory;
 import inventory.Item;
-import inventory.ItemAlreadyExcistException;
+import inventory.ItemAlreadyExistsException;
 import io.InventoryRepository;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import purchase.ItemAvailableStockException;
 import purchase.ShoppingBag;
 
 import java.io.IOException;
+import java.util.List;
 
 
 public class CustomerController {
 
     private Inventory inventory;
-
-    private Item item;
 
     private InventoryRepository inventoryRepository;
 
@@ -36,7 +32,7 @@ public class CustomerController {
 
     private ShoppingBag shoppingBag;
 
-    private Stage stage;
+    private SceneChanger sceneChanger;
 
     @FXML
     private Label lblNotifyMessage;
@@ -65,105 +61,89 @@ public class CustomerController {
     @FXML
     private TableColumn<Item, Void> colQty;
 
+    public CustomerController(SceneChanger sceneChanger) {
+        this.sceneChanger = sceneChanger;
+    }
+
 
     @FXML
-    void btnAddToBasket(ActionEvent event) throws IOException {
-        Parent basketParent = FXMLLoader.load(getClass().getResource("basket.fxml"));
-        Scene basketScene = new Scene(basketParent);
+    void btnAddToBasket(ActionEvent event) {
+        //Dette funker ikke. Man kan ikke legge på IO-Exception i signaturen på et ActionEvent, det matcher ikke fxml'en
+        //Når denne metoden kalles skal vi legge til items i basket og kalle på metoden "createBasketScene" - som ikke har blitt laget enda
+        //Parent basketParent = FXMLLoader.load(getClass().getResource("basket.fxml"));
+        //Scene basketScene = new Scene(basketParent);
 
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(basketScene);
-        window.show();
+        //Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        //window.setScene(basketScene);
+        //window.show();
     }
 
     @FXML
-    void btnAdmin(ActionEvent event) throws IOException {
-        Parent adminParent = FXMLLoader.load(getClass().getResource("inventory.fxml")); //funker med editItem.fxml
-        Scene adminScene = new Scene(adminParent);
-
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(adminScene);
-        window.show();
+    void btnAdmin(ActionEvent event) {
+        Scene scene = this.createLoginSuperUserScene();
+        this.sceneChanger.change("Sign in", scene);
     }
 
 
     @FXML
     void navGraphicCard(ActionEvent event) {
-        String componentType = GraphicCard.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(GraphicCard.CATEGORY);
     }
 
-
     @FXML
-    void navHarddisc(ActionEvent event) {
-        String componentType = Harddisc.TYPE;
-        this.getComponentFromNavBar(componentType);
+    void navHardDisk(ActionEvent event) {
+        this.filterTabelViewByComponentCategory(HardDisk.CATEGORY);
     }
 
     @FXML
     void navKeyboard(ActionEvent event) {
-        String componentType = Keyboard.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(Keyboard.CATEGORY);
     }
-
 
     @FXML
     void navMotherboard(ActionEvent event) {
-        String componentType = Motherboard.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(Motherboard.CATEGORY);
     }
-
 
     @FXML
     void navMouse(ActionEvent event) {
-        String componentType = Mouse.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(Mouse.CATEGORY);
     }
 
     @FXML
     void navPowerSupply(ActionEvent event) {
-        String componentType = PowerSupply.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(PowerSupply.CATEGORY);
     }
 
     @FXML
     void navProcessor(ActionEvent event) {
-        String componentType = Processor.TYPE;
-        this.getComponentFromNavBar(componentType);
-
+        this.filterTabelViewByComponentCategory(Processor.CATEGORY);
     }
 
     @FXML
     void navRAM(ActionEvent event) {
-        String componentType = RAM.TYPE;
-        this.getComponentFromNavBar(componentType);
-
+        this.filterTabelViewByComponentCategory(RAM.CATEGORY);
     }
 
     @FXML
     void navScreen(ActionEvent event) {
-        String componentType = Screen.TYPE;
-        this.getComponentFromNavBar(componentType);
+        this.filterTabelViewByComponentCategory(Screen.CATEGORY);
     }
 
     @FXML
-    private void initialize() {
+    private void initialize() throws ItemAlreadyExistsException {
         this.testFillInventory(); // denne må byttes ut med en ordentlig instans av inventory.
         this.initializeTableView();
         this.shoppingBag = new ShoppingBag(this.inventory);
     }
 
 
-    //Her lagde jeg en metode så man slipper å skrive for-løkken under alle knappene i navbaren
-    private void getComponentFromNavBar(String componentType) {
-        for (int i = 0; i < this.inventory.getItems().size(); i++) {
-            if (inventory.getItems().get(i).getComponentCategory().equals(componentType)) {
-                this.tvCustomerInventory.getItems().setAll(inventory.getItems().get(i), item);
-            }
-        }
+    private void filterTabelViewByComponentCategory(String category) {
+        List<Item> items = this.inventory.getItemsByComponentCategory(category);
+        this.tvCustomerInventory.getItems().setAll(items);
     }
 
-    private void testFillInventory() {
+    private void testFillInventory() throws ItemAlreadyExistsException {
         inventory = new Inventory();
         //Hvis inventory er tomt så fylles inventory med dette test-inventory
         Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
@@ -171,38 +151,39 @@ public class CustomerController {
         item1.setInStock(6);
         this.inventory.addItem(item1);
 
+
         Component component2 = new Keyboard("HP", "Elite gaming", "USB");
         Item item2 = new Item(component2, 500, 7564739);
         item2.setInStock(10);
         this.inventory.addItem(item2);
 
-        Component component3 = new Harddisc("HP", "Elite", "HDD");
-        Item item3 = new Item(component3, 600, 7564739);
+        Component component3 = new HardDisk("HP", "Elite", "HDD");
+        Item item3 = new Item(component3, 600, 7564738);
         item3.setInStock(14);
         this.inventory.addItem(item3);
 
         Component component4 = new Motherboard("HP", "Elite gaming", "Small");
-        Item item4 = new Item(component4, 1200, 7564739);
+        Item item4 = new Item(component4, 1200, 7564745);
         item4.setInStock(60);
         this.inventory.addItem(item4);
 
         Component component5 = new PowerSupply("HP", "Elite gaming", 2, 123.5, 123.4);
-        Item item5 = new Item(component5, 1200, 7564739);
+        Item item5 = new Item(component5, 1200, 7564730);
         item5.setInStock(30);
         this.inventory.addItem(item5);
 
         Component component6 = new Processor("HP", "Elite gaming", 10, 20.5);
-        Item item6 = new Item(component6, 1200, 7564739);
+        Item item6 = new Item(component6, 1200, 7564734);
         item6.setInStock(10);
         this.inventory.addItem(item6);
 
         Component component7 = new RAM("HP", "Elite gaming", 100);
-        Item item7 = new Item(component7, 1200, 7564739);
+        Item item7 = new Item(component7, 1200, 7564767);
         item7.setInStock(2);
         this.inventory.addItem(item7);
 
         Component component8 = new Screen("HP", "Elite gaming", 50);
-        Item item8 = new Item(component8, 1000, 7564739);
+        Item item8 = new Item(component8, 1000, 7564778);
         item8.setInStock(56);
         this.inventory.addItem(item8);
 
@@ -210,6 +191,16 @@ public class CustomerController {
         Item item9 = new Item(component9, 2000, 1325535);
         item9.setInStock(12);
         this.inventory.addItem(item9);
+
+        Component component10 = new Mouse("Dell", "Mus", "USB");
+        Item item10 = new Item(component1, 120, 72345690);
+        item1.setInStock(6);
+        this.inventory.addItem(item10);
+
+        Component component11 = new GraphicCard("HP", "gaming", 250);
+        Item item11 = new Item(component11, 20, 1325785);
+        item11.setInStock(12);
+        this.inventory.addItem(item11);
     }
 
     private void initializeTableView() {
@@ -254,7 +245,11 @@ public class CustomerController {
                     private final GridPane gridPane = new GridPane();
 
                     {
+                        ColumnConstraints col50 = new ColumnConstraints();
+                        col50.setPercentWidth(50);
+
                         gridPane.setHgap(5);
+                        gridPane.getColumnConstraints().addAll(col50, col50);
                         gridPane.add(txtQty, 0, 1);
                         gridPane.add(btnBuy, 1, 1);
                     }
@@ -278,7 +273,37 @@ public class CustomerController {
     }
 
 
+    private Scene createLoginSuperUserScene() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSuperUser.fxml"));
+            LoginSuperUserController loginSuperUserController = new LoginSuperUserController(() -> {
+                this.sceneChanger.change("Inventory", this.createInventoryScene());
+            }, () -> {
+                this.sceneChanger.change("Data Store", this.tvCustomerInventory.getScene());
+            });
+            loader.setController(loginSuperUserController);
+            return new Scene(loader.load(), 500, 600);
+        } catch (IOException e) {
+            //If this happens it means that fxml is corrupt or not found
+            throw new RuntimeException();
+        }
+    }
 
+
+    private Scene createInventoryScene() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
+            InventoryController inventoryController = new InventoryController(this.sceneChanger);
+            loader.setController(inventoryController);
+            return new Scene(loader.load(), 1000, 800);
+        } catch (IOException e) {
+            //If this happens it means that fxml is corrupt or not found
+            throw new RuntimeException();
+        } catch (ClassNotFoundException e) {
+            //This means that something is wrong with serialized jobj file
+            throw new RuntimeException();
+        }
+    }
 
     /*private Scene createShoppingBagScene(Item item, int qty ) {
 
@@ -296,8 +321,6 @@ public class CustomerController {
             return null;
         }
     }*/
-
-
 
 
 }

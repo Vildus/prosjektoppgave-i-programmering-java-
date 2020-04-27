@@ -1,9 +1,7 @@
 package components;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
 public class GraphicCard extends Component {
-    public static final String TYPE = "Graphic Card";
+    public static final String CATEGORY = "Graphic Card";
     private int memory; //i megabyte
 
 
@@ -17,7 +15,7 @@ public class GraphicCard extends Component {
 
     @Override
     public String getCategory() {
-        return TYPE;
+        return CATEGORY;
     }
 
     public int getMemory() {

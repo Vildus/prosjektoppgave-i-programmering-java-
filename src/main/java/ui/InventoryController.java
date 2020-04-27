@@ -4,16 +4,14 @@ import components.*;
 import inventory.Inventory;
 import inventory.Item;
 import io.InventoryRepository;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
+import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
 import java.io.FileNotFoundException;
@@ -23,7 +21,9 @@ import java.util.List;
 
 public class InventoryController {
 
-    private Stage stage;
+    public final String TITLE = "Inventory";
+
+    private SceneChanger sceneChanger;
 
     private Inventory inventory;
 
@@ -56,18 +56,18 @@ public class InventoryController {
     private TableColumn<Item, Integer> colInStock;
 
     @FXML
-    private TableColumn<Item, Void> colEdit;
-
-    @FXML
-    private TableColumn<Item, Void> colDelete;
+    private TableColumn<Item, Void> colEditDelete;
 
     @FXML
     private TextField txtFilter;
 
+    @FXML
+    private Label lblInfo;
+
 
     //TODO: Lage en path. global path.
-// Legge til denne i koden til sluttbruker main.
-    public InventoryController(Stage stage) throws ClassNotFoundException, IOException {
+
+    public InventoryController(SceneChanger sceneChanger) throws ClassNotFoundException, IOException {
         this.inventoryRepository = new InventoryRepository();
         try {
             this.inventory = this.inventoryRepository.read();
@@ -75,21 +75,25 @@ public class InventoryController {
             this.inventory = new Inventory(); //Hvis den ikke finner en fil med et vareregister så vil vi ha et tomt inventory
             this.testFillInventory();
         } //Hvis det ikke finnes noe path så vil vi lage et nytt
+        this.sceneChanger = sceneChanger;
         this.customerScene = this.createCustomerScene();
-        this.stage = stage;
     }
 
     private void testFillInventory() {
         //Hvis inventory er tomt så fylles inventory med dette test-inventory
-        Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
-        Item item1 = new Item(component1, 120, 7234567);
-        item1.setInStock(6);
-        this.inventory.addItem(item1);
+        try {
+            Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
+            Item item1 = new Item(component1, 120, 7234567);
+            item1.setInStock(6);
+            this.inventory.addItem(item1);
 
-        Component component2 = new Keyboard("HP", "Elite gaming mouse", "USB");
-        Item item2 = new Item(component2, 500, 7564739);
-        item2.setInStock(10);
-        this.inventory.addItem(item2);
+            Component component2 = new Keyboard("HP", "Elite gaming mouse", "USB");
+            Item item2 = new Item(component2, 500, 7564739);
+            item2.setInStock(10);
+            this.inventory.addItem(item2);
+        } catch (Exception e) {
+            //Test. Slett!
+        }
     }
 
     private void initializeComboBox() {
@@ -106,15 +110,15 @@ public class InventoryController {
             }
         });
         this.cbCreateNewItem.getItems().setAll(
-                GraphicCard.TYPE,
-                Harddisc.TYPE,
-                Keyboard.TYPE,
-                Motherboard.TYPE,
-                Mouse.TYPE,
-                PowerSupply.TYPE,
-                Processor.TYPE,
-                RAM.TYPE,
-                Screen.TYPE);
+                GraphicCard.CATEGORY,
+                HardDisk.CATEGORY,
+                Keyboard.CATEGORY,
+                Motherboard.CATEGORY,
+                Mouse.CATEGORY,
+                PowerSupply.CATEGORY,
+                Processor.CATEGORY,
+                RAM.CATEGORY,
+                Screen.CATEGORY);
     }
 
 
@@ -142,15 +146,42 @@ public class InventoryController {
             public TableCell<Item, Void> call(final TableColumn<Item, Void> param) {
                 final TableCell<Item, Void> cell = new TableCell<Item, Void>() {
 
-                    private final Button btn = new Button("Edit");
+                    private final Button btnEdit = new Button("Edit");
 
                     {
-                        btn.setOnAction((ActionEvent event) -> {
+                        btnEdit.setOnAction((ActionEvent event) -> {
                             Item item = this.getTableView().getItems().get(getIndex());
                             Scene editItemScene = self.createEditItemScene(item);
-                            self.stage.setTitle(String.format("Edit item: %d", item.getArticleNumber()));
-                            self.stage.setScene(editItemScene);
+                            self.sceneChanger.change(String.format("Edit item: %d", item.getArticleNumber()), editItemScene);
                         });
+                    }
+
+                    private final Button btnDelete = new Button("Delete");
+
+                    {
+                        btnDelete.setOnAction((ActionEvent event) -> {
+                            Item item = this.getTableView().getItems().get(getIndex());
+                            self.inventory.removeItem(item);
+                            self.updateTableViewItems(self.inventory.getItems());
+                            try {
+                                self.inventoryRepository.save(self.inventory);
+                            } catch (IOException e) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Error Dialog");
+                                alert.setHeaderText("Failed to save file");
+                                alert.setContentText("Ooops, there was an error! The file could not be saved");
+
+                                alert.showAndWait();
+                            }
+                        });
+                    }
+
+                    private final GridPane gridPane = new GridPane();
+
+                    {
+                        gridPane.setHgap(5);
+                        gridPane.add(btnEdit, 0, 1);
+                        gridPane.add(btnDelete, 1, 1);
                     }
 
 
@@ -160,7 +191,7 @@ public class InventoryController {
                         if (empty) {
                             this.setGraphic(null);
                         } else {
-                            this.setGraphic(btn);
+                            this.setGraphic(gridPane);
                         }
                     }
                 };
@@ -168,7 +199,7 @@ public class InventoryController {
             }
         };
 
-        colEdit.setCellFactory(cellFactory);
+        colEditDelete.setCellFactory(cellFactory);
 
         this.updateTableViewItems(this.inventory.getItems());
     }
@@ -185,17 +216,17 @@ public class InventoryController {
 
     @FXML
     private void cbCreateNewItemAction(ActionEvent e) {
-        String componentType = cbCreateNewItem.getSelectionModel().getSelectedItem().toString();
-        Scene addItemScene = this.createAddItemScene(componentType);
-        this.stage.setTitle(String.format("Add item: %s", componentType));
-        this.stage.setScene(addItemScene);
+        String category = cbCreateNewItem.getSelectionModel().getSelectedItem();
+        if (category != null) {
+            Scene addItemScene = this.createAddItemScene(category);
+            this.sceneChanger.change(String.format("Add item: %s", category), addItemScene);
+        }
     }
 
 
     @FXML
     void signOut(ActionEvent event) {
-        this.stage.setTitle("Data store");
-        this.stage.setScene(this.customerScene);
+        this.sceneChanger.change("Data store", this.customerScene);
     }
 
     private void updateTableViewItems(List<Item> items) {
@@ -204,23 +235,24 @@ public class InventoryController {
 
     private Scene createCustomerScene() {
         try {
-            Parent parent = FXMLLoader.load(getClass().getResource("customer.fxml"));
-            return new Scene(parent, 900, 1100);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("customer.fxml"));
+            CustomerController customerController = new CustomerController(this.sceneChanger);
+            loader.setController(customerController);
+            return new Scene(loader.load(), 1000, 800);
         } catch (IOException e) {
-            //If this happens it means that something is seriously wrong
+            //If this happens it means that fxml is corrupt or not found
             throw new RuntimeException();
         }
     }
 
+
     private Scene createEditItemScene(Item item) {
         try {
             EditItemController editItemController = new EditItemController(item, () -> {
-                System.out.println("Close window");
-                this.stage.setTitle("Main scene");
-                this.stage.setScene(this.tvInventory.getScene());
+                this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(this.inventory.getItems());
             });
-            return new Scene(editItemController.getRoot(), 900, 1100);
+            return new Scene(editItemController.getRoot(), 500, 300);
         } catch (Exception e) {
             // TODO: handle somehow
             return null;
@@ -228,12 +260,10 @@ public class InventoryController {
 
     }
 
-    private Scene createAddItemScene(String componentType) {
+    private Scene createAddItemScene(String category) {
         try {
-            AddItemController addItemController = new AddItemController(componentType, this.inventory, this.inventoryRepository, () -> {
-                System.out.println("Close window");
-                this.stage.setTitle("Main scene");
-                this.stage.setScene(this.tvInventory.getScene());
+            AddItemController addItemController = new AddItemController(category, this.inventory, this.inventoryRepository, () -> {
+                this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(this.inventory.getItems());
                 this.cbCreateNewItem.setValue(null);
             });

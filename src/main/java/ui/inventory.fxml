@@ -6,22 +6,41 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <TableView fx:id="tvInventory" layoutX="45.0" layoutY="226.0" prefHeight="535.0" prefWidth="796.0" styleClass="tableView">
-        <columns>
-          <TableColumn fx:id="colCategory" prefWidth="120.0" styleClass="colCategory" text="Category" />
-          <TableColumn fx:id="colArticleNumber" prefWidth="120.0" styleClass="colArticleNumber" text="Article number" />
-            <TableColumn fx:id="colBrand" prefWidth="120.0" styleClass="colBrand" text="Brand" />
-            <TableColumn fx:id="colModel" prefWidth="120.0" styleClass="colModel" text="Model" />
-            <TableColumn fx:id="colPrice" prefWidth="80.0" styleClass="colPrice" text="Price NOK" />
-            <TableColumn fx:id="colInStock" minWidth="50.0" prefWidth="70.0" styleClass="colInStock" text="InStock" />
-            <TableColumn fx:id="colEdit" prefWidth="90.0" styleClass="colEdit" text="Edit" />
-        </columns>
-      </TableView>
-      <TextField fx:id="txtFilter" layoutX="45.0" layoutY="176.0" onKeyTyped="#txtFilterKeyTyped" promptText="Search" styleClass="textField" />
-      <ComboBox fx:id="cbCreateNewItem" layoutX="45.0" layoutY="76.0" onAction="#cbCreateNewItemAction" prefHeight="51.0" prefWidth="212.0" />
-      <Button layoutX="773.0" layoutY="23.0" mnemonicParsing="false" onAction="#signOut" text="Sign out" />
-   </children>
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <TableView fx:id="tvInventory" layoutX="45.0" layoutY="226.0" prefHeight="535.0" prefWidth="912.0"
+                   styleClass="tableView">
+            <columns>
+                <TableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="-1.0" styleClass="colCategory"
+                             text="Category"/>
+                <TableColumn fx:id="colArticleNumber" minWidth="-1.0" prefWidth="-1.0" styleClass="colArticleNumber"
+                             text="Article number"/>
+                <TableColumn fx:id="colBrand" minWidth="-1.0" prefWidth="-1.0" styleClass="colBrand" text="Brand"/>
+                <TableColumn fx:id="colModel" minWidth="-1.0" prefWidth="-1.0" styleClass="colModel" text="Model"/>
+                <TableColumn fx:id="colPrice" minWidth="-1.0" prefWidth="-1.0" styleClass="colPrice" text="Price NOK"/>
+                <TableColumn fx:id="colInStock" minWidth="-1.0" prefWidth="-1.0" styleClass="colInStock"
+                             text="InStock"/>
+                <TableColumn fx:id="colEditDelete" minWidth="-1.0" prefWidth="-1.0" styleClass="colEdit" text=""/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+        <TextField fx:id="txtFilter" layoutX="45.0" layoutY="176.0" onKeyTyped="#txtFilterKeyTyped" promptText="Search"
+                   styleClass="textField">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </TextField>
+        <ComboBox fx:id="cbCreateNewItem" layoutX="45.0" layoutY="76.0" onAction="#cbCreateNewItemAction"
+                  prefWidth="200.0"/>
+        <Button layoutX="894.0" layoutY="26.0" mnemonicParsing="false" onAction="#signOut" text="Sign out">
+            <font>
+                <Font size="14.0"/>
+            </font>
+        </Button>
+    </children>
 </AnchorPane>

@@ -1,7 +1,7 @@
 package components;
 
 public class Screen extends Component {
-    public static final String TYPE = "Screen";
+    public static final String CATEGORY = "Screen";
     private int screenSize; // in inch (tommer)
 
     public Screen(String brand, String model, int screenSize) {
@@ -11,7 +11,7 @@ public class Screen extends Component {
 
     @Override
     public String getCategory() {
-        return TYPE;
+        return CATEGORY;
     }
 
     public int getScreenSize() {

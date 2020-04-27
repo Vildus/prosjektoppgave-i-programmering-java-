@@ -1,7 +1,7 @@
 package components;
 
 public class Keyboard extends Component {
-    public static final String TYPE = "Keyboard";
+    public static final String CATEGORY = "Keyboard";
     private String interfaceType; //USB eller bluetooth
 
     public Keyboard(String brand, String model, String interfaceType) {
@@ -11,7 +11,7 @@ public class Keyboard extends Component {
 
     @Override
     public String getCategory() {
-        return TYPE;
+        return CATEGORY;
     }
 
     public String getInterfaceType() {
