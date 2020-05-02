@@ -24,7 +24,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
         </TableView>
-        <Button layoutX="783.0" layoutY="556.0" mnemonicParsing="false" onAction="#btnAddToShoppingBag" text="Shopping bag" />
+        <Button layoutX="783.0" layoutY="556.0" mnemonicParsing="false" onAction="#goToShoppingBag" text="Go to shopping bag" />
         <HBox fx:id="hbNav" layoutX="-3.0" prefHeight="60.0" prefWidth="927.0" spacing="10.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#navGraphicCard" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Graphic Card" textOverrun="CLIP" />

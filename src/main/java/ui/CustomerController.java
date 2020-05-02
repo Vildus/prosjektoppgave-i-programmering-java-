@@ -4,10 +4,10 @@ import components.*;
 import inventory.Inventory;
 import inventory.Item;
 import inventory.ItemAlreadyExistsException;
-import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -24,9 +24,9 @@ import java.util.List;
 
 public class CustomerController {
 
-    private Inventory inventory;
+    public final String TITLE = "Data Store";
 
-    private InventoryRepository inventoryRepository;
+    private Inventory inventory;
 
     private GridPane gridPane;
 
@@ -61,24 +61,21 @@ public class CustomerController {
     @FXML
     private TableColumn<Item, Void> colQty;
 
-    public CustomerController(SceneChanger sceneChanger) {
+
+    public CustomerController(Inventory inventory, SceneChanger sceneChanger) {
         this.sceneChanger = sceneChanger;
+        this.inventory = inventory;
+    }
+
+    public Parent getRoot() {
+        return this.gridPane;
     }
 
 
     @FXML
-    void btnAddToShoppingBag(ActionEvent event) {
-        //Scene scene = this.createShoppingBagScene();
-        //this.sceneChanger.change("Shopping bag", scene);
-
-        //Dette funker ikke. Man kan ikke legge på IO-Exception i signaturen på et ActionEvent, det matcher ikke fxml'en
-        //Når denne metoden kalles skal vi legge til items i basket og kalle på metoden "createBasketScene" - som ikke har blitt laget enda
-        //Parent basketParent = FXMLLoader.load(getClass().getResource("basket.fxml"));
-        //Scene basketScene = new Scene(basketParent);
-
-        //Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        //window.setScene(basketScene);
-        //window.show();
+    void goToShoppingBag(ActionEvent event) {
+        Scene scene = this.createShoppingBagScene();
+        this.sceneChanger.change("Shopping bag", scene);
     }
 
     @FXML
@@ -230,16 +227,15 @@ public class CustomerController {
 
                     {
                         btnBuy.setOnAction((ActionEvent event) -> {
-                            System.out.println("hei");
-                            int parseQty = Integer.parseInt(txtQty.getText());
                             Item item = this.getTableView().getItems().get(getIndex());
                             try {
+                                int parseQty = Integer.parseInt(txtQty.getText());
                                 shoppingBag.setItem(item, parseQty);
                                 lblNotifyMessage.setText(String.format("%d item with articlenumber: %d added to shopping bag", parseQty, item.getArticleNumber()));
-                                System.out.println("Item er lagt til"); //denne linjen kan fjernes når handlekurven er laget
                             } catch (ItemAvailableStockException e) {
                                 lblNotifyMessage.setText("Out of Stock!");
-                                //TODO: Handle somehow
+                            } catch (NumberFormatException e) {
+                                lblNotifyMessage.setText("Quantity must be a number");
                             }
 
                         });
@@ -292,6 +288,10 @@ public class CustomerController {
         }
     }
 
+    private void updateTableViewItems(List<Item> items) {
+        this.tvCustomerInventory.getItems().setAll(items);
+    }
+
 
     private Scene createInventoryScene() {
         try {
@@ -307,27 +307,37 @@ public class CustomerController {
             throw new RuntimeException();
         }
     }
-}
 
 
-   /* private Scene createShoppingBagScene(Item item, int qty ) {
-
+    private Scene createShoppingBagScene() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("shoppingBag.fxml"));
-            ShoppingBagController shoppingBagController = new ShoppingbagController(item, qty () -> {
-                this.stage.setTitle("Main scene");
-                this.stage.setScene(this.tvCustomerInventory.getScene());
-            });
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/shoppingBag.fxml"));
+            ShoppingBagController shoppingBagController = new ShoppingBagController(this.shoppingBag, () -> {
+                this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
+            }, this.sceneChanger);
             loader.setController(shoppingBagController);
-            return new Scene(loader.load(), 900, 1100);
+            return new Scene(loader.load(), 1000, 800);
         } catch (Exception e) {
-            // TODO: handle somehow
+            //TODO: Handle somehow
             return null;
         }
     }
-
-    */
-
+}
 
 
+            /*
+        private Scene createEditItemScene(Item item){
+            try {
+                EditItemController editItemController = new EditItemController(item, () -> {
+                    this.sceneChanger.change(TITLE, this.tvInventory.getScene());
+                    this.updateTableViewItems(this.inventory.getItems());
+                });
+                return new Scene(editItemController.getRoot(), 500, 300);
+            } catch (Exception e) {
+                // TODO: handle somehow
+                return null;
+            }
+
+        }
+*/
 

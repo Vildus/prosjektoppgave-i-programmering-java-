@@ -1,10 +1,15 @@
+
+import components.*;
+import inventory.Item;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.CustomerController;
+import ui.ShoppingBagController;
 
 
+import java.io.Console;
 import java.io.IOException;
 
 public class Main extends Application {
@@ -22,13 +27,34 @@ public class Main extends Application {
     }
 
     //kommenterer ut de linjene som ikke er spesifikke for din. Og legger til sin scene
-    private Scene createMainScene(Stage primaryStage) throws IOException {
+    /*private Scene createMainScene(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/customer.fxml"));
         loader.setController(new CustomerController(((title, scene) -> {
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
         })));
         return new Scene(loader.load(), 1000, 600);
+    }*/
+
+
+    private Scene createMainScene(Stage primaryStage) throws IOException {
+        try {
+            Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
+            Item item1 = new Item(component1, 120, 7234567);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/shoppingBag.fxml"));
+            ShoppingBagController shoppingBagController = new ShoppingBagController(item1, 10, () -> {
+                System.out.println("bytt vindu nå");
+            }, (title, scene) -> {
+                primaryStage.setTitle(title);
+                primaryStage.setScene(scene);
+            });
+            loader.setController(shoppingBagController);
+            return new Scene(loader.load(), 1000, 600);
+        } catch (Exception e) {
+            //TODO: Handle somehow
+            return null;
+        }
     }
 }
 

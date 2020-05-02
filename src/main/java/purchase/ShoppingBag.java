@@ -10,12 +10,12 @@ public class ShoppingBag {
     //trenger bare artikkelnummer og antall
     //Når antall går til 0.. må være noe logikk som fjerner item fra shopping bag
 
-    //Kan bare være en på en key.
-    private Map<Item, Integer> items; // item er key, og value er amount
+
+    private List<ShoppingBagItem> shoppingBagItems;
     private Inventory inventory; //tilgang til varelager
 
     public ShoppingBag(Inventory inventory) {
-        this.items = new HashMap<>();
+        this.shoppingBagItems = new ArrayList<>();
         this.inventory = inventory;
         //tom liste
     }
@@ -30,7 +30,7 @@ public class ShoppingBag {
     // Da må vi skrive dette i oppgaven: Dette programmet tillater kun en som handler om gangen
 
 
-    //TODO:
+    //TODO: endre til liste og lage get items
     //skal oppdatere antallet
     //1; finne ut om varen finnes
     //2: finne ut om det er nok instock
@@ -42,6 +42,28 @@ public class ShoppingBag {
         if (inStock < amount) {
             throw new ItemAvailableStockException(item.getArticleNumber(), amount, inStock);
         }
+
+
+        public void addItem(Item item, int amount) {
+
+        //Løpe igjennom liste, erstatte med item som kommer inn og ny amount. Hvis jeg finner den i listen
+        /*
+
+        int foundIndex = -1;
+        for (.... items)
+           if articleNuimber = item.arigveit;
+            foundIndex = i;
+            break;
+        }
+        ShopongniBAti shoppingBagItem = new ShoppingBagItm(item, amoiunt),
+        if (foundIndex >= 0) {
+            this.items[foundIndex] = shoppingBagItem
+        } else {
+            this.items.add(shoppingBagItem);
+        }
+
+
+         */
         this.items.put(item, amount);
     }
 
