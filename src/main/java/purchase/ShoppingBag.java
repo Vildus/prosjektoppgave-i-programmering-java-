@@ -7,8 +7,13 @@ import java.util.*;
 
 public class ShoppingBag {
     //Starte med en tom shoppingbag. Når en ny bruker kommer inn lager man en ny bag for den brukeren
-    //trenger bare artikkelnummer og antall
     //Når antall går til 0.. må være noe logikk som fjerner item fra shopping bag
+
+
+    //Hva om det er flere brukere som handler samtidig?
+    //Denne logikken kan vi ta senere. Eller skal vi tillate kun en bruker som shopper samtidig
+    // da slipper vi flere shoppingbag instanser og problem med varebeholdning som vi må skrive logikk for.
+    // Da må vi skrive dette i oppgaven: Dette programmet tillater kun en som handler om gangen
 
 
     private List<ShoppingBagItem> shoppingBagItems;
@@ -20,66 +25,45 @@ public class ShoppingBag {
         //tom liste
     }
 
-    // hvis man legger til ett art.nummer to ganger så vil vi at antallet oppdateres på den
-    //varen ikke at den legges til to ganger
+    public List<ShoppingBagItem> getShoppingBagItems() {
+        return this.shoppingBagItems;
+    }
 
-
-    //Hva om det er flere brukere som handler samtidig?
-    //Denne logikken kan vi ta senere. Eller skal vi tillate kun en bruker som shopper samtidig
-    // da slipper vi flere shoppingbag instanser og problem med varebeholdning som vi må skrive logikk for.
-    // Da må vi skrive dette i oppgaven: Dette programmet tillater kun en som handler om gangen
-
-
-    //TODO: endre til liste og lage get items
-    //skal oppdatere antallet
-    //1; finne ut om varen finnes
-    //2: finne ut om det er nok instock
-    //3: oppdatere antall
-
-
-    public void setItem(Item item, int amount) throws ItemAvailableStockException {
-        int inStock = item.getInStock();
-        if (inStock < amount) {
-            throw new ItemAvailableStockException(item.getArticleNumber(), amount, inStock);
+//addItem will overwrite if the same item is already added
+    public void addItem(ShoppingBagItem shoppingBagItem) throws ItemAvailableStockException {
+        int inStock = shoppingBagItem.getItem().getInStock();
+        if (inStock < shoppingBagItem.getQty()) {
+            throw new ItemAvailableStockException(shoppingBagItem.getItem().getArticleNumber(), shoppingBagItem.getQty(), inStock);
         }
 
+        int foundIndex = -1; //dette er indeksen til det item som har samme artikkelnummer som det som kommer inn
+        for (int i = 0; i < this.shoppingBagItems.size(); i++) {
+            if (this.shoppingBagItems.get(i).getArticleNumber() == shoppingBagItem.getItem().getArticleNumber()) {
+                foundIndex = i;
+                break;
+            }
 
-        public void addItem(Item item, int amount) {
-
-        //Løpe igjennom liste, erstatte med item som kommer inn og ny amount. Hvis jeg finner den i listen
-        /*
-
-        int foundIndex = -1;
-        for (.... items)
-           if articleNuimber = item.arigveit;
-            foundIndex = i;
-            break;
         }
-        ShopongniBAti shoppingBagItem = new ShoppingBagItm(item, amoiunt),
+
+        //Hvis founIndex er 0 eller mer så inneholder den en index til det item som er lik det som sendes inn
         if (foundIndex >= 0) {
-            this.items[foundIndex] = shoppingBagItem
+            this.shoppingBagItems.set(foundIndex, shoppingBagItem);
         } else {
-            this.items.add(shoppingBagItem);
+            this.shoppingBagItems.add(shoppingBagItem);
         }
-
-
-         */
-        this.items.put(item, amount);
     }
 
-
-    public void removeItem(Item item) {
-        this.items.remove(item);
+    public void removeItem(ShoppingBagItem shoppingBagItem) {
+        this.shoppingBagItems.remove(shoppingBagItem);
     }
 
-    //HashMap har ikke index. Ketvalue = index.
     public double getTotalPrice() {
         double totalPrice = 0;
-        for (Map.Entry<Item, Integer> entry : this.items.entrySet()) {
-            Item item = entry.getKey();
-            int amount = entry.getValue();
-            totalPrice = totalPrice + item.getPrice() * amount;
+        for (ShoppingBagItem shoppingBagItem : this.shoppingBagItems) {
+            totalPrice = totalPrice + shoppingBagItem.getPrice() * shoppingBagItem.getQty();
         }
         return totalPrice;
     }
+
+
 }

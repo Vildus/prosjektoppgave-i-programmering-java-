@@ -41,14 +41,14 @@ class ShoppingBagTest {
     @Test
     void testGetTotalPrice() throws ItemAvailableStockException {
         ShoppingBag shoppingBag = new ShoppingBag(inventory);
-        shoppingBag.setItem(this.inventory.findItemByArticleNumber(7234567), 3);
-        shoppingBag.setItem(this.inventory.findItemByArticleNumber(7564739), 2);
+        shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7234567), 3));
+        shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7564739), 2));
         double totalPrice1 = shoppingBag.getTotalPrice();
         assertEquals(1360.0, totalPrice1);
 
         //Oppdaterer antall for å teste at total price oppdateres
-        shoppingBag.setItem(this.inventory.findItemByArticleNumber(7234567), 1);
-        shoppingBag.setItem(this.inventory.findItemByArticleNumber(7564739), 1);
+        shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7234567), 1));
+        shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7564739), 1));
         double totalPrice2 = shoppingBag.getTotalPrice();
         assertEquals(620, totalPrice2);
     }
@@ -62,7 +62,7 @@ class ShoppingBagTest {
                 //assertThrows tar to arguments: 1.arg = den exception man vil ha. 2.argument = lamda(metoden)
                 ItemAvailableStockException.class,
                 () -> {
-                    shoppingBag.setItem(this.inventory.findItemByArticleNumber(7234567), 11);
+                    shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7234567), 11));
                 });
     }
 

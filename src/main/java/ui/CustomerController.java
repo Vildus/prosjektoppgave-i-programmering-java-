@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import purchase.ItemAvailableStockException;
 import purchase.ShoppingBag;
+import purchase.ShoppingBagItem;
 
 import java.io.IOException;
 import java.util.List;
@@ -230,7 +231,7 @@ public class CustomerController {
                             Item item = this.getTableView().getItems().get(getIndex());
                             try {
                                 int parseQty = Integer.parseInt(txtQty.getText());
-                                shoppingBag.setItem(item, parseQty);
+                                shoppingBag.addItem(new ShoppingBagItem(item, parseQty));
                                 lblNotifyMessage.setText(String.format("%d item with articlenumber: %d added to shopping bag", parseQty, item.getArticleNumber()));
                             } catch (ItemAvailableStockException e) {
                                 lblNotifyMessage.setText("Out of Stock!");
@@ -311,7 +312,7 @@ public class CustomerController {
 
     private Scene createShoppingBagScene() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/shoppingBag.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("shoppingBag.fxml"));
             ShoppingBagController shoppingBagController = new ShoppingBagController(this.shoppingBag, () -> {
                 this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
             }, this.sceneChanger);

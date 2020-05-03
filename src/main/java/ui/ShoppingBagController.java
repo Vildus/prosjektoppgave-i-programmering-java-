@@ -1,17 +1,13 @@
 package ui;
 
-import inventory.Item;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
-import purchase.ItemAvailableStockException;
 import purchase.ShoppingBag;
+import purchase.ShoppingBagItem;
 
-import java.io.IOException;
 import java.util.List;
 
 public class ShoppingBagController {
@@ -24,31 +20,31 @@ public class ShoppingBagController {
 
 
     @FXML
-    private TableView<Item> tvShoppingBag;
+    private TableView<ShoppingBagItem> tvShoppingBag;
 
     @FXML
-    private TableColumn<Item, String> colCategory;
+    private TableColumn<ShoppingBagItem, String> colCategory;
 
     @FXML
-    private TableColumn<Item, Integer> colArticleNumber;
+    private TableColumn<ShoppingBagItem, Integer> colArticleNumber;
 
     @FXML
-    private TableColumn<Item, String> colBrand;
+    private TableColumn<ShoppingBagItem, String> colBrand;
 
     @FXML
-    private TableColumn<Item, String> colModel;
+    private TableColumn<ShoppingBagItem, String> colModel;
 
     @FXML
-    private TableColumn<Item, Double> colPrice;
+    private TableColumn<ShoppingBagItem, Double> colPrice;
 
     @FXML
-    private TableColumn<Item, Void> colQty;
+    private TableColumn<ShoppingBagItem, Void> colQty;
 
     @FXML
-    private TableColumn<Item, Double> colTotalPrice;
+    private TableColumn<ShoppingBagItem, Double> colTotalPrice;
 
     @FXML
-    private TableColumn<Item, Void> colRemoveItem;
+    private TableColumn<ShoppingBagItem, Void> colRemoveItem;
 
 
     @FXML
@@ -71,8 +67,13 @@ public class ShoppingBagController {
         this.sceneCloser = sceneCloser;
     }
 
-    private void updateTableViewItems(List<Item> items) {
-        this.tvShoppingBag.getItems().setAll(items);
+    @FXML
+    public void initialize() {
+        this.initializeTableView();
+    }
+
+    private void updateTableViewItems(List<ShoppingBagItem> shoppingBagItems) {
+        this.tvShoppingBag.getItems().setAll(shoppingBagItems);
     }
 
 
@@ -90,24 +91,20 @@ public class ShoppingBagController {
         ShoppingBagController self = this;
 
 
-        //ShoppingBagController self = this;
-
-        // Lager knapp inne i tableview-celler hvor det er data. Kode tatt fra nettet - skjønner den ikke selv men det funker :p
-        //google it!
-        Callback<TableColumn<Item, Void>, TableCell<Item, Void>> removeItemCellFactory = new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
+        Callback<TableColumn<ShoppingBagItem, Void>, TableCell<ShoppingBagItem, Void>> removeItemCellFactory = new Callback<TableColumn<ShoppingBagItem, Void>, TableCell<ShoppingBagItem, Void>>() {
             @Override
-            public TableCell<Item, Void> call(final TableColumn<Item, Void> param) {
-                final TableCell<Item, Void> cell = new TableCell<Item, Void>() {
+            public TableCell<ShoppingBagItem, Void> call(final TableColumn<ShoppingBagItem, Void> param) {
+                final TableCell<ShoppingBagItem, Void> cell = new TableCell<ShoppingBagItem, Void>() {
 
 
                     private final Button btnRemove = new Button("Remove");
 
                     {
                         btnRemove.setOnAction((ActionEvent event) -> {
-                            Item item = this.getTableView().getItems().get(getIndex());
-                            self.shoppingBag.removeItem(item);
+                            ShoppingBagItem shoppingBagItem = this.getTableView().getItems().get(getIndex());
+                            self.shoppingBag.removeItem(shoppingBagItem);
                             //TODO : lage getitems i shoppingbag
-                            self.updateTableViewItems(self.shoppingBag.getItems());
+                            self.updateTableViewItems(self.shoppingBag.getShoppingBagItems());
 
                         });
                     }
@@ -129,10 +126,10 @@ public class ShoppingBagController {
 
         colRemoveItem.setCellFactory(removeItemCellFactory);
 
-        this.updateTableViewItems(this.shoppingBag.getItems());
+        this.updateTableViewItems(this.shoppingBag.getShoppingBagItems());
+
+        this.lblTotalPrice.setText(String.format("%.2f NOK", this.shoppingBag.getTotalPrice()));
     }
-
-
 }
 
 
