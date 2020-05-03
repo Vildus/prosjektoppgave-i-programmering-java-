@@ -236,7 +236,7 @@ public class InventoryController {
     private Scene createCustomerScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("customer.fxml"));
-            CustomerController customerController = new CustomerController(this.sceneChanger);
+            CustomerController customerController = new CustomerController(this.inventory, this.sceneChanger);
             loader.setController(customerController);
             return new Scene(loader.load(), 1000, 800);
         } catch (IOException e) {
