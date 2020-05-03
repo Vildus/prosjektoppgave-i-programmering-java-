@@ -2,12 +2,15 @@ package ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import purchase.ShoppingBag;
 import purchase.ShoppingBagItem;
 
+import java.io.IOException;
 import java.util.List;
 
 public class ShoppingBagController {
@@ -57,7 +60,7 @@ public class ShoppingBagController {
 
     @FXML
     void checkOut(ActionEvent event) {
-        //this.sceneChanger.change();
+        this.sceneChanger.change("Order Confirmation", this.createOrderConfirmationScene());
     }
 
 
@@ -129,6 +132,19 @@ public class ShoppingBagController {
         this.updateTableViewItems(this.shoppingBag.getShoppingBagItems());
 
         this.lblTotalPrice.setText(String.format("%.2f NOK", this.shoppingBag.getTotalPrice()));
+    }
+
+
+    private Scene createOrderConfirmationScene() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("orderConfirmation.fxml"));
+            OrderConfirmationController orderConfirmationController = new OrderConfirmationController(this.shoppingBag);
+            loader.setController(orderConfirmationController);
+            return new Scene(loader.load(), 1000, 800);
+        } catch (IOException e) {
+            //If this happens it means that fxml is corrupt or not found
+            throw new RuntimeException();
+        }
     }
 }
 

@@ -1,7 +1,6 @@
 package purchase;
 
 import inventory.Inventory;
-import inventory.Item;
 
 import java.util.*;
 
@@ -29,7 +28,7 @@ public class ShoppingBag {
         return this.shoppingBagItems;
     }
 
-//addItem will overwrite if the same item is already added
+    //addItem will overwrite if the same item is already added
     public void addItem(ShoppingBagItem shoppingBagItem) throws ItemAvailableStockException {
         int inStock = shoppingBagItem.getItem().getInStock();
         if (inStock < shoppingBagItem.getQty()) {
@@ -60,7 +59,7 @@ public class ShoppingBag {
     public double getTotalPrice() {
         double totalPrice = 0;
         for (ShoppingBagItem shoppingBagItem : this.shoppingBagItems) {
-            totalPrice = totalPrice + shoppingBagItem.getPrice() * shoppingBagItem.getQty();
+            totalPrice = totalPrice + shoppingBagItem.getTotalPrice();
         }
         return totalPrice;
     }
