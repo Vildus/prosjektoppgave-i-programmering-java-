@@ -1,5 +1,6 @@
 package ui;
 
+import io.OrderRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import purchase.OrderRegister;
 import purchase.ShoppingBag;
 import purchase.ShoppingBagItem;
 
@@ -14,6 +16,10 @@ import java.io.IOException;
 import java.util.List;
 
 public class ShoppingBagController {
+
+    private OrderRepository orderRepository;
+
+    private OrderRegister orderRegister;
 
     private SceneChanger sceneChanger;
 
@@ -60,14 +66,23 @@ public class ShoppingBagController {
 
     @FXML
     void checkOut(ActionEvent event) {
-        this.sceneChanger.change("Order Confirmation", this.createOrderConfirmationScene());
+        this.orderRegister = new OrderRegister();
+        this.orderRegister.addOrder(this.shoppingBag.createOrder());
+        try {
+            this.orderRepository.saveOrderRegister(this.orderRegister);
+            this.sceneChanger.change("Order Confirmation", this.createOrderConfirmationScene());
+        } catch (IOException e) {
+            Alert.showErrorDialog("Failed to save order register", e);
+        }
     }
 
 
-    public ShoppingBagController(ShoppingBag shoppingBag, SceneCloser sceneCloser, SceneChanger sceneChanger) {
+    public ShoppingBagController(ShoppingBag shoppingBag, SceneCloser sceneCloser, SceneChanger sceneChanger) throws IOException {
         this.shoppingBag = shoppingBag;
         this.sceneChanger = sceneChanger;
         this.sceneCloser = sceneCloser;
+        this.orderRepository = new OrderRepository();
+        this.orderRegister = new OrderRegister();
     }
 
     @FXML
@@ -106,7 +121,6 @@ public class ShoppingBagController {
                         btnRemove.setOnAction((ActionEvent event) -> {
                             ShoppingBagItem shoppingBagItem = this.getTableView().getItems().get(getIndex());
                             self.shoppingBag.removeItem(shoppingBagItem);
-                            //TODO : lage getitems i shoppingbag
                             self.updateTableViewItems(self.shoppingBag.getShoppingBagItems());
 
                         });
@@ -142,6 +156,7 @@ public class ShoppingBagController {
             loader.setController(orderConfirmationController);
             return new Scene(loader.load(), 1000, 800);
         } catch (IOException e) {
+            Alert.showErrorDialog("Unexpected error", e);
             //If this happens it means that fxml is corrupt or not found
             throw new RuntimeException();
         }

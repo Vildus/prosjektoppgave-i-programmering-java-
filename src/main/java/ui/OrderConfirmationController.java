@@ -21,18 +21,14 @@ public class OrderConfirmationController {
 
     @FXML
     void signOut(ActionEvent event) {
-
+        //TODO - Skal skifte til sign inn siden
     }
 
     @FXML
     void returnToShopping(ActionEvent event) {
-
+        //TODO
     }
 
-    @FXML
-    void viewOrderHistory(ActionEvent event) {
-
-    }
 
     @FXML
     void initialize() {
@@ -40,10 +36,13 @@ public class OrderConfirmationController {
     }
 
     private void printSoppingBag() {
+
+        //Order date
+        //Order ID
         ArrayList<String> lines = new ArrayList<>();
 
         for (ShoppingBagItem shoppingBagItem : this.shoppingBag.getShoppingBagItems()) {
-            String line = String.format("%s, %s, %s\t\t\tPrice: %.2f",
+            String line = String.format("%s, %s, %s\nPrice: %.2f\n",
                     shoppingBagItem.getComponentCategory(),
                     shoppingBagItem.getComponentBrand(),
                     shoppingBagItem.getComponentModel(),
@@ -52,7 +51,7 @@ public class OrderConfirmationController {
         }
         String output = "";
         output = output + String.join("\n", lines) +
-                String.format("\n\nTotal order price: %.2f", this.shoppingBag.getTotalPrice());
+                String.format("\n\n\nTotal order price: %.2f NOK", this.shoppingBag.getTotalPrice());
         this.lblOrderInfo.setText(output);
     }
 

@@ -22,14 +22,14 @@ class OrderRepositoryTest {
         order1Lines.add(new OrderLine(234435, 5, 1560.90));
         order1Lines.add(new OrderLine(4362442, 1, 212.90));
         order1Lines.add(new OrderLine(35632, 12, 187.90));
-        Order order1 = new Order(1, new Date(), order1Lines);
+        Order order1 = new Order(order1Lines);
         orderRegister.addOrder(order1);
 
         ArrayList<OrderLine> order2Lines = new ArrayList<>();
         order2Lines.add(new OrderLine(7483719, 2, 100.50));
         order2Lines.add(new OrderLine(7483720, 7, 292.42));
         order2Lines.add(new OrderLine(7483721, 3, 287.90));
-        Order order2 = new Order(2, new Date(), order2Lines);
+        Order order2 = new Order(order2Lines);
         orderRegister.addOrder(order2);
 
         return orderRegister;
