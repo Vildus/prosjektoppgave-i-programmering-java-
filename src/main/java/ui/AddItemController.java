@@ -10,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -77,8 +76,6 @@ public class AddItemController {
 
     Button btnAddItem;
 
-    Label lblInfo;
-
 
     // This means we cannot create an item controller without a copmonent category
     // as it does not make sense to have a "view" (javafx view) without a component category to edit
@@ -92,7 +89,6 @@ public class AddItemController {
         this.initGridPane();
         this.initCloseButton();
         this.initAddItemButton();
-        this.initInfoLabel();
     }
 
     public Parent getRoot() {
@@ -121,14 +117,14 @@ public class AddItemController {
         try {
             price = Double.parseDouble(this.txtPrice.getText());
         } catch (NumberFormatException e) {
-            this.lblInfo.setText("The price can only contain digits");
+            Alert.showInfoDialog("Price must be a number", "Please make sure that the price only contain digits", e);
             return;
         }
 
         try {
             articleNumber = Integer.parseInt(this.txtArticleNumber.getText());
         } catch (NumberFormatException e) {
-            this.lblInfo.setText("The article number can only contain digits");
+            Alert.showInfoDialog("Article number must be a number", "Please make sure that the article number only contain integers", e);
             return;
         }
 
@@ -139,7 +135,7 @@ public class AddItemController {
                     try {
                         graphicCardMemory = Integer.parseInt(this.txtGraphicCardMemory.getText());
                     } catch (NumberFormatException e) {
-                        this.lblInfo.setText("Graphic card memory can only contain digits");
+                        Alert.showInfoDialog("Graphic card memory must be a number", "Please make sure that the graphic card memory only contain integers", e);
                         return;
                     }
                     component = new GraphicCard(brand, model, graphicCardMemory);
@@ -170,7 +166,7 @@ public class AddItemController {
                     try {
                         effect = Integer.parseInt(txtPowerSupplyEffect.getText());
                     } catch (NumberFormatException e) {
-                        this.lblInfo.setText("Effect can only contain digits");
+                        Alert.showInfoDialog("Power supply effect  must be a number", "Please make sure that effect only contain integers", e);
                         return;
                     }
 
@@ -178,7 +174,7 @@ public class AddItemController {
                     try {
                         inputVoltage = Double.parseDouble(txtPowerSupplyInputVoltage.getText());
                     } catch (NumberFormatException e) {
-                        this.lblInfo.setText("Input voltage can only contain digits");
+                        Alert.showInfoDialog("Input voltage  must be a number", "Please make sure that input voltage only contain integers", e);
                         return;
                     }
 
@@ -186,7 +182,7 @@ public class AddItemController {
                     try {
                         outputVoltage = Double.parseDouble(txtPowerSupplyOutputVoltage.getText());
                     } catch (NumberFormatException e) {
-                        this.lblInfo.setText("Output voltage can only contain digits");
+                        Alert.showInfoDialog("Output voltage  must be a number", "Please make sure that output voltage only contain integers", e);
                         return;
                     }
                     component = new PowerSupply(brand, model, effect, inputVoltage, outputVoltage);
@@ -197,7 +193,7 @@ public class AddItemController {
                     try {
                         processorCount = Integer.parseInt(txtProcessorCount.getText());
                     } catch (NumberFormatException e) {
-                        this.lblInfo.setText("Count can only contain digits");
+                        Alert.showInfoDialog("Count must be a number", "Please make sure count only contain integers", e);
                         return;
                     }
 
@@ -205,7 +201,7 @@ public class AddItemController {
                     try {
                         processorClockRate = Double.parseDouble(txtProcessorClockRate.getText());
                     } catch (NumberFormatException e) {
-                        this.lblInfo.setText("Clock rate can only contain digits");
+                        Alert.showInfoDialog("Clock rate  must be a number", "Please make sure that clock rate only contain integers", e);
                         return;
                     }
                     component = new Processor(brand, model, processorCount, processorClockRate);
@@ -216,7 +212,7 @@ public class AddItemController {
                     try {
                         ramMemory = Integer.parseInt(txtRAMMemory.getText());
                     } catch (NumberFormatException e) {
-                        this.lblInfo.setText("Memory can only contain digits");
+                        Alert.showInfoDialog("RAM memory must be a number", "Please make sure that the RAM memory only contain integers", e);
                         return;
                     }
                     component = new RAM(brand, model, ramMemory);
@@ -227,7 +223,7 @@ public class AddItemController {
                     try {
                         screenSize = Integer.parseInt(txtScreenSize.getText());
                     } catch (NumberFormatException e) {
-                        this.lblInfo.setText("Screen size can only contain digits");
+                        Alert.showInfoDialog("Screen size must be a number", "Please make sure that screen size only contain integers", e);
                         return;
                     }
                     component = new Screen(brand, model, screenSize);
@@ -238,17 +234,17 @@ public class AddItemController {
             }
 
         } catch (IllegalBrandArgumentException e) {
-            this.lblInfo.setText("The field cannot be left blank. You must enter in the brand");
+            Alert.showInfoDialog("The field \"brand\" cannot be left blank", "You must enter in the brand", e);
             return;
         } catch (IllegalModelArgumentException e) {
-            this.lblInfo.setText("The field cannot be left blank. You must enter in the Model");
+            Alert.showInfoDialog("The field \"model\" cannot be left blank", "You must enter in the model", e);
             return;
         }
 
         try {
             item = new Item(component, price, articleNumber);
         } catch (InvalidPriceArgumentException e) {
-            this.lblInfo.setText("The price must be higher than 0");
+            Alert.showInfoDialog("Wrong price", "The price must be higher than 0", e);
             return;
         }
 
@@ -256,34 +252,23 @@ public class AddItemController {
             int qty = Integer.parseInt(txtQty.getText());
             item.setInStock(qty);
         } catch (Exception e) {
-            this.lblInfo.setText("Quantity must be a digit");
+            Alert.showInfoDialog("Quantity must be a number", "Please make sure that the quantity only contain integers", e);
             return;
         }
 
         try {
             this.inventory.addItem(item);
         } catch (ItemAlreadyExistsException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("An item with this article number exists already");
-            alert.setContentText("To update price or quantity for an item that already exists go back to inventory");
-            alert.showAndWait();
+            Alert.showInfoDialog("An item with this article number exists already", "To update price or quantity for an item that already exists go back to inventory", e);
             return;
         }
 
         try {
             this.inventoryRepository.save(this.inventory);
+            this.closer.close();
         } catch (IOException e) {
-            this.lblInfo.setText("Failed to save file");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialog");
-            alert.setHeaderText("Failed to save file");
-            alert.setContentText("Ooops, there was an error! The file could not be saved");
-            alert.showAndWait();
-            return;
+            Alert.showErrorDialog("Failed to save file", e);
         }
-
-        this.closer.close();
     }
 
 
@@ -294,12 +279,6 @@ public class AddItemController {
         this.btnClose.setOnAction(this::handleCancel);
         int rowCount = this.getRowCount();
         this.gridPane.add(this.btnClose, 2, rowCount + 1);
-    }
-
-    private void initInfoLabel() {
-        this.lblInfo = new Label();
-        this.lblInfo.autosize();
-        this.vb.getChildren().add(this.lblInfo);
     }
 
 

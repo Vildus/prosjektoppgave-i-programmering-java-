@@ -61,9 +61,6 @@ public class InventoryController {
     @FXML
     private TextField txtFilter;
 
-    @FXML
-    private Label lblInfo;
-
 
     //TODO: Lage en path. global path.
 
@@ -166,12 +163,7 @@ public class InventoryController {
                             try {
                                 self.inventoryRepository.save(self.inventory);
                             } catch (IOException e) {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Error Dialog");
-                                alert.setHeaderText("Failed to save file");
-                                alert.setContentText("Ooops, there was an error! The file could not be saved");
-
-                                alert.showAndWait();
+                                Alert.showErrorDialog("Failed to save file", e);
                             }
                         });
                     }
@@ -254,10 +246,9 @@ public class InventoryController {
             });
             return new Scene(editItemController.getRoot(), 500, 300);
         } catch (Exception e) {
-            // TODO: handle somehow
-            return null;
+            Alert.showErrorDialog("Unexpected error", e);
+            throw new RuntimeException();
         }
-
     }
 
     private Scene createAddItemScene(String category) {
@@ -269,8 +260,8 @@ public class InventoryController {
             });
             return new Scene(addItemController.getRoot(), 900, 1100);
         } catch (Exception e) {
-            // TODO: handle somehow
-            return null;
+            Alert.showErrorDialog("Unexpected error", e);
+            throw new RuntimeException();
         }
     }
 }

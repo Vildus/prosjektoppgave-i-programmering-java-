@@ -36,9 +36,6 @@ public class CustomerController {
     private SceneChanger sceneChanger;
 
     @FXML
-    private Label lblNotifyMessage;
-
-    @FXML
     private HBox hbNav;
 
     @FXML
@@ -88,47 +85,47 @@ public class CustomerController {
 
     @FXML
     void navGraphicCard(ActionEvent event) {
-        this.filterTabelViewByComponentCategory(GraphicCard.CATEGORY);
+        this.filterTableViewByComponentCategory(GraphicCard.CATEGORY);
     }
 
     @FXML
     void navHardDisk(ActionEvent event) {
-        this.filterTabelViewByComponentCategory(HardDisk.CATEGORY);
+        this.filterTableViewByComponentCategory(HardDisk.CATEGORY);
     }
 
     @FXML
     void navKeyboard(ActionEvent event) {
-        this.filterTabelViewByComponentCategory(Keyboard.CATEGORY);
+        this.filterTableViewByComponentCategory(Keyboard.CATEGORY);
     }
 
     @FXML
     void navMotherboard(ActionEvent event) {
-        this.filterTabelViewByComponentCategory(Motherboard.CATEGORY);
+        this.filterTableViewByComponentCategory(Motherboard.CATEGORY);
     }
 
     @FXML
     void navMouse(ActionEvent event) {
-        this.filterTabelViewByComponentCategory(Mouse.CATEGORY);
+        this.filterTableViewByComponentCategory(Mouse.CATEGORY);
     }
 
     @FXML
     void navPowerSupply(ActionEvent event) {
-        this.filterTabelViewByComponentCategory(PowerSupply.CATEGORY);
+        this.filterTableViewByComponentCategory(PowerSupply.CATEGORY);
     }
 
     @FXML
     void navProcessor(ActionEvent event) {
-        this.filterTabelViewByComponentCategory(Processor.CATEGORY);
+        this.filterTableViewByComponentCategory(Processor.CATEGORY);
     }
 
     @FXML
     void navRAM(ActionEvent event) {
-        this.filterTabelViewByComponentCategory(RAM.CATEGORY);
+        this.filterTableViewByComponentCategory(RAM.CATEGORY);
     }
 
     @FXML
     void navScreen(ActionEvent event) {
-        this.filterTabelViewByComponentCategory(Screen.CATEGORY);
+        this.filterTableViewByComponentCategory(Screen.CATEGORY);
     }
 
     @FXML
@@ -139,7 +136,7 @@ public class CustomerController {
     }
 
 
-    private void filterTabelViewByComponentCategory(String category) {
+    private void filterTableViewByComponentCategory(String category) {
         List<Item> items = this.inventory.getItemsByComponentCategory(category);
         this.tvCustomerInventory.getItems().setAll(items);
     }
@@ -214,8 +211,7 @@ public class CustomerController {
 
         CustomerController self = this;
 
-        // Lager knapp inne i tableview-celler hvor det er data. Kode tatt fra nettet - skjønner den ikke selv men det funker :p
-        //google it!
+
         Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
             @Override
             public TableCell<Item, Void> call(final TableColumn<Item, Void> param) {
@@ -232,15 +228,15 @@ public class CustomerController {
                             try {
                                 int parseQty = Integer.parseInt(txtQty.getText());
                                 shoppingBag.addItem(new ShoppingBagItem(item, parseQty));
-                                lblNotifyMessage.setText(String.format("%d item with articlenumber: %d added to shopping bag", parseQty, item.getArticleNumber()));
+                                Alert.showConfirmationDialog("Added to shoppingbag", String.format("%d pcs of articlenumber: %d is added to shopping bag", parseQty, item.getArticleNumber()));
                             } catch (ItemAvailableStockException e) {
-                                lblNotifyMessage.setText("Out of Stock!");
+                                Alert.showInfoDialog("Out of stock", "We are sorry, this item is out of stock", e);
                             } catch (NumberFormatException e) {
-                                lblNotifyMessage.setText("Quantity must be a number");
+                                Alert.showInfoDialog("Quantity must be a number", "Please make sure that the quantity is an integer", e);
                             }
-
                         });
                     }
+
 
                     private final GridPane gridPane = new GridPane();
 
@@ -273,6 +269,11 @@ public class CustomerController {
     }
 
 
+    private void updateTableViewItems(List<Item> items) {
+        this.tvCustomerInventory.getItems().setAll(items);
+    }
+
+
     private Scene createLoginSuperUserScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSuperUser.fxml"));
@@ -289,10 +290,6 @@ public class CustomerController {
         }
     }
 
-    private void updateTableViewItems(List<Item> items) {
-        this.tvCustomerInventory.getItems().setAll(items);
-    }
-
 
     private Scene createInventoryScene() {
         try {
@@ -301,9 +298,10 @@ public class CustomerController {
             loader.setController(inventoryController);
             return new Scene(loader.load(), 1000, 800);
         } catch (IOException e) {
-            //If this happens it means that fxml is corrupt or not found
+            Alert.showErrorDialog("Failed to read inventory from disk", e);
             throw new RuntimeException();
         } catch (ClassNotFoundException e) {
+            Alert.showErrorDialog("Inventory file is corrupt", e);
             //This means that something is wrong with serialized jobj file
             throw new RuntimeException();
         }
@@ -319,26 +317,9 @@ public class CustomerController {
             loader.setController(shoppingBagController);
             return new Scene(loader.load(), 1000, 800);
         } catch (Exception e) {
-            //TODO: Handle somehow
-            return null;
+            Alert.showErrorDialog("Unexpected error", e);
+            throw new RuntimeException();
         }
     }
 }
-
-
-            /*
-        private Scene createEditItemScene(Item item){
-            try {
-                EditItemController editItemController = new EditItemController(item, () -> {
-                    this.sceneChanger.change(TITLE, this.tvInventory.getScene());
-                    this.updateTableViewItems(this.inventory.getItems());
-                });
-                return new Scene(editItemController.getRoot(), 500, 300);
-            } catch (Exception e) {
-                // TODO: handle somehow
-                return null;
-            }
-
-        }
-*/
 
