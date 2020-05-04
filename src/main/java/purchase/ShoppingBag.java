@@ -64,5 +64,16 @@ public class ShoppingBag {
         return totalPrice;
     }
 
+    public Order createOrder() {
+        List<OrderLine> orderLines = new ArrayList<>();
+        for (ShoppingBagItem shoppingBagItem : this.shoppingBagItems) {
+            OrderLine orderLine = new OrderLine(shoppingBagItem.getArticleNumber(), shoppingBagItem.getQty(), shoppingBagItem.getPrice());
+            orderLines.add(orderLine);
+        }
+        int customuerNumber = 0;
+        Order order = new Order(orderLines, customuerNumber);
+        return order;
+    }
+
 
 }

@@ -15,6 +15,8 @@ public class OrderRegister {
     }
 
     public void addOrder(Order order) {
+        int orderNumber = this.orders.size() + 1;
+        order.setOrderNumber(orderNumber);
         this.orders.add(order);
     }
 

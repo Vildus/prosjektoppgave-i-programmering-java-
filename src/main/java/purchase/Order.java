@@ -6,18 +6,22 @@ import java.util.List;
 
 public class Order {
     private int orderNumber;
-    //eventuelt kundenummer
+    private int customerNumber;
     private Date date;
     private List<OrderLine> lines;
 
-    public Order(int orderNumber, Date date, List<OrderLine> lines) {
-        this.orderNumber = orderNumber;
+    public Order(List<OrderLine> lines, int customerNumber) {
         this.lines = lines;
-        this.date = date;
+        this.date = new Date();
+        this.customerNumber =customerNumber;
     }
 
     public int getOrderNumber() {
         return this.orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public Date getDate() {

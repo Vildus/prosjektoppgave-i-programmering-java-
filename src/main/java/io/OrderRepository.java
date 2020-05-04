@@ -4,6 +4,7 @@ import purchase.Order;
 import purchase.OrderLine;
 import purchase.OrderRegister;
 import utils.DateStringConverter;
+
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -18,11 +19,10 @@ public class OrderRepository {
 
     // path to store orders.csv and all [order_id].csv files
     private Path directory;
-    private DateStringConverter dateStringConverter;
+    private DateStringConverter dateStringConverter = new DateStringConverter("dd/MM/yyyy HH:mm:ss");
 
     public OrderRepository(Path directory) {
         this.directory = directory;
-        this.dateStringConverter = new DateStringConverter("dd/MM/yyyy HH:mm:ss");
     }
 
     public OrderRepository() throws IOException {
@@ -35,6 +35,7 @@ public class OrderRepository {
         }
         this.directory = storePath;
     }
+
     // Lager en path fordi det er den samme pathen vi skal lese og skrive fra. Da slipper vi
     // å skrive den to ganger og minsker risiko for stavefeil i strengen "orders.csv"
     private Path getOrderRegisterPath() {
@@ -74,7 +75,7 @@ public class OrderRepository {
             Date date = this.dateStringConverter.fromString(dateStr);
             // read all order lines by "orderNumber"
             List<OrderLine> orderLines = this.readOrderLines(orderNumber);
-            Order order = new Order(orderNumber, date, orderLines);
+            Order order = new Order(orderLines);
 
             orderRegister.addOrder(order);
         }
