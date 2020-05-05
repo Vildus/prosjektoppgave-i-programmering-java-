@@ -1,5 +1,7 @@
 package ui;
 
+import inventory.Inventory;
+import io.InventoryRepository;
 import io.OrderRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,16 +19,17 @@ import java.util.List;
 
 public class ShoppingBagController {
 
+    public final static String TITLE = "Shopping bag";
+
+    private Scene scene;
+
     private OrderRepository orderRepository;
 
-    private OrderRegister orderRegister;
+    private InventoryRepository inventoryRepository;
 
     private SceneChanger sceneChanger;
 
     private SceneCloser sceneCloser;
-
-    private ShoppingBag shoppingBag;
-
 
     @FXML
     private TableView<ShoppingBagItem> tvShoppingBag;
@@ -55,9 +58,21 @@ public class ShoppingBagController {
     @FXML
     private TableColumn<ShoppingBagItem, Void> colRemoveItem;
 
-
     @FXML
     private Label lblTotalPrice;
+
+
+    public ShoppingBagController(SceneCloser sceneCloser, SceneChanger sceneChanger) throws IOException {
+        this.sceneChanger = sceneChanger;
+        this.sceneCloser = sceneCloser;
+        this.orderRepository = new OrderRepository();
+        this.inventoryRepository = new InventoryRepository();
+    }
+
+    @FXML
+    public void initialize() {
+        this.initializeTableView();
+    }
 
     @FXML
     void close(ActionEvent event) {
@@ -66,34 +81,27 @@ public class ShoppingBagController {
 
     @FXML
     void checkOut(ActionEvent event) {
-        this.orderRegister = new OrderRegister();
-        this.orderRegister.addOrder(this.shoppingBag.createOrder());
+        OrderRegister orderRegister = OrderRegister.getInstance();
+        ShoppingBag shoppingBag = ShoppingBag.getInstance();
+        orderRegister.addOrder(shoppingBag.createOrder());
         try {
-            this.orderRepository.saveOrderRegister(this.orderRegister);
-            this.sceneChanger.change("Order Confirmation", this.createOrderConfirmationScene());
+            // orderRegister and inventory must be saved at the same time
+            // for consistency. Also if inventory save fails we should rollback
+            // the orderRegister save, but for simplicity we assume it all goes well
+            this.orderRepository.save(orderRegister);
+            this.inventoryRepository.save(Inventory.getInstance());
+
+            Scene orderConfirmationScene = this.createOrderConfirmationScene();
+            this.sceneChanger.change(OrderConfirmationController.TITLE, orderConfirmationScene);
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to save order register", e);
         }
     }
 
-
-    public ShoppingBagController(ShoppingBag shoppingBag, SceneCloser sceneCloser, SceneChanger sceneChanger) throws IOException {
-        this.shoppingBag = shoppingBag;
-        this.sceneChanger = sceneChanger;
-        this.sceneCloser = sceneCloser;
-        this.orderRepository = new OrderRepository();
-        this.orderRegister = new OrderRegister();
-    }
-
-    @FXML
-    public void initialize() {
-        this.initializeTableView();
-    }
-
-    private void updateTableViewItems(List<ShoppingBagItem> shoppingBagItems) {
+    private void updateTableViewItems() {
+        List<ShoppingBagItem> shoppingBagItems = ShoppingBag.getInstance().getShoppingBagItems();
         this.tvShoppingBag.getItems().setAll(shoppingBagItems);
     }
-
 
     // LAGE DENNE
     private void initializeTableView() {
@@ -120,8 +128,9 @@ public class ShoppingBagController {
                     {
                         btnRemove.setOnAction((ActionEvent event) -> {
                             ShoppingBagItem shoppingBagItem = this.getTableView().getItems().get(getIndex());
-                            self.shoppingBag.removeItem(shoppingBagItem);
-                            self.updateTableViewItems(self.shoppingBag.getShoppingBagItems());
+                            ShoppingBag shoppingBag = ShoppingBag.getInstance();
+                            shoppingBag.removeItem(shoppingBagItem);
+                            self.updateTableViewItems();
 
                         });
                     }
@@ -143,16 +152,18 @@ public class ShoppingBagController {
 
         colRemoveItem.setCellFactory(removeItemCellFactory);
 
-        this.updateTableViewItems(this.shoppingBag.getShoppingBagItems());
+        this.updateTableViewItems();
 
-        this.lblTotalPrice.setText(String.format("%.2f NOK", this.shoppingBag.getTotalPrice()));
+        this.lblTotalPrice.setText(String.format("%.2f NOK", ShoppingBag.getInstance().getTotalPrice()));
     }
 
 
     private Scene createOrderConfirmationScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("orderConfirmation.fxml"));
-            OrderConfirmationController orderConfirmationController = new OrderConfirmationController(this.shoppingBag);
+            OrderConfirmationController orderConfirmationController = new OrderConfirmationController(this.sceneCloser, () -> {
+                this.sceneChanger.change(TITLE, this.tvShoppingBag.getScene());
+            });
             loader.setController(orderConfirmationController);
             return new Scene(loader.load(), 1000, 800);
         } catch (IOException e) {

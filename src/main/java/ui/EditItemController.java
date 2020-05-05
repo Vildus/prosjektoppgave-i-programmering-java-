@@ -14,6 +14,8 @@ import javafx.scene.layout.VBox;
 
 public class EditItemController {
 
+    public static final String TITLE = "Edit item: %d";
+
     Button btnClose;
     Button btnUpdate;
 

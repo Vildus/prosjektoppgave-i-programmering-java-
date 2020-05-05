@@ -21,9 +21,9 @@ import java.io.IOException;
 
 public class AddItemController {
 
-    private String componentCategory;
+    public static final String TITLE = "Add item: %s";
 
-    private Inventory inventory;
+    private String componentCategory;
 
     private InventoryRepository inventoryRepository;
 
@@ -80,10 +80,9 @@ public class AddItemController {
     // This means we cannot create an item controller without a copmonent category
     // as it does not make sense to have a "view" (javafx view) without a component category to edit
     // this also means we cannot declare the controller in the fxml file / no "fx:controller=ui/EditItemController"
-    public AddItemController(String componentCategory, Inventory inventory, InventoryRepository inventoryRepository, SceneCloser closer) {
+    public AddItemController(String componentCategory, InventoryRepository inventoryRepository, SceneCloser closer) {
         this.componentCategory = componentCategory;
         this.inventoryRepository = inventoryRepository;
-        this.inventory = inventory;
         this.closer = closer;
         this.initVBox();
         this.initGridPane();
@@ -257,14 +256,14 @@ public class AddItemController {
         }
 
         try {
-            this.inventory.addItem(item);
+            Inventory.getInstance().addItem(item);
         } catch (ItemAlreadyExistsException e) {
             Alert.showInfoDialog("An item with this article number exists already", "To update price or quantity for an item that already exists go back to inventory", e);
             return;
         }
 
         try {
-            this.inventoryRepository.save(this.inventory);
+            this.inventoryRepository.save(Inventory.getInstance());
             this.closer.close();
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to save file", e);

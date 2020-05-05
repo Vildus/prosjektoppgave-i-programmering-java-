@@ -21,7 +21,7 @@ class ShoppingBagTest {
     //Legge til varer i shopping bagen. Regne ut totalpris, fjerne og justere antall?
 
     private Inventory createTestInventory() throws ItemAlreadyExistsException {
-        Inventory inventory = new Inventory();
+        Inventory inventory = Inventory.getInstance();
         Component component1 = new Mouse("Dell", "1", "USB");
         Item item1 = new Item(component1, 120.0, 7234567);
         item1.setInStock(10);
@@ -40,7 +40,7 @@ class ShoppingBagTest {
 
     @Test
     void testGetTotalPrice() throws ItemAvailableStockException {
-        ShoppingBag shoppingBag = new ShoppingBag(inventory);
+        ShoppingBag shoppingBag = ShoppingBag.getInstance();
         shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7234567), 3));
         shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7564739), 2));
         double totalPrice1 = shoppingBag.getTotalPrice();
@@ -57,7 +57,7 @@ class ShoppingBagTest {
     //teste at man legger til flere varer enn tilgjengelig og får exception som man vil ha
     @Test
     void testAvailableStock() {
-        ShoppingBag shoppingBag = new ShoppingBag(inventory);
+        ShoppingBag shoppingBag = ShoppingBag.getInstance();
         assertThrows(
                 //assertThrows tar to arguments: 1.arg = den exception man vil ha. 2.argument = lamda(metoden)
                 ItemAvailableStockException.class,

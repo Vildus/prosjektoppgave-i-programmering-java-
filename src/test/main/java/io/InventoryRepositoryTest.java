@@ -1,8 +1,9 @@
-/*package io;
+package io;
 
 import components.*;
 import inventory.Inventory;
 import inventory.Item;
+import inventory.ItemAlreadyExistsException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -15,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class InventoryRepositoryTest {
 
-    private Inventory createTestInventory() {
-        Inventory inventory = new Inventory();
+    private Inventory createTestInventory() throws ItemAlreadyExistsException {
+        Inventory inventory = Inventory.getInstance();
 
 
         inventory.addItem(new Item(new GraphicCard("Dell", "XR100", 120), 2.30, 4567));
-        inventory.addItem(new Item(new Harddisc("Dell", "HDD200", "SSD"), 20.40, 123453));
+        inventory.addItem(new Item(new HardDisk("Dell", "HDD200", "SSD"), 20.40, 123453));
         inventory.addItem(new Item(new Keyboard("Dell", "Razor", "bluetooth"), 120, 123451));
         inventory.addItem(new Item(new Motherboard("Dell", "FEOKF", "123inches"), 23.50, 1234));
         inventory.addItem(new Item(new Mouse("Dell", "WODK", "bluetooth"), 400, 46565634));
@@ -33,28 +34,28 @@ class InventoryRepositoryTest {
     }
 
     @Test
-    void testSaveInventory() {
+    void testSaveInventory() throws ItemAlreadyExistsException {
         Inventory inventory = this.createTestInventory();
 
         try {
             Path inventoryRepositoryDirectory = createTempDirectory();
             InventoryRepository inventoryRepository = new InventoryRepository(inventoryRepositoryDirectory);
-            inventoryRepository.saveInventory(inventory);
+            inventoryRepository.save(inventory);
         } catch (IOException e) {
             fail(e);
         }
     }
 
     @Test
-    void testReadInventory() {
+    void testReadInventory() throws ItemAlreadyExistsException {
         Inventory inventory1 = this.createTestInventory();
         Inventory inventory2;
 
         try {
             Path inventoryRepositoryDirectory = createTempDirectory();
             InventoryRepository inventoryRepository = new InventoryRepository(inventoryRepositoryDirectory);
-            inventoryRepository.saveInventory(inventory1);
-            inventory2 = inventoryRepository.ReadInventory();
+            inventoryRepository.save(inventory1);
+            inventory2 = inventoryRepository.read();
         } catch (IOException | ClassNotFoundException e) {
             fail(e);
             return;
@@ -74,5 +75,3 @@ class InventoryRepositoryTest {
         return dir;
     }
 }
-
- */

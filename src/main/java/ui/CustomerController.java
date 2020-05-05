@@ -19,21 +19,16 @@ import purchase.ItemAvailableStockException;
 import purchase.ShoppingBag;
 import purchase.ShoppingBagItem;
 
-import java.io.IOException;
 import java.util.List;
 
 
 public class CustomerController {
 
-    public final String TITLE = "Data Store";
-
-    private Inventory inventory;
-
-    private GridPane gridPane;
-
-    private ShoppingBag shoppingBag;
+    public static final String TITLE = "Data Store";
 
     private SceneChanger sceneChanger;
+
+    private SceneCloser scenecloser;
 
     @FXML
     private HBox hbNav;
@@ -60,28 +55,21 @@ public class CustomerController {
     private TableColumn<Item, Void> colQty;
 
 
-    public CustomerController(Inventory inventory, SceneChanger sceneChanger) {
+    public CustomerController(SceneChanger sceneChanger, SceneCloser sceneCloser) {
         this.sceneChanger = sceneChanger;
-        this.inventory = inventory;
+        this.scenecloser = sceneCloser;
     }
-
-    public Parent getRoot() {
-        return this.gridPane;
-    }
-
 
     @FXML
     void goToShoppingBag(ActionEvent event) {
-        Scene scene = this.createShoppingBagScene();
-        this.sceneChanger.change("Shopping bag", scene);
+        Scene shoppingBagScene = this.createShoppingBagScene();
+        this.sceneChanger.change(ShoppingBagController.TITLE, shoppingBagScene);
     }
 
     @FXML
-    void btnAdmin(ActionEvent event) {
-        Scene scene = this.createLoginSuperUserScene();
-        this.sceneChanger.change("Sign in", scene);
+    void signOut(ActionEvent event) {
+        this.scenecloser.close();
     }
-
 
     @FXML
     void navGraphicCard(ActionEvent event) {
@@ -132,73 +120,71 @@ public class CustomerController {
     private void initialize() throws ItemAlreadyExistsException {
         this.testFillInventory(); // denne må byttes ut med en ordentlig instans av inventory.
         this.initializeTableView();
-        this.shoppingBag = new ShoppingBag(this.inventory);
     }
 
 
     private void filterTableViewByComponentCategory(String category) {
-        List<Item> items = this.inventory.getItemsByComponentCategory(category);
+        List<Item> items = Inventory.getInstance().getItemsByComponentCategory(category);
         this.tvCustomerInventory.getItems().setAll(items);
     }
 
     private void testFillInventory() throws ItemAlreadyExistsException {
-        inventory = new Inventory();
         //Hvis inventory er tomt så fylles inventory med dette test-inventory
         Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
         Item item1 = new Item(component1, 120, 7234567);
         item1.setInStock(6);
-        this.inventory.addItem(item1);
+        Inventory.getInstance().addItem(item1);
 
 
         Component component2 = new Keyboard("HP", "Elite gaming", "USB");
         Item item2 = new Item(component2, 500, 7564739);
         item2.setInStock(10);
-        this.inventory.addItem(item2);
+        Inventory.getInstance().addItem(item2);
 
         Component component3 = new HardDisk("HP", "Elite", "HDD");
         Item item3 = new Item(component3, 600, 7564738);
         item3.setInStock(14);
-        this.inventory.addItem(item3);
+        Inventory.getInstance().addItem(item3);
 
         Component component4 = new Motherboard("HP", "Elite gaming", "Small");
         Item item4 = new Item(component4, 1200, 7564745);
         item4.setInStock(60);
-        this.inventory.addItem(item4);
+        Inventory.getInstance().addItem(item4);
 
         Component component5 = new PowerSupply("HP", "Elite gaming", 2, 123.5, 123.4);
         Item item5 = new Item(component5, 1200, 7564730);
         item5.setInStock(30);
-        this.inventory.addItem(item5);
+        Inventory.getInstance().addItem(item5);
 
         Component component6 = new Processor("HP", "Elite gaming", 10, 20.5);
         Item item6 = new Item(component6, 1200, 7564734);
         item6.setInStock(10);
-        this.inventory.addItem(item6);
+        Inventory.getInstance().addItem(item6);
 
         Component component7 = new RAM("HP", "Elite gaming", 100);
         Item item7 = new Item(component7, 1200, 7564767);
         item7.setInStock(2);
-        this.inventory.addItem(item7);
+        Inventory.getInstance().addItem(item7);
 
         Component component8 = new Screen("HP", "Elite gaming", 50);
         Item item8 = new Item(component8, 1000, 7564778);
         item8.setInStock(56);
-        this.inventory.addItem(item8);
+        Inventory.getInstance().addItem(item8);
 
         Component component9 = new GraphicCard("HP", "Elite gaming", 250);
         Item item9 = new Item(component9, 2000, 1325535);
         item9.setInStock(12);
-        this.inventory.addItem(item9);
+        Inventory.getInstance().addItem(item9);
 
         Component component10 = new Mouse("Dell", "Mus", "USB");
         Item item10 = new Item(component1, 120, 72345690);
         item1.setInStock(6);
-        this.inventory.addItem(item10);
+        Inventory.getInstance().addItem(item10);
 
         Component component11 = new GraphicCard("HP", "gaming", 250);
         Item item11 = new Item(component11, 20, 1325785);
         item11.setInStock(12);
-        this.inventory.addItem(item11);
+        Inventory.getInstance().addItem(item11);
     }
 
     private void initializeTableView() {
@@ -227,7 +213,7 @@ public class CustomerController {
                             Item item = this.getTableView().getItems().get(getIndex());
                             try {
                                 int parseQty = Integer.parseInt(txtQty.getText());
-                                shoppingBag.addItem(new ShoppingBagItem(item, parseQty));
+                                ShoppingBag.getInstance().addItem(new ShoppingBagItem(item, parseQty));
                                 Alert.showConfirmationDialog("Added to shoppingbag", String.format("%d pcs of articlenumber: %d is added to shopping bag", parseQty, item.getArticleNumber()));
                             } catch (ItemAvailableStockException e) {
                                 Alert.showInfoDialog("Out of stock", "We are sorry, this item is out of stock", e);
@@ -274,44 +260,10 @@ public class CustomerController {
     }
 
 
-    private Scene createLoginSuperUserScene() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("loginSuperUser.fxml"));
-            LoginSuperUserController loginSuperUserController = new LoginSuperUserController(() -> {
-                this.sceneChanger.change("Inventory", this.createInventoryScene());
-            }, () -> {
-                this.sceneChanger.change("Data Store", this.tvCustomerInventory.getScene());
-            });
-            loader.setController(loginSuperUserController);
-            return new Scene(loader.load(), 500, 600);
-        } catch (IOException e) {
-            //If this happens it means that fxml is corrupt or not found
-            throw new RuntimeException();
-        }
-    }
-
-
-    private Scene createInventoryScene() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
-            InventoryController inventoryController = new InventoryController(this.sceneChanger);
-            loader.setController(inventoryController);
-            return new Scene(loader.load(), 1000, 800);
-        } catch (IOException e) {
-            Alert.showErrorDialog("Failed to read inventory from disk", e);
-            throw new RuntimeException();
-        } catch (ClassNotFoundException e) {
-            Alert.showErrorDialog("Inventory file is corrupt", e);
-            //This means that something is wrong with serialized jobj file
-            throw new RuntimeException();
-        }
-    }
-
-
     private Scene createShoppingBagScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("shoppingBag.fxml"));
-            ShoppingBagController shoppingBagController = new ShoppingBagController(this.shoppingBag, () -> {
+            ShoppingBagController shoppingBagController = new ShoppingBagController(() -> {
                 this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
             }, this.sceneChanger);
             loader.setController(shoppingBagController);

@@ -1,6 +1,6 @@
 package purchase;
 
-import inventory.Inventory;
+import inventory.Item;
 
 import java.util.*;
 
@@ -14,14 +14,16 @@ public class ShoppingBag {
     // da slipper vi flere shoppingbag instanser og problem med varebeholdning som vi må skrive logikk for.
     // Da må vi skrive dette i oppgaven: Dette programmet tillater kun en som handler om gangen
 
+    private static final ShoppingBag INSTANCE = new ShoppingBag();
 
     private List<ShoppingBagItem> shoppingBagItems;
-    private Inventory inventory; //tilgang til varelager
 
-    public ShoppingBag(Inventory inventory) {
+    private ShoppingBag() {
         this.shoppingBagItems = new ArrayList<>();
-        this.inventory = inventory;
-        //tom liste
+    }
+
+    public static ShoppingBag getInstance() {
+        return INSTANCE;
     }
 
     public List<ShoppingBagItem> getShoppingBagItems() {
@@ -41,7 +43,6 @@ public class ShoppingBag {
                 foundIndex = i;
                 break;
             }
-
         }
 
         //Hvis founIndex er 0 eller mer så inneholder den en index til det item som er lik det som sendes inn
@@ -69,9 +70,12 @@ public class ShoppingBag {
         for (ShoppingBagItem shoppingBagItem : this.shoppingBagItems) {
             OrderLine orderLine = new OrderLine(shoppingBagItem.getArticleNumber(), shoppingBagItem.getQty(), shoppingBagItem.getPrice());
             orderLines.add(orderLine);
+
+            // update inventory item in stock amount
+            Item item = shoppingBagItem.getItem();
+            item.setInStock(item.getInStock() - shoppingBagItem.getQty());
         }
-        int customuerNumber = 0;
-        Order order = new Order(orderLines, customuerNumber);
+        Order order = new Order(orderLines, new Date(), Customer.getCurrentCustomerID());
         return order;
     }
 

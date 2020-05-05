@@ -2,16 +2,26 @@ package purchase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderRegister {
+
+    private static final OrderRegister INSTANCE = new OrderRegister();
+
     private List<Order> orders;
 
-    public OrderRegister() {
+    private OrderRegister() {
         this.orders = new ArrayList<>();
     }
 
-    public List<Order> getOrders() {
-        return this.orders;
+    public static OrderRegister getInstance() {
+        return INSTANCE;
+    }
+
+    public List<Order> getOrders(String customerNumber) {
+        return this.orders.stream().filter((order -> {
+            return order.getCustomerNumber().equals(customerNumber);
+        })).collect(Collectors.toList());
     }
 
     public void addOrder(Order order) {

@@ -1,12 +1,7 @@
 package ui;
 
-import components.*;
-import inventory.Inventory;
-import inventory.Item;
-import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,18 +13,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import components.*;
+import inventory.Inventory;
+import inventory.Item;
+import io.InventoryRepository;
 
 public class InventoryController {
 
-    public final String TITLE = "Inventory";
+    public static final String TITLE = "Inventory";
 
     private SceneChanger sceneChanger;
 
-    private Inventory inventory;
+    private SceneCloser sceneCloser;
 
     private InventoryRepository inventoryRepository;
-
-    private Scene customerScene;
 
     @FXML
     private ComboBox<String> cbCreateNewItem;
@@ -64,16 +61,15 @@ public class InventoryController {
 
     //TODO: Lage en path. global path.
 
-    public InventoryController(SceneChanger sceneChanger) throws ClassNotFoundException, IOException {
+    public InventoryController(SceneChanger sceneChanger, SceneCloser sceneCloser) throws ClassNotFoundException, IOException {
         this.inventoryRepository = new InventoryRepository();
         try {
-            this.inventory = this.inventoryRepository.read();
+             this.inventoryRepository.read();
         } catch (FileNotFoundException e) {
-            this.inventory = new Inventory(); //Hvis den ikke finner en fil med et vareregister så vil vi ha et tomt inventory
             this.testFillInventory();
         } //Hvis det ikke finnes noe path så vil vi lage et nytt
         this.sceneChanger = sceneChanger;
-        this.customerScene = this.createCustomerScene();
+        this.sceneCloser = sceneCloser;
     }
 
     private void testFillInventory() {
@@ -82,12 +78,12 @@ public class InventoryController {
             Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
             Item item1 = new Item(component1, 120, 7234567);
             item1.setInStock(6);
-            this.inventory.addItem(item1);
+            Inventory.getInstance().addItem(item1);
 
             Component component2 = new Keyboard("HP", "Elite gaming mouse", "USB");
             Item item2 = new Item(component2, 500, 7564739);
             item2.setInStock(10);
-            this.inventory.addItem(item2);
+            Inventory.getInstance().addItem(item2);
         } catch (Exception e) {
             //Test. Slett!
         }
@@ -149,7 +145,7 @@ public class InventoryController {
                         btnEdit.setOnAction((ActionEvent event) -> {
                             Item item = this.getTableView().getItems().get(getIndex());
                             Scene editItemScene = self.createEditItemScene(item);
-                            self.sceneChanger.change(String.format("Edit item: %d", item.getArticleNumber()), editItemScene);
+                            self.sceneChanger.change(String.format(EditItemController.TITLE, item.getArticleNumber()), editItemScene);
                         });
                     }
 
@@ -157,11 +153,12 @@ public class InventoryController {
 
                     {
                         btnDelete.setOnAction((ActionEvent event) -> {
+                            Inventory inventory = Inventory.getInstance();
                             Item item = this.getTableView().getItems().get(getIndex());
-                            self.inventory.removeItem(item);
-                            self.updateTableViewItems(self.inventory.getItems());
+                            inventory.removeItem(item);
+                            self.updateTableViewItems(inventory.getItems());
                             try {
-                                self.inventoryRepository.save(self.inventory);
+                                self.inventoryRepository.save(inventory);
                             } catch (IOException e) {
                                 Alert.showErrorDialog("Failed to save file", e);
                             }
@@ -193,14 +190,15 @@ public class InventoryController {
 
         colEditDelete.setCellFactory(cellFactory);
 
-        this.updateTableViewItems(this.inventory.getItems());
+        this.updateTableViewItems(Inventory.getInstance().getItems());
     }
 
     @FXML
     private void txtFilterKeyTyped(KeyEvent event) {
+        Inventory inventory = Inventory.getInstance();
         String search = this.txtFilter.getText();
         if (search.isEmpty()) {
-            this.updateTableViewItems(this.inventory.getItems());
+            this.updateTableViewItems(inventory.getItems());
         } else {
             this.updateTableViewItems(inventory.filter(search));
         }
@@ -211,30 +209,17 @@ public class InventoryController {
         String category = cbCreateNewItem.getSelectionModel().getSelectedItem();
         if (category != null) {
             Scene addItemScene = this.createAddItemScene(category);
-            this.sceneChanger.change(String.format("Add item: %s", category), addItemScene);
+            this.sceneChanger.change(String.format(AddItemController.TITLE, category), addItemScene);
         }
     }
 
-
     @FXML
     void signOut(ActionEvent event) {
-        this.sceneChanger.change("Data store", this.customerScene);
+        this.sceneCloser.close();
     }
 
     private void updateTableViewItems(List<Item> items) {
         this.tvInventory.getItems().setAll(items);
-    }
-
-    private Scene createCustomerScene() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("customer.fxml"));
-            CustomerController customerController = new CustomerController(this.inventory, this.sceneChanger);
-            loader.setController(customerController);
-            return new Scene(loader.load(), 1000, 800);
-        } catch (IOException e) {
-            //If this happens it means that fxml is corrupt or not found
-            throw new RuntimeException();
-        }
     }
 
 
@@ -242,7 +227,7 @@ public class InventoryController {
         try {
             EditItemController editItemController = new EditItemController(item, () -> {
                 this.sceneChanger.change(TITLE, this.tvInventory.getScene());
-                this.updateTableViewItems(this.inventory.getItems());
+                this.updateTableViewItems(Inventory.getInstance().getItems());
             });
             return new Scene(editItemController.getRoot(), 500, 300);
         } catch (Exception e) {
@@ -253,9 +238,9 @@ public class InventoryController {
 
     private Scene createAddItemScene(String category) {
         try {
-            AddItemController addItemController = new AddItemController(category, this.inventory, this.inventoryRepository, () -> {
+            AddItemController addItemController = new AddItemController(category, this.inventoryRepository, () -> {
                 this.sceneChanger.change(TITLE, this.tvInventory.getScene());
-                this.updateTableViewItems(this.inventory.getItems());
+                this.updateTableViewItems(Inventory.getInstance().getItems());
                 this.cbCreateNewItem.setValue(null);
             });
             return new Scene(addItemController.getRoot(), 900, 1100);
