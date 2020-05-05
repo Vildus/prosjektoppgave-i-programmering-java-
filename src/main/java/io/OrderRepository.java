@@ -1,10 +1,13 @@
 package io;
 
+import purchase.Customer;
 import purchase.Order;
 import purchase.OrderLine;
 import purchase.OrderRegister;
 import utils.DateStringConverter;
+
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,11 +21,10 @@ public class OrderRepository {
 
     // path to store orders.csv and all [order_id].csv files
     private Path directory;
-    private DateStringConverter dateStringConverter;
+    private DateStringConverter dateStringConverter = new DateStringConverter("dd/MM/yyyy HH:mm:ss");
 
     public OrderRepository(Path directory) {
         this.directory = directory;
-        this.dateStringConverter = new DateStringConverter("dd/MM/yyyy HH:mm:ss");
     }
 
     public OrderRepository() throws IOException {
@@ -35,36 +37,37 @@ public class OrderRepository {
         }
         this.directory = storePath;
     }
+
     // Lager en path fordi det er den samme pathen vi skal lese og skrive fra. Da slipper vi
     // å skrive den to ganger og minsker risiko for stavefeil i strengen "orders.csv"
     private Path getOrderRegisterPath() {
         return Paths.get(this.directory.toString(), "orders.csv");
     }
 
-    public void saveOrderRegister(OrderRegister orderRegister) throws IOException {
+    public void save(OrderRegister orderRegister) throws IOException {
         Path path = this.getOrderRegisterPath();
         Files.write(path, orderRegisterToCSV(orderRegister).getBytes("utf-8"));
 
         // Save all orders with order lines
-        for (Order order : orderRegister.getOrders()) {
+        for (Order order : orderRegister.getOrders(Customer.getCurrentCustomerID())) {
             this.saveOrderLines(order.getOrderNumber(), order.getLines());
         }
     }
 
     private String orderRegisterToCSV(OrderRegister orderRegister) {
         String output = "";
-        for (Order order : orderRegister.getOrders()) {
+        for (Order order : orderRegister.getOrders(Customer.getCurrentCustomerID())) {
             String dateStr = this.dateStringConverter.toString(order.getDate());
-            output = output + String.format("%d;%s\n", order.getOrderNumber(), dateStr);
+            output = output + String.format("%d;%s;%s\n", order.getOrderNumber(), dateStr, order.getCustomerNumber());
         }
         return output;
     }
 
-    public OrderRegister readOrderRegister() throws IOException, ParseException {
+    public OrderRegister read() throws IOException, ParseException {
         Path path = this.getOrderRegisterPath();
         List<String> lines = Files.readAllLines(path);
 
-        OrderRegister orderRegister = new OrderRegister();
+        OrderRegister orderRegister = OrderRegister.getInstance();
 
         for (String line : lines) {
             String[] parts = line.split(";");
@@ -72,9 +75,10 @@ public class OrderRepository {
             int orderNumber = Integer.parseInt(orderNumberStr);
             String dateStr = parts[1];
             Date date = this.dateStringConverter.fromString(dateStr);
+            String customerNumber = parts[2];
             // read all order lines by "orderNumber"
             List<OrderLine> orderLines = this.readOrderLines(orderNumber);
-            Order order = new Order(orderNumber, date, orderLines);
+            Order order = new Order(orderLines, date, customerNumber);
 
             orderRegister.addOrder(order);
         }

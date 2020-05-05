@@ -10,10 +10,18 @@ import java.util.stream.Stream;
 
 public class Inventory implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    private static final Inventory INSTANCE = new Inventory();
+
     private List<Item> items;
 
-    public Inventory() {
+    private Inventory() {
         this.items = new ArrayList<>();
+    }
+
+    public static Inventory getInstance() {
+        return INSTANCE;
     }
 
     public void addItem(Item item) throws ItemAlreadyExistsException {

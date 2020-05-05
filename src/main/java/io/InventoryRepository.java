@@ -49,7 +49,6 @@ public class InventoryRepository {
         }
         InputStream in = Files.newInputStream(path);
         ObjectInputStream oin = new ObjectInputStream(in);
-        Object inventory = oin.readObject();
-        return (Inventory) inventory;
+        return (Inventory) oin.readObject();
     }
 }
