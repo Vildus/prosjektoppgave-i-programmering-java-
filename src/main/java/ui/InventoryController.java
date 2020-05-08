@@ -205,7 +205,7 @@ public class InventoryController {
                 this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(Inventory.getInstance().getItems());
             });
-            return new Scene(editItemController.getRoot(), 500, 300);
+            return new Scene(editItemController.getRoot(), 600, 400);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();
@@ -219,7 +219,7 @@ public class InventoryController {
                 this.updateTableViewItems(Inventory.getInstance().getItems());
                 this.cbCreateNewItem.setValue(null);
             });
-            return new Scene(addItemController.getRoot(), 900, 1100);
+            return new Scene(addItemController.getRoot(), 600, 400);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();

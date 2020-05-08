@@ -68,12 +68,13 @@ public class LoginUserController {
                 sceneChanger.change(TITLE, this.txtSuperUserName.getScene());
             });
             loader.setController(inventoryController);
-            return new Scene(loader.load(), 1000, 800);
+            return new Scene(loader.load(), 1000, 600);
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to read inventory from disk", e);
             throw new RuntimeException();
         }
     }
+
 
     private Scene createCustomerScene() {
         try {
@@ -82,7 +83,7 @@ public class LoginUserController {
                 this.sceneChanger.change(TITLE, this.txtSuperUserName.getScene());
             });
             loader.setController(customerController);
-            return new Scene(loader.load(), 1000, 800);
+            return new Scene(loader.load(), 1000, 600);
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to read inventory from disk", e);
             throw new RuntimeException();
