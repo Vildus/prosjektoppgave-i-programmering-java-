@@ -3,8 +3,6 @@ import components.*;
 import inventory.Inventory;
 import inventory.Item;
 import inventory.ItemAlreadyExistsException;
-import io.InventoryRepository;
-import io.OrderRepository;
 import javafx.application.Application;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.Alert;
 import ui.LoginUserController;
+
 
 import java.io.IOException;
 import java.text.ParseException;

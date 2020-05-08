@@ -1,5 +1,6 @@
 package ui;
 
+import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -9,14 +10,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
 import components.*;
 import inventory.Inventory;
 import inventory.Item;
-import io.InventoryRepository;
 
 public class InventoryController {
 
@@ -25,8 +24,6 @@ public class InventoryController {
     private SceneChanger sceneChanger;
 
     private SceneCloser sceneCloser;
-
-    private InventoryRepository inventoryRepository;
 
     @FXML
     private ComboBox<String> cbCreateNewItem;
@@ -61,33 +58,11 @@ public class InventoryController {
 
     //TODO: Lage en path. global path.
 
-    public InventoryController(SceneChanger sceneChanger, SceneCloser sceneCloser) throws ClassNotFoundException, IOException {
-        this.inventoryRepository = new InventoryRepository();
-        try {
-             this.inventoryRepository.read();
-        } catch (FileNotFoundException e) {
-            this.testFillInventory();
-        } //Hvis det ikke finnes noe path så vil vi lage et nytt
+    public InventoryController(SceneChanger sceneChanger, SceneCloser sceneCloser) {
         this.sceneChanger = sceneChanger;
         this.sceneCloser = sceneCloser;
     }
 
-    private void testFillInventory() {
-        //Hvis inventory er tomt så fylles inventory med dette test-inventory
-        try {
-            Component component1 = new Mouse("Dell", "M30 silent plus", "USB");
-            Item item1 = new Item(component1, 120, 7234567);
-            item1.setInStock(6);
-            Inventory.getInstance().addItem(item1);
-
-            Component component2 = new Keyboard("HP", "Elite gaming mouse", "USB");
-            Item item2 = new Item(component2, 500, 7564739);
-            item2.setInStock(10);
-            Inventory.getInstance().addItem(item2);
-        } catch (Exception e) {
-            //Test. Slett!
-        }
-    }
 
     private void initializeComboBox() {
         this.cbCreateNewItem.setPromptText("Add new item to inventory");
@@ -158,7 +133,8 @@ public class InventoryController {
                             inventory.removeItem(item);
                             self.updateTableViewItems(inventory.getItems());
                             try {
-                                self.inventoryRepository.save(inventory);
+                                InventoryRepository inventoryRepository = new InventoryRepository();
+                                inventoryRepository.save(inventory);
                             } catch (IOException e) {
                                 Alert.showErrorDialog("Failed to save file", e);
                             }
@@ -238,7 +214,7 @@ public class InventoryController {
 
     private Scene createAddItemScene(String category) {
         try {
-            AddItemController addItemController = new AddItemController(category, this.inventoryRepository, () -> {
+            AddItemController addItemController = new AddItemController(category, () -> {
                 this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(Inventory.getInstance().getItems());
                 this.cbCreateNewItem.setValue(null);
