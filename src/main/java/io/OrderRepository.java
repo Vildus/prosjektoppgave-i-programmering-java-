@@ -6,6 +6,7 @@ import purchase.OrderLine;
 import purchase.OrderRegister;
 import utils.DateStringConverter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.FileAlreadyExistsException;
@@ -65,6 +66,9 @@ public class OrderRepository {
 
     public OrderRegister read() throws IOException, ParseException {
         Path path = this.getOrderRegisterPath();
+        if (Files.exists(path) == false) {
+            throw new FileNotFoundException(path.toString());
+        }
         List<String> lines = Files.readAllLines(path);
 
         OrderRegister orderRegister = OrderRegister.getInstance();
