@@ -4,14 +4,6 @@ import javafx.concurrent.Task;
 
 public class InventoryReadTask extends Task<Inventory> {
 
-    //Ingen kan forandre på denne. Kan ikke skrive til denne mer enn en gang
-    //Og da er den thread safe:D
-    private final int version;
-
-    public InventoryReadTask(int version) {
-        this.version = version;
-    }
-
     @Override
     protected Inventory call() throws Exception {
         try {

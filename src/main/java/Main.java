@@ -3,8 +3,9 @@ import components.*;
 import inventory.Inventory;
 import inventory.Item;
 import inventory.ItemAlreadyExistsException;
+import io.InventoryRepository;
+import io.OrderRepository;
 import javafx.application.Application;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,6 +13,7 @@ import ui.Alert;
 import ui.LoginUserController;
 
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -40,28 +42,48 @@ public class Main extends Application {
         return new Scene(loader.load(), 600, 600);
     }
 
+    /*
+
     private void handleOpenFileTaskSucceeded(WorkerStateEvent event) {
         String content = (String) event.getSource().getValue();
         txtEditor.setHtmlText(content);
         this.setDisable(false);
     }
 
+     */
 
+/*
     private void handleOpenFileTaskFailed(WorkerStateEvent event) {
         Throwable error = event.getSource().getException();
         txtInfo.setText(String.format("Failed to open file: %s", error.getMessage()));
         this.setDisable(false);
     }
 
+ */
+
     private void readDataStore() {
+        InventoryReadTask inventoryReadTask = new InventoryReadTask();
+
+        task.setOnSucceeded(this::handleOpenFileTaskSucceeded);
+        task.setOnFailed(this::handleOpenFileTaskFailed);
+        Thread thread = new Thread(task);
+        //setDaemon= barn av hovedtråden = vil avsluttes dersom hovedtråden avsluttes
+        thread.setDaemon(true);
+
+        // når start blir kjørt vil tråden starte og "call" metoden i OpenFileTask
+        // vil bli kjørt i "denne" tråden (ikke i hovedtråden)
+        thread.start();
 
         try {
-            InventoryRepository inventoryRepository = new InventoryRepository();
-            inventoryRepository.read();
-        } catch (ClassNotFoundException e) {
+
+        } catch (FileNotFoundException e) {
             this.testFillInventory();
         } catch (IOException e) {
-            Alert.showErrorDialog("Failed to read file", e);
+            Alert.showErrorDialog("Failed to read inventory data", e);
+        } catch (ClassNotFoundException e) {
+            Alert.showErrorDialog("Inventory data is corrupt", e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         try {
             OrderRepository orderRepository = new OrderRepository();

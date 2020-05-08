@@ -72,10 +72,6 @@ public class LoginUserController {
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to read inventory from disk", e);
             throw new RuntimeException();
-        } catch (ClassNotFoundException e) {
-            Alert.showErrorDialog("Inventory file is corrupt", e);
-            //This means that something is wrong with serialized jobj file
-            throw new RuntimeException();
         }
     }
 
