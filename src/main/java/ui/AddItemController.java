@@ -25,8 +25,6 @@ public class AddItemController {
 
     private String componentCategory;
 
-    private InventoryRepository inventoryRepository;
-
     private VBox vb;
 
     private GridPane gridPane;
@@ -80,9 +78,8 @@ public class AddItemController {
     // This means we cannot create an item controller without a copmonent category
     // as it does not make sense to have a "view" (javafx view) without a component category to edit
     // this also means we cannot declare the controller in the fxml file / no "fx:controller=ui/EditItemController"
-    public AddItemController(String componentCategory, InventoryRepository inventoryRepository, SceneCloser closer) {
+    public AddItemController(String componentCategory, SceneCloser closer) {
         this.componentCategory = componentCategory;
-        this.inventoryRepository = inventoryRepository;
         this.closer = closer;
         this.initVBox();
         this.initGridPane();
@@ -263,7 +260,8 @@ public class AddItemController {
         }
 
         try {
-            this.inventoryRepository.save(Inventory.getInstance());
+            InventoryRepository inventoryRepository = new InventoryRepository();
+            inventoryRepository.save(Inventory.getInstance());
             this.closer.close();
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to save file", e);
