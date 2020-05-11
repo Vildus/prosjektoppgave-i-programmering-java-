@@ -32,6 +32,14 @@ public class Order {
         return this.date;
     }
 
+    public double getTotalPrice() {
+        double price = 0;
+        for (OrderLine orderLine : this.lines) {
+            price = price + orderLine.getTotalPrice();
+        }
+        return price;
+    }
+
     public List<OrderLine> getLines() {
         return this.lines;
     }

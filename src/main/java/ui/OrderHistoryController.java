@@ -6,7 +6,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import purchase.Customer;
 import purchase.Order;
+import purchase.OrderRegister;
 
 import java.util.Date;
 
@@ -42,9 +45,22 @@ public class OrderHistoryController {
 
     @FXML
     void handleClose(ActionEvent event) {
-
+        this.sceneCloser.close();
     }
 
-}
+    @FXML
+    void initialize() {
+        this.lblCustomerID.setText(Customer.getCurrentCustomerID());
+        this.initializeTableView();
+    }
 
+
+    private void initializeTableView() {
+        // her binder vi opp getComponentCategory til cellen i tabellen
+        this.colOrderNumber.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
+        this.colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        this.colTotalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
+        this.tvOrderHistory.getItems().setAll(OrderRegister.getInstance().getOrders(Customer.getCurrentCustomerID()));
+    }
+}
 

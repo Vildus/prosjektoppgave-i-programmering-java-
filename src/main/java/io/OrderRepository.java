@@ -59,7 +59,7 @@ public class OrderRepository {
         String output = "";
         for (Order order : orderRegister.getOrders(Customer.getCurrentCustomerID())) {
             String dateStr = this.dateStringConverter.toString(order.getDate());
-            output = output + String.format("%d;%s;%s\n", order.getOrderNumber(), dateStr, order.getCustomerNumber());
+            output = output + String.format("%d;%s;%s\n", order.getOrderNumber(), dateStr, order.getCustomerID());
         }
         return output;
     }

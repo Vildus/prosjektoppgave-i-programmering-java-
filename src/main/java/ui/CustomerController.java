@@ -161,7 +161,7 @@ public class CustomerController {
                             try {
                                 int parseQty = Integer.parseInt(txtQty.getText());
                                 ShoppingBag.getInstance().addItem(new ShoppingBagItem(item, parseQty));
-                                Alert.showConfirmationDialog("Added to shoppingbag", String.format("%d pcs of articlenumber: %d is added to shopping bag", parseQty, item.getArticleNumber()));
+                                Alert.showInfoDialog("Added to shoppingbag", String.format("%d pcs of articlenumber: %d is added to shopping bag", parseQty, item.getArticleNumber()));
                             } catch (ItemAvailableStockException e) {
                                 Alert.showInfoDialog("Out of stock", "We are sorry, this item is out of stock", e);
                             } catch (NumberFormatException e) {
