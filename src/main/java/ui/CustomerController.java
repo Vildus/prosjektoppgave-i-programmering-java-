@@ -226,7 +226,7 @@ public class CustomerController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("orderHistory.fxml"));
             OrderHistoryController orderHistoryController = new OrderHistoryController(() -> {
                 this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
-            };
+            });
             loader.setController(orderHistoryController);
             return new Scene(loader.load(), 1000, 650);
         } catch (Exception e) {
