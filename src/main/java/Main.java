@@ -92,14 +92,14 @@ public class Main extends Application {
             primaryStage.setScene(scene);
         });
         loader.setController(controller);
-        return new Scene(loader.load(), 600, 600);
+        return new Scene(loader.load(), 1000, 600);
     }
 
     private Scene createLoadingDataStoreScene(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/loadingDataStore.fxml"));
         LoadingDataStoreController controller = new LoadingDataStoreController();
         loader.setController(controller);
-        return new Scene(loader.load(), 600, 600);
+        return new Scene(loader.load(), 1000, 600);
     }
 
     private void testFillInventory() {
