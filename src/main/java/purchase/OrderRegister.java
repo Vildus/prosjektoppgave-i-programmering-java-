@@ -20,7 +20,7 @@ public class OrderRegister {
 
     public List<Order> getOrders(String customerID) {
         return this.orders.stream().filter((order -> {
-            return order.getCustomerID.equals(customerID);
+            return order.getCustomerID().equals(customerID);
         })).collect(Collectors.toList());
     }
 
