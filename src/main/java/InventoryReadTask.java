@@ -12,10 +12,8 @@ public class InventoryReadTask extends Task<Inventory> {
         } catch (InterruptedException e) {
         }
         InventoryRepository inventoryRepository = new InventoryRepository();
-        Inventory content = inventoryRepository.read();
-        //FileOpener fileOpener = new FileOpenerString();
-        //String content = fileOpener.openFile(version);
-        return content;
+        Inventory inventory = inventoryRepository.read();
+        return inventory;
     }
 }
 
