@@ -2,7 +2,7 @@ package ui;
 
 public class Alert {
 
-    public static void showErrorDialog(String header, Exception e) {
+    public static void showErrorDialog(String header, Throwable e) {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(header);
@@ -10,7 +10,7 @@ public class Alert {
         alert.showAndWait();
     }
 
-    public static void showInfoDialog(String header, String content, Exception e) {
+    public static void showInfoDialog(String header, String content, Throwable e) {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
         alert.setTitle("Information");
         alert.setHeaderText(header);

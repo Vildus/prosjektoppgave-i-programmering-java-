@@ -3,29 +3,81 @@ import components.*;
 import inventory.Inventory;
 import inventory.Item;
 import inventory.ItemAlreadyExistsException;
-import io.InventoryRepository;
 import io.OrderRepository;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.Alert;
+import ui.LoadingDataStoreController;
 import ui.LoginUserController;
-
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.ParseException;
 
 public class Main extends Application {
 
-
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        this.readDataStore();
-        Scene mainScene = this.createMainScene(primaryStage);
+    public void start(Stage primaryStage) {
+        Scene mainScene;
+        Scene loadDataStoreScene;
+        try {
+            mainScene = this.createMainScene(primaryStage);
+            loadDataStoreScene = this.createLoadingDataStoreScene(primaryStage);
+        } catch (IOException e) {
+            Alert.showErrorDialog("Failed to create UI", e);
+            Platform.exit();
+            return;
+        }
+
+        primaryStage.setTitle(LoadingDataStoreController.TITLE);
+        primaryStage.setScene(loadDataStoreScene);
+        primaryStage.show();
+
+        try {
+            OrderRepository orderRepository = new OrderRepository();
+            orderRepository.read();
+        } catch (FileNotFoundException e) {
+            // This is ok, first time we open application
+        } catch (Exception e) {
+            Alert.showErrorDialog("Failed to read file", e);
+            Platform.exit();
+            return;
+        }
+
+        // As the inventory is needed for both "modes" — super user, and end user
+        // we read the inventory here
+
+        InventoryReadTask inventoryReadTask = new InventoryReadTask();
+
+        // handle read inventory success
+        inventoryReadTask.setOnSucceeded((event) -> {
+            // because the Inventory is implemented as singleton,
+            // we don't need the return value (event), as the singleton is "initialized"
+            this.showMainScene(primaryStage, mainScene);
+        });
+
+        // handle failed read inventory
+        inventoryReadTask.setOnFailed((event) -> {
+            Throwable error = event.getSource().getException();
+            if (error instanceof FileNotFoundException) {
+                this.testFillInventory();
+                this.showMainScene(primaryStage, mainScene);
+            } else {
+                Alert.showErrorDialog("Failed to read inventory", error);
+                Platform.exit();
+            }
+        });
+
+        // start reading inventory
+        Thread thread = new Thread(inventoryReadTask);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void showMainScene(Stage primaryStage, Scene scene) {
         primaryStage.setTitle(LoginUserController.TITLE);
-        primaryStage.setScene(mainScene);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
@@ -35,64 +87,20 @@ public class Main extends Application {
 
     private Scene createMainScene(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/loginUser.fxml"));
-        loader.setController(new LoginUserController((title, scene) -> {
+        LoginUserController controller = new LoginUserController((title, scene) -> {
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
-        }));
+        });
+        loader.setController(controller);
         return new Scene(loader.load(), 600, 600);
     }
 
-    /*
-
-    private void handleOpenFileTaskSucceeded(WorkerStateEvent event) {
-        String content = (String) event.getSource().getValue();
-        txtEditor.setHtmlText(content);
-        this.setDisable(false);
+    private Scene createLoadingDataStoreScene(Stage primaryStage) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/loadingDataStore.fxml"));
+        LoadingDataStoreController controller = new LoadingDataStoreController();
+        loader.setController(controller);
+        return new Scene(loader.load(), 600, 600);
     }
-
-     */
-
-/*
-    private void handleOpenFileTaskFailed(WorkerStateEvent event) {
-        Throwable error = event.getSource().getException();
-        txtInfo.setText(String.format("Failed to open file: %s", error.getMessage()));
-        this.setDisable(false);
-    }
-
- */
-
-    private void readDataStore() {
-        InventoryReadTask inventoryReadTask = new InventoryReadTask();
-
-        task.setOnSucceeded(this::handleOpenFileTaskSucceeded);
-        task.setOnFailed(this::handleOpenFileTaskFailed);
-        Thread thread = new Thread(task);
-        //setDaemon= barn av hovedtråden = vil avsluttes dersom hovedtråden avsluttes
-        thread.setDaemon(true);
-
-        // når start blir kjørt vil tråden starte og "call" metoden i OpenFileTask
-        // vil bli kjørt i "denne" tråden (ikke i hovedtråden)
-        thread.start();
-
-        try {
-
-        } catch (FileNotFoundException e) {
-            this.testFillInventory();
-        } catch (IOException e) {
-            Alert.showErrorDialog("Failed to read inventory data", e);
-        } catch (ClassNotFoundException e) {
-            Alert.showErrorDialog("Inventory data is corrupt", e);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            OrderRepository orderRepository = new OrderRepository();
-            orderRepository.read();
-        } catch (IOException | ParseException e) {
-            Alert.showErrorDialog("Failed to read file", e);
-        }
-    }
-
 
     private void testFillInventory() {
         try {
