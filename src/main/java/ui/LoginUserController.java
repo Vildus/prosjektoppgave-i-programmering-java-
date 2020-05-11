@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -60,7 +63,6 @@ public class LoginUserController {
         }
     }
 
-
     private Scene createInventoryScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
@@ -68,13 +70,9 @@ public class LoginUserController {
                 sceneChanger.change(TITLE, this.txtSuperUserName.getScene());
             });
             loader.setController(inventoryController);
-            return new Scene(loader.load(), 1000, 800);
+            return new Scene(loader.load(), 1000, 600);
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to read inventory from disk", e);
-            throw new RuntimeException();
-        } catch (ClassNotFoundException e) {
-            Alert.showErrorDialog("Inventory file is corrupt", e);
-            //This means that something is wrong with serialized jobj file
             throw new RuntimeException();
         }
     }
@@ -86,7 +84,7 @@ public class LoginUserController {
                 this.sceneChanger.change(TITLE, this.txtSuperUserName.getScene());
             });
             loader.setController(customerController);
-            return new Scene(loader.load(), 1000, 800);
+            return new Scene(loader.load(), 1000, 600);
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to read inventory from disk", e);
             throw new RuntimeException();

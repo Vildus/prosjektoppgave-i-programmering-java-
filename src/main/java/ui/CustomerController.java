@@ -206,7 +206,7 @@ public class CustomerController {
                 this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
             }, this.sceneChanger);
             loader.setController(shoppingBagController);
-            return new Scene(loader.load(), 1000, 800);
+            return new Scene(loader.load(), 1000, 600);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();
