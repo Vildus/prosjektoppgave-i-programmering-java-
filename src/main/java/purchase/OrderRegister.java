@@ -18,9 +18,9 @@ public class OrderRegister {
         return INSTANCE;
     }
 
-    public List<Order> getOrders(String customerNumber) {
+    public List<Order> getOrders(String customerID) {
         return this.orders.stream().filter((order -> {
-            return order.getCustomerNumber().equals(customerNumber);
+            return order.getCustomerID.equals(customerID);
         })).collect(Collectors.toList());
     }
 
