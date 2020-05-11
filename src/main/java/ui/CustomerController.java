@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import purchase.ItemAvailableStockException;
+import purchase.Order;
 import purchase.ShoppingBag;
 import purchase.ShoppingBagItem;
 
@@ -65,9 +66,16 @@ public class CustomerController {
     }
 
     @FXML
+    void handleGotoOrderHistory(ActionEvent event) {
+        Scene orderHistoryScene = this.createOrderHistoryScene();
+        this.sceneChanger.change(OrderHistoryController.TITLE, orderHistoryScene);
+    }
+
+    @FXML
     void signOut(ActionEvent event) {
         this.scenecloser.close();
     }
+
 
     @FXML
     void navGraphicCard(ActionEvent event) {
@@ -207,6 +215,20 @@ public class CustomerController {
             }, this.sceneChanger);
             loader.setController(shoppingBagController);
             return new Scene(loader.load(), 1000, 600);
+        } catch (Exception e) {
+            Alert.showErrorDialog("Unexpected error", e);
+            throw new RuntimeException();
+        }
+    }
+
+    private Scene createOrderHistoryScene() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("orderHistory.fxml"));
+            OrderHistoryController orderHistoryController = new OrderHistoryController(() -> {
+                this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
+            };
+            loader.setController(orderHistoryController);
+            return new Scene(loader.load(), 1000, 650);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();

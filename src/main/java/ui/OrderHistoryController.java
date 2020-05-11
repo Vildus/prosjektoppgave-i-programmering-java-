@@ -13,6 +13,14 @@ import java.util.Date;
 
 public class OrderHistoryController {
 
+    public static final String TITLE = "Order history";
+
+    private SceneCloser sceneCloser;
+
+    public OrderHistoryController(SceneCloser sceneCloser) {
+        this.sceneCloser = sceneCloser;
+    }
+
 
     @FXML
     private Button btnClose;

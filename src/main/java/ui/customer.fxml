@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TableView fx:id="tvCustomerInventory" layoutX="54.0" layoutY="152.0" prefHeight="350.0" prefWidth="900.0">
+        <TableView fx:id="tvCustomerInventory" layoutX="51.0" layoutY="167.0" prefHeight="350.0" prefWidth="900.0">
             <columns>
                 <TableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="-1.0" text="Category" />
                 <TableColumn fx:id="colArticleNumber" minWidth="-1.0" prefWidth="-1.0" text="Article Number" />
@@ -25,11 +25,11 @@
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>
         </TableView>
-        <Button layoutX="782.0" layoutY="529.0" mnemonicParsing="false" onAction="#goToShoppingBag" text="Go to shopping bag">
+        <Button layoutX="784.0" layoutY="537.0" mnemonicParsing="false" onAction="#goToShoppingBag" text="Go to shopping bag">
          <font>
             <Font size="18.0" />
          </font></Button>
-        <HBox fx:id="hbNav" layoutX="45.0" layoutY="67.0" prefHeight="60.0" prefWidth="911.0" spacing="10.0">
+        <HBox fx:id="hbNav" layoutX="46.0" layoutY="92.0" prefHeight="60.0" prefWidth="911.0" spacing="10.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#navGraphicCard" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Graphic Card" textOverrun="CLIP" />
                 <Button mnemonicParsing="false" onAction="#navHardDisk" prefHeight="75.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="Hard Disk" />
@@ -49,7 +49,7 @@
                 <Insets left="10.0" right="10.0" top="10.0" />
             </padding>
         </HBox>
-      <Button layoutX="870.0" layoutY="25.0" mnemonicParsing="false" onAction="#signOut" text="Sign out">
+      <Button layoutX="51.0" layoutY="537.0" mnemonicParsing="false" onAction="#signOut" text="Sign out">
          <font>
             <Font size="18.0" />
          </font>
@@ -59,5 +59,10 @@
             <Font size="24.0" />
          </font>
       </Label>
+      <Button fx:id="btnViewOrderHistory" layoutX="759.0" layoutY="28.0" mnemonicParsing="false" onAction="#handleGotoOrderHistory" text="View your order history">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
