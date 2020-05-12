@@ -3,6 +3,7 @@ import components.*;
 import inventory.Inventory;
 import inventory.Item;
 import inventory.ItemAlreadyExistsException;
+import io.InventoryReadTask;
 import io.OrderRepository;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,8 +23,8 @@ public class Main extends Application {
         Scene mainScene;
         Scene loadDataStoreScene;
         try {
-            mainScene = this.createMainScene(primaryStage);
-            loadDataStoreScene = this.createLoadingDataStoreScene(primaryStage);
+            mainScene = this.createLoginScene(primaryStage);
+            loadDataStoreScene = this.createLoadingDataStoreScene();
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to create UI", e);
             Platform.exit();
@@ -85,7 +86,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    private Scene createMainScene(Stage primaryStage) throws IOException {
+    private Scene createLoginScene(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/loginUser.fxml"));
         LoginUserController controller = new LoginUserController((title, scene) -> {
             primaryStage.setTitle(title);
@@ -95,7 +96,7 @@ public class Main extends Application {
         return new Scene(loader.load(), 1000, 600);
     }
 
-    private Scene createLoadingDataStoreScene(Stage primaryStage) throws IOException {
+    private Scene createLoadingDataStoreScene() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ui/loadingDataStore.fxml"));
         LoadingDataStoreController controller = new LoadingDataStoreController();
         loader.setController(controller);

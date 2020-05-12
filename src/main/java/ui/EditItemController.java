@@ -1,6 +1,8 @@
 package ui;
 
+import inventory.Inventory;
 import inventory.Item;
+import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -10,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+
+import java.io.IOException;
 
 
 public class EditItemController {
@@ -69,9 +73,6 @@ public class EditItemController {
     //TODO: Implementer metoden under når man trykker på oppdater
 
     private void updateItem(ActionEvent actionEvent) {
-        //Item input
-        Item item;
-
         double price;
         try {
             price = Double.parseDouble(this.txtPrice.getText());
@@ -91,7 +92,13 @@ public class EditItemController {
         this.item.setPrice(price);
         this.item.setInStock(insStock);
 
-        this.closer.close();
+        try {
+            InventoryRepository inventoryRepository = new InventoryRepository();
+            inventoryRepository.save(Inventory.getInstance());
+            this.closer.close();
+        } catch (IOException e) {
+            Alert.showErrorDialog("Failed to save file", e);
+        }
     }
 
 

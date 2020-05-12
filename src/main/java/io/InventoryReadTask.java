@@ -1,5 +1,6 @@
+package io;
+
 import inventory.Inventory;
-import io.InventoryRepository;
 import javafx.concurrent.Task;
 
 public class InventoryReadTask extends Task<Inventory> {
@@ -12,8 +13,7 @@ public class InventoryReadTask extends Task<Inventory> {
         } catch (InterruptedException e) {
         }
         InventoryRepository inventoryRepository = new InventoryRepository();
-        Inventory inventory = inventoryRepository.read();
-        return inventory;
+        return inventoryRepository.read();
     }
 }
 

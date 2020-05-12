@@ -55,14 +55,10 @@ public class InventoryController {
     @FXML
     private TextField txtFilter;
 
-
-    //TODO: Lage en path. global path.
-
     public InventoryController(SceneChanger sceneChanger, SceneCloser sceneCloser) {
         this.sceneChanger = sceneChanger;
         this.sceneCloser = sceneCloser;
     }
-
 
     private void initializeComboBox() {
         this.cbCreateNewItem.setPromptText("Add new item to inventory");
@@ -89,7 +85,6 @@ public class InventoryController {
                 Screen.CATEGORY);
     }
 
-
     @FXML
     public void initialize() {
         this.initializeTableView();
@@ -107,8 +102,6 @@ public class InventoryController {
 
         InventoryController self = this;
 
-        // Lager knapp inne i tableview-celler hvor det er data. Kode tatt fra nettet - skjønner den ikke selv men det funker :p
-        //google it!
         Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
             @Override
             public TableCell<Item, Void> call(final TableColumn<Item, Void> param) {

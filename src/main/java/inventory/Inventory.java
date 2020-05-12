@@ -2,7 +2,7 @@ package inventory;
 
 import ui.FilterTableViewItemPredicate;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,7 +12,7 @@ public class Inventory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Inventory INSTANCE = new Inventory();
+    private static transient Inventory instance;
 
     private List<Item> items;
 
@@ -21,7 +21,10 @@ public class Inventory implements Serializable {
     }
 
     public static Inventory getInstance() {
-        return INSTANCE;
+        if (instance == null) {
+            instance = new Inventory();
+        }
+        return instance;
     }
 
     public void addItem(Item item) throws ItemAlreadyExistsException {
@@ -48,7 +51,6 @@ public class Inventory implements Serializable {
         return null;
     }
 
-
     public List<Item> filter(String search) {
         //Leser strømmen til strømmen ikke returnerer noe mer og konverter til obeservable arraylist
         Stream<Item> filteredStream = items.stream().filter(new FilterTableViewItemPredicate(search));
@@ -64,6 +66,19 @@ public class Inventory implements Serializable {
         }
         return itemsByCategory;
     }
-}
 
-//TODO: Ikke kunne legge til to varer med samme artikkelnummer
+    private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException {
+        ois.defaultReadObject();
+        // this instance = deserialized from disk
+        if (instance != null) {
+            throw new IOException("Inventory instance not null");
+        }
+        instance = this;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        // singleton objects should not be cloned
+        throw new CloneNotSupportedException();
+    }
+}

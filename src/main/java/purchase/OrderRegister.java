@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class OrderRegister {
 
-    private static final OrderRegister INSTANCE = new OrderRegister();
+    private static OrderRegister instance;
 
     private List<Order> orders;
 
@@ -15,7 +15,10 @@ public class OrderRegister {
     }
 
     public static OrderRegister getInstance() {
-        return INSTANCE;
+        if (instance == null) {
+            instance = new OrderRegister();
+        }
+        return instance;
     }
 
     public List<Order> getOrders(String customerID) {
@@ -38,5 +41,11 @@ public class OrderRegister {
         }
         return String.format("%s",
                 String.join("\n", strOrders));
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        // singleton objects should not be cloned
+        throw new CloneNotSupportedException();
     }
 }

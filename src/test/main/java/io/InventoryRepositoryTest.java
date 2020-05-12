@@ -4,9 +4,12 @@ import components.*;
 import inventory.Inventory;
 import inventory.Item;
 import inventory.ItemAlreadyExistsException;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,9 +19,23 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class InventoryRepositoryTest {
 
-    private Inventory createTestInventory() throws ItemAlreadyExistsException {
-        Inventory inventory = Inventory.getInstance();
+    private static Path inventoryRepositoryDirectory;
 
+    @BeforeAll
+    static void setupTests() throws IOException {
+        inventoryRepositoryDirectory = createTempDirectory();
+    }
+
+    @BeforeEach
+    void resetInventory() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Field instance = Inventory.class.getDeclaredField("instance");
+        instance.setAccessible(true);
+        instance.set(null, null);
+    }
+
+    @Test
+    void testSaveInventory() throws ItemAlreadyExistsException {
+        Inventory inventory = Inventory.getInstance();
 
         inventory.addItem(new Item(new GraphicCard("Dell", "XR100", 120), 2.30, 4567));
         inventory.addItem(new Item(new HardDisk("Dell", "HDD200", "SSD"), 20.40, 123453));
@@ -30,37 +47,28 @@ class InventoryRepositoryTest {
         inventory.addItem(new Item(new RAM("Dell", "EWDMO", 434), 499, 2233));
         inventory.addItem(new Item(new Screen("Dell", "900AWERWA", 1234), 234, 39394));
 
-        return inventory;
-    }
-
-    @Test
-    void testSaveInventory() throws ItemAlreadyExistsException {
-        Inventory inventory = this.createTestInventory();
-
         try {
-            Path inventoryRepositoryDirectory = createTempDirectory();
-            InventoryRepository inventoryRepository = new InventoryRepository(inventoryRepositoryDirectory);
+            InventoryRepository inventoryRepository = new InventoryRepository(this.inventoryRepositoryDirectory);
             inventoryRepository.save(inventory);
         } catch (IOException e) {
             fail(e);
         }
+
+        assertEquals(9, inventory.getItems().size());
     }
 
     @Test
-    void testReadInventory() throws ItemAlreadyExistsException {
-        Inventory inventory1 = this.createTestInventory();
-        Inventory inventory2;
+    void testReadInventory() {
+        Inventory inventory;
 
         try {
-            Path inventoryRepositoryDirectory = createTempDirectory();
-            InventoryRepository inventoryRepository = new InventoryRepository(inventoryRepositoryDirectory);
-            inventoryRepository.save(inventory1);
-            inventory2 = inventoryRepository.read();
+            InventoryRepository inventoryRepository = new InventoryRepository(this.inventoryRepositoryDirectory);
+            inventory = inventoryRepository.read();
         } catch (IOException | ClassNotFoundException e) {
             fail(e);
             return;
         }
-        assertEquals(inventory1, inventory2);
+        assertEquals(9, inventory.getItems().size());
     }
 
 
