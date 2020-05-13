@@ -11,64 +11,66 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <GridPane>
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-          <RowConstraints percentHeight="60.0" vgrow="SOMETIMES" />
-          <RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label text="Your order history" GridPane.halignment="LEFT" GridPane.valignment="TOP">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <padding>
-                  <Insets bottom="10.0" left="20.0" top="20.0" />
-               </padding>
-            </Label>
-            <Button fx:id="btnClose" mnemonicParsing="false" onAction="#handleClose" text="Close" GridPane.rowIndex="2">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets bottom="10.0" left="20.0" top="20.0" />
-               </GridPane.margin>
-            </Button>
-            <TableView fx:id="tvOrderHistory" prefHeight="311.0" prefWidth="960.0" GridPane.rowIndex="1">
-              <columns>
-                <TableColumn fx:id="colOrderNumber" prefWidth="75.0" text="Order number" />
-                <TableColumn fx:id="colDate" prefWidth="75.0" text="Date" />
-                  <TableColumn fx:id="colTotalPrice" prefWidth="75.0" text="Total price" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-               <GridPane.margin>
-                  <Insets left="20.0" right="20.0" />
-               </GridPane.margin>
-            </TableView>
-            <Label text="Customer ID:" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <padding>
-                  <Insets left="20.0" top="20.0" />
-               </padding>
-            </Label>
-            <Label fx:id="lblCustomerID" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <GridPane.margin>
-                  <Insets left="130.0" top="20.0" />
-               </GridPane.margin>
-            </Label>
-         </children>
-      </GridPane>
-   </children>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+      prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints percentHeight="20.0" vgrow="SOMETIMES"/>
+                <RowConstraints percentHeight="60.0" vgrow="SOMETIMES"/>
+                <RowConstraints percentHeight="20.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <children>
+                <Label text="Your order history" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+                    <font>
+                        <Font size="24.0"/>
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" top="20.0"/>
+                    </padding>
+                </Label>
+                <Button fx:id="btnClose" mnemonicParsing="false" onAction="#handleClose" text="Close"
+                        GridPane.rowIndex="2">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                    <GridPane.margin>
+                        <Insets bottom="10.0" left="20.0" top="20.0"/>
+                    </GridPane.margin>
+                </Button>
+                <TableView fx:id="tvOrderHistory" prefHeight="311.0" prefWidth="960.0" GridPane.rowIndex="1">
+                    <columns>
+                        <TableColumn fx:id="colOrderNumber" prefWidth="75.0" text="Order number"/>
+                        <TableColumn fx:id="colDate" prefWidth="75.0" text="Date"/>
+                        <TableColumn fx:id="colTotalPrice" prefWidth="75.0" text="Total price"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                    <GridPane.margin>
+                        <Insets left="20.0" right="20.0"/>
+                    </GridPane.margin>
+                </TableView>
+                <Label text="Customer ID:" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                    <padding>
+                        <Insets left="20.0" top="20.0"/>
+                    </padding>
+                </Label>
+                <Label fx:id="lblCustomerID" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                    <font>
+                        <Font size="18.0"/>
+                    </font>
+                    <GridPane.margin>
+                        <Insets left="130.0" top="20.0"/>
+                    </GridPane.margin>
+                </Label>
+            </children>
+        </GridPane>
+    </children>
 </VBox>

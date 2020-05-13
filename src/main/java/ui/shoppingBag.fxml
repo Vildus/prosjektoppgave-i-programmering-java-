@@ -7,45 +7,49 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <TableView fx:id="tvShoppingBag" layoutX="58.0" layoutY="101.0" prefHeight="356.0" prefWidth="885.0">
             <columns>
-                <TableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="-1.0" text="Category" />
-                <TableColumn fx:id="colArticleNumber" minWidth="-1.0" prefWidth="-1.0" text="Articlenumber" />
-                <TableColumn fx:id="colBrand" minWidth="-1.0" prefWidth="-1.0" text="Brand" />
-                <TableColumn fx:id="colModel" minWidth="-1.0" prefWidth="-1.0" text="Model" />
-                <TableColumn fx:id="colPrice" minWidth="-1.0" prefWidth="-1.0" text="Price" />
-                <TableColumn fx:id="colQty" minWidth="-1.0" prefWidth="-1.0" text="Qty" />
-                <TableColumn fx:id="colTotalPrice" minWidth="-1.0" prefWidth="-1.0" text="Total Price" />
-                <TableColumn fx:id="colRemoveItem" minWidth="-1.0" prefWidth="-1.0" text="Remove item" />
+                <TableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="-1.0" text="Category"/>
+                <TableColumn fx:id="colArticleNumber" minWidth="-1.0" prefWidth="-1.0" text="Articlenumber"/>
+                <TableColumn fx:id="colBrand" minWidth="-1.0" prefWidth="-1.0" text="Brand"/>
+                <TableColumn fx:id="colModel" minWidth="-1.0" prefWidth="-1.0" text="Model"/>
+                <TableColumn fx:id="colPrice" minWidth="-1.0" prefWidth="-1.0" text="Price"/>
+                <TableColumn fx:id="colQty" minWidth="-1.0" prefWidth="-1.0" text="Qty"/>
+                <TableColumn fx:id="colTotalPrice" minWidth="-1.0" prefWidth="-1.0" text="Total Price"/>
+                <TableColumn fx:id="colRemoveItem" minWidth="-1.0" prefWidth="-1.0" text="Remove item"/>
             </columns>
             <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
         </TableView>
         <Label layoutX="354.0" layoutY="33.0" text="Your Shopping Bag">
             <font>
-                <Font size="36.0" />
+                <Font size="36.0"/>
             </font>
         </Label>
         <Button layoutX="804.0" layoutY="485.0" mnemonicParsing="false" onAction="#checkOut" text="Complete order">
-         <font>
-            <Font size="18.0" />
-         </font></Button>
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Button>
         <Label layoutX="86.0" layoutY="491.0" prefHeight="23.0" prefWidth="207.0" text="Total price for your order:">
             <font>
-                <Font size="18.0" />
+                <Font size="18.0"/>
             </font>
         </Label>
         <Label fx:id="lblTotalPrice" layoutX="293.0" layoutY="491.0" prefHeight="23.0" prefWidth="123.0">
             <font>
-                <Font size="18.0" />
+                <Font size="18.0"/>
             </font>
         </Label>
-        <Button layoutX="580.0" layoutY="485.0" mnemonicParsing="false" onAction="#close" prefHeight="35.0" prefWidth="186.0" text="Go back to shopping">
-         <font>
-            <Font size="18.0" />
-         </font></Button>
+        <Button layoutX="580.0" layoutY="485.0" mnemonicParsing="false" onAction="#close" prefHeight="35.0"
+                prefWidth="186.0" text="Go back to shopping">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Button>
     </children>
 </AnchorPane>
