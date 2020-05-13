@@ -22,3 +22,4 @@ Bruker ID `customer1` og `customer2` inneholder allerede eksempeldata under `Ord
 Klassen [TestData](src/main/java/TestData.java) er ikke ment som en del av besvarelsen, men kun til for testing.
 Dersom inventory.jobj filen ikke finnes vil metoden `TestData.fillInventory`
 kjøres og fylle inventory med "test data".
+
