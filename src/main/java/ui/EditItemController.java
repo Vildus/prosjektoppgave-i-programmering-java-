@@ -1,5 +1,7 @@
 package ui;
 
+import inventory.InvalidInStockArgumentException;
+import inventory.InvalidPriceArgumentException;
 import inventory.Inventory;
 import inventory.Item;
 import io.InventoryRepository;
@@ -84,8 +86,19 @@ public class EditItemController {
             return;
         }
 
-        this.item.setPrice(price);
-        this.item.setInStock(insStock);
+        try {
+            this.item.setPrice(price);
+        } catch (InvalidPriceArgumentException e) {
+            Alert.showInfoDialog("Invalid price", "Price must be above 0", e);
+            return;
+        }
+
+        try {
+            this.item.setInStock(insStock);
+        } catch (InvalidInStockArgumentException e) {
+            Alert.showInfoDialog("Invalid in stock", "In stock cannot be negative", e);
+            return;
+        }
 
         try {
             InventoryRepository inventoryRepository = new InventoryRepository();
