@@ -1,6 +1,5 @@
 package io;
 
-import purchase.Customer;
 import purchase.Order;
 import purchase.OrderLine;
 import purchase.OrderRegister;
@@ -8,7 +7,6 @@ import utils.DateStringConverter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,8 +37,6 @@ public class OrderRepository {
         this.directory = storePath;
     }
 
-    // Lager en path fordi det er den samme pathen vi skal lese og skrive fra. Da slipper vi
-    // å skrive den to ganger og minsker risiko for stavefeil i strengen "orders.csv"
     private Path getOrderRegisterPath() {
         return Paths.get(this.directory.toString(), "orders.csv");
     }
@@ -50,14 +46,14 @@ public class OrderRepository {
         Files.write(path, orderRegisterToCSV(orderRegister).getBytes("utf-8"));
 
         // Save all orders with order lines
-        for (Order order : orderRegister.getOrders(Customer.getCurrentCustomerID())) {
+        for (Order order : orderRegister.getOrders()) {
             this.saveOrderLines(order.getOrderNumber(), order.getLines());
         }
     }
 
     private String orderRegisterToCSV(OrderRegister orderRegister) {
         String output = "";
-        for (Order order : orderRegister.getOrders(Customer.getCurrentCustomerID())) {
+        for (Order order : orderRegister.getOrders()) {
             String dateStr = this.dateStringConverter.toString(order.getDate());
             output = output + String.format("%d;%s;%s\n", order.getOrderNumber(), dateStr, order.getCustomerID());
         }
@@ -86,7 +82,6 @@ public class OrderRepository {
 
             orderRegister.addOrder(order);
         }
-
         return orderRegister;
     }
 

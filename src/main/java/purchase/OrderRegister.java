@@ -21,6 +21,10 @@ public class OrderRegister {
         return instance;
     }
 
+    public List<Order> getOrders() {
+        return this.orders;
+    }
+
     public List<Order> getOrders(String customerID) {
         return this.orders.stream().filter((order -> {
             return order.getCustomerID().equals(customerID);
