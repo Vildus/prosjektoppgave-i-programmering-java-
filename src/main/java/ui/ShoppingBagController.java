@@ -16,7 +16,7 @@ import purchase.ShoppingBag;
 import purchase.ShoppingBagItem;
 
 import java.io.IOException;
-import java.util.List;
+
 
 public class ShoppingBagController {
 
@@ -108,7 +108,6 @@ public class ShoppingBagController {
 
     }
 
-    // LAGE DENNE
     private void initializeTableView() {
         // her binder vi opp getComponentCategory til cellen i tabellen
         this.colCategory.setCellValueFactory(new PropertyValueFactory<>("componentCategory"));

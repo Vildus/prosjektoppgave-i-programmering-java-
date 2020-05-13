@@ -10,7 +10,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import purchase.Customer;
 import purchase.Order;
 import purchase.OrderRegister;
-
 import java.util.Date;
 
 

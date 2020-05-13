@@ -1,7 +1,5 @@
 package purchase;
 
-import inventory.Inventory;
-import inventory.Item;
 
 public class ItemAvailableStockException extends Exception {
 

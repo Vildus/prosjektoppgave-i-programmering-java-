@@ -55,9 +55,4 @@ public class Order {
                 this.getDate().toString(),
                 String.join("\n", strLines));
     }
-
-    //For hver gang vi lagrer en ny ordre så lagres en ny linje i orders
-    //en ordre kan lagres til CSV
-
-    //TO-CSV på ordre. En FIL = en ordre. En ordre består av flere ordrelinjer.
 }

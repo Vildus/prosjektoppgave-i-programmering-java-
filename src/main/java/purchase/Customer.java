@@ -4,8 +4,6 @@ package purchase;
 public class Customer {
     private static String currentCustomerID;
 
-
-    //TODO: Lage test for customerNUmber
     public static void setCurrentCustomerID(String customerID) {
         if (customerID.matches("[a-z,A-Z,0-9]{5,15}")) {
             currentCustomerID = customerID;

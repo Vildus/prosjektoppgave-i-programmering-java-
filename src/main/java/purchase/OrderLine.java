@@ -1,6 +1,5 @@
 package purchase;
 
-
 public class OrderLine {
     private int articleNumber;
     private int amount;
@@ -35,9 +34,4 @@ public class OrderLine {
                 this.amount,
                 this.pricePerUnit);
     }
-
-    //inneholder flere ordrelinjer
-    //en ordrelinje må ha en referanse til artikkelnummeret som er kjøpt (art nummer er unikt)
-    //en dato når kjøpt
-    //en liste over purchased items
 }

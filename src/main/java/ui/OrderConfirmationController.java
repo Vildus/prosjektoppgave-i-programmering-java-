@@ -13,7 +13,6 @@ import java.util.Date;
 
 public class OrderConfirmationController {
 
-
     public static final String TITLE = "Order confirmation";
 
     private Order order;
@@ -40,8 +39,6 @@ public class OrderConfirmationController {
     }
 
     private void printShoppingBag() {
-
-//TODO: Order date, Order number
         ArrayList<String> lines = new ArrayList<>();
 
         for (ShoppingBagItem shoppingBagItem : ShoppingBag.getInstance().getShoppingBagItems()) {
@@ -61,6 +58,4 @@ public class OrderConfirmationController {
                 String.format("\n\n\nTotal order price: %.2f NOK", ShoppingBag.getInstance().getTotalPrice());
         this.txtOrderInfo.setText(String.format("Customer ID: %s\n\nOrder number: %d\nDate: %s\n\nOrder info:\n\n%s", customerID, orderNumber, date, output));
     }
-
-
 }

@@ -1,6 +1,5 @@
 package ui;
 
-
 import javafx.scene.control.*;
 import javafx.scene.text.Font;
 
