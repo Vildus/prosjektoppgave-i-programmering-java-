@@ -3,7 +3,7 @@ package io;
 import components.*;
 import inventory.Inventory;
 import inventory.Item;
-import inventory.ItemAlreadyExistsException;
+import inventory.exceptions.ItemAlreadyExistsException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

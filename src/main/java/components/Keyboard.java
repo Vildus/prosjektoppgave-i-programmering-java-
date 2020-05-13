@@ -7,6 +7,7 @@ public class Keyboard extends Component implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final String CATEGORY = "Keyboard";
+
     private String interfaceType; //USB or bluetooth
 
     public Keyboard(String brand, String model, String interfaceType) {

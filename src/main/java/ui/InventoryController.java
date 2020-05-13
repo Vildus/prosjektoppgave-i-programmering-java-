@@ -95,7 +95,6 @@ public class InventoryController {
     }
 
     private void initializeTableView() {
-        // her binder vi opp getComponentCategory til cellen i tabellen
         this.colCategory.setCellValueFactory(new PropertyValueFactory<>("componentCategory"));
         this.colArticleNumber.setCellValueFactory(new PropertyValueFactory<>("articleNumber"));
         this.colBrand.setCellValueFactory(new PropertyValueFactory<>("componentBrand"));
@@ -201,7 +200,7 @@ public class InventoryController {
                 this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(Inventory.getInstance().getItems());
             });
-            return new Scene(editItemController.getRoot(), 1000, 600);
+            return new Scene(editItemController.getRoot(), Common.SCENE_WIDTH, Common.SCENE_HEIGHT);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();
@@ -215,7 +214,7 @@ public class InventoryController {
                 this.updateTableViewItems(Inventory.getInstance().getItems());
                 this.cbCreateNewItem.setValue(null);
             });
-            return new Scene(addItemController.getRoot(), 1000, 600);
+            return new Scene(addItemController.getRoot(), Common.SCENE_WIDTH, Common.SCENE_HEIGHT);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();

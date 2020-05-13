@@ -12,12 +12,10 @@ import java.nio.file.Paths;
 public class InventoryRepository {
     private Path directory;
 
-    //bruk denne konstruktøren i testing når vi vil spesifieserer den
     public InventoryRepository(Path directory) {
         this.directory = directory;
     }
 
-    // denne konstruktøren skal brukes i ui fordi path er predefinert/default
     public InventoryRepository() throws IOException {
         String cwd = System.getProperty("user.dir");
         Path storePath = Paths.get(cwd, "datastore");

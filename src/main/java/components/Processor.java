@@ -7,7 +7,9 @@ public class Processor extends Component implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final String CATEGORY = "Processor";
+
     private int processorCount;
+
     private int clockRate;
 
     public Processor(String brand, String model, int processorCount, int clockRate) {

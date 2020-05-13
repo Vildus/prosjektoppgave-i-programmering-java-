@@ -7,6 +7,7 @@ public class Mouse extends Component implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final String CATEGORY = "Mouse";
+
     private String interfaceType; // USB or bluetooth
 
     public Mouse(String brand, String model, String interfaceType) {

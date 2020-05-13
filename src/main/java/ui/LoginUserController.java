@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import javafx.scene.layout.VBox;
 import purchase.Customer;
-import purchase.IllegalCustomerIDException;
+import purchase.exceptions.IllegalCustomerIDException;
 
 
 public class LoginUserController {
@@ -58,18 +58,18 @@ public class LoginUserController {
             this.sceneChanger.change(CustomerController.TITLE, customerScene);
             this.txtUserName.clear();
         } catch (IllegalCustomerIDException e) {
-            Alert.showInfoDialog("Illegal user ID", "You must enter an ID that contains between 5-15 characters or digits");
+            Alert.showAlertDialog("Illegal user ID", e);
         }
     }
 
     private Scene createInventoryScene() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("inventory.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/inventory.fxml"));
             InventoryController inventoryController = new InventoryController(this.sceneChanger, () -> {
                 sceneChanger.change(TITLE, this.txtSuperUserName.getScene());
             });
             loader.setController(inventoryController);
-            return new Scene(loader.load(), 1000, 600);
+            return new Scene(loader.load(), Common.SCENE_WIDTH, Common.SCENE_HEIGHT);
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to read inventory from disk", e);
             throw new RuntimeException();
@@ -78,12 +78,12 @@ public class LoginUserController {
 
     private Scene createCustomerScene() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("customer.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/customer.fxml"));
             CustomerController customerController = new CustomerController(this.sceneChanger, () -> {
                 this.sceneChanger.change(TITLE, this.txtSuperUserName.getScene());
             });
             loader.setController(customerController);
-            return new Scene(loader.load(), 1000, 600);
+            return new Scene(loader.load(), Common.SCENE_WIDTH, Common.SCENE_HEIGHT);
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to read inventory from disk", e);
             throw new RuntimeException();

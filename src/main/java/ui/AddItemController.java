@@ -1,10 +1,12 @@
 package ui;
 
 import components.*;
-import inventory.InvalidPriceArgumentException;
-import inventory.Inventory;
-import inventory.Item;
-import inventory.ItemAlreadyExistsException;
+import components.exceptions.IllegalBrandArgumentException;
+import components.exceptions.IllegalModelArgumentException;
+import inventory.*;
+import inventory.exceptions.InvalidInStockArgumentException;
+import inventory.exceptions.InvalidPriceArgumentException;
+import inventory.exceptions.ItemAlreadyExistsException;
 import io.InventoryRepository;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -29,7 +31,6 @@ public class AddItemController {
     private GridPane gridPane;
 
     private SceneCloser closer;
-
 
     // Common inputs
     TextField txtBrand;
@@ -69,19 +70,15 @@ public class AddItemController {
     //Screen input
     TextField txtScreenSize;
 
-
     Button btnClose;
 
     Button btnAddItem;
 
-
-    // This means we cannot create an item controller without a copmonent category
-    // as it does not make sense to have a "view" (javafx view) without a component category to edit
-    // this also means we cannot declare the controller in the fxml file / no "fx:controller=ui/EditItemController"
     public AddItemController(String componentCategory, SceneCloser closer) {
         this.componentCategory = componentCategory;
         this.closer = closer;
         this.initVBox();
+        this.initHeader();
         this.initGridPane();
         this.initCloseButton();
         this.initAddItemButton();
@@ -91,13 +88,17 @@ public class AddItemController {
         return this.vb;
     }
 
+    private void initHeader() {
+        String header = String.format("Add item: %s", this.componentCategory);
+        this.vb.getChildren().add(Common.createHeader(header));
+    }
+
     private void initAddItemButton() {
         this.btnAddItem = Common.createButton("Add to inventory");
         this.btnAddItem.setOnAction(this::addItemToInventory);
         int rowCount = this.getRowCount();
         this.gridPane.add(this.btnAddItem, 1, rowCount - 1);
     }
-
 
     private void addItemToInventory(ActionEvent actionEvent) {
         //Component input
@@ -113,14 +114,14 @@ public class AddItemController {
         try {
             price = Double.parseDouble(this.txtPrice.getText());
         } catch (NumberFormatException e) {
-            Alert.showInfoDialog("Price must be a number", "Please make sure that the price only contain digits", e);
+            Alert.showAlertDialog("Price must be a number", "Please make sure that the price only contain digits");
             return;
         }
 
         try {
             articleNumber = Integer.parseInt(this.txtArticleNumber.getText());
         } catch (NumberFormatException e) {
-            Alert.showInfoDialog("Article number must be a number", "Please make sure that the article number only contain integers", e);
+            Alert.showAlertDialog("Article number must be a number", "Please make sure that the article number only contain digits");
             return;
         }
 
@@ -131,7 +132,7 @@ public class AddItemController {
                     try {
                         graphicCardMemory = Integer.parseInt(this.txtGraphicCardMemory.getText());
                     } catch (NumberFormatException e) {
-                        Alert.showInfoDialog("Graphic card memory must be a number", "Please make sure that the graphic card memory only contain integers", e);
+                        Alert.showAlertDialog("Graphic card memory must be a number", "Please make sure that the graphic card memory only contain digits");
                         return;
                     }
                     component = new GraphicCard(brand, model, graphicCardMemory);
@@ -143,7 +144,7 @@ public class AddItemController {
                     try {
                         hardDiskSize = Integer.parseInt(this.txtHardDiskSize.getText());
                     } catch (NumberFormatException e) {
-                        Alert.showInfoDialog("Hard disk size must be a number", "Please make sure that the hard disk size only contain integers", e);
+                        Alert.showAlertDialog("Hard disk size must be a number", "Please make sure that the hard disk size only contain digits");
                         return;
                     }
                     component = new HardDisk(brand, model, hardDiskType, hardDiskSize);
@@ -169,7 +170,7 @@ public class AddItemController {
                     try {
                         effect = Integer.parseInt(txtPowerSupplyEffect.getText());
                     } catch (NumberFormatException e) {
-                        Alert.showInfoDialog("Power supply effect  must be a number", "Please make sure that effect only contain integers", e);
+                        Alert.showAlertDialog("Power supply effect  must be a number", "Please make sure that effect only contain digits");
                         return;
                     }
 
@@ -177,7 +178,7 @@ public class AddItemController {
                     try {
                         inputVoltage = Double.parseDouble(txtPowerSupplyInputVoltage.getText());
                     } catch (NumberFormatException e) {
-                        Alert.showInfoDialog("Input voltage  must be a number", "Please make sure that input voltage only contain integers", e);
+                        Alert.showAlertDialog("Input voltage  must be a number", "Please make sure that input voltage only contain digits");
                         return;
                     }
 
@@ -185,7 +186,7 @@ public class AddItemController {
                     try {
                         outputVoltage = Double.parseDouble(txtPowerSupplyOutputVoltage.getText());
                     } catch (NumberFormatException e) {
-                        Alert.showInfoDialog("Output voltage  must be a number", "Please make sure that output voltage only contain integers", e);
+                        Alert.showAlertDialog("Output voltage  must be a number", "Please make sure that output voltage only contain digits");
                         return;
                     }
                     component = new PowerSupply(brand, model, effect, inputVoltage, outputVoltage);
@@ -196,7 +197,7 @@ public class AddItemController {
                     try {
                         processorCount = Integer.parseInt(txtProcessorCount.getText());
                     } catch (NumberFormatException e) {
-                        Alert.showInfoDialog("Count must be a number", "Please make sure count only contain integers", e);
+                        Alert.showAlertDialog("Count must be a number", "Please make sure count only contain digits");
                         return;
                     }
 
@@ -204,7 +205,7 @@ public class AddItemController {
                     try {
                         processorClockRate = Integer.parseInt(txtProcessorClockRate.getText());
                     } catch (NumberFormatException e) {
-                        Alert.showInfoDialog("Clock rate  must be a number", "Please make sure that clock rate only contain integers", e);
+                        Alert.showAlertDialog("Clock rate  must be a number", "Please make sure that clock rate only contain digits");
                         return;
                     }
                     component = new Processor(brand, model, processorCount, processorClockRate);
@@ -215,7 +216,7 @@ public class AddItemController {
                     try {
                         ramMemory = Integer.parseInt(txtRAMMemory.getText());
                     } catch (NumberFormatException e) {
-                        Alert.showInfoDialog("RAM memory must be a number", "Please make sure that the RAM memory only contain integers", e);
+                        Alert.showAlertDialog("RAM memory must be a number", "Please make sure that the RAM memory only contain digits");
                         return;
                     }
                     component = new RAM(brand, model, ramMemory);
@@ -226,7 +227,7 @@ public class AddItemController {
                     try {
                         screenSize = Integer.parseInt(txtScreenSize.getText());
                     } catch (NumberFormatException e) {
-                        Alert.showInfoDialog("Screen size must be a number", "Please make sure that screen size only contain integers", e);
+                        Alert.showAlertDialog("Screen size must be a number", "Please make sure that screen size only contain digits");
                         return;
                     }
                     component = new Screen(brand, model, screenSize);
@@ -235,34 +236,36 @@ public class AddItemController {
                 default:
                     throw new RuntimeException(String.format("Unknown component type: %s", this.componentCategory));
             }
-
         } catch (IllegalBrandArgumentException e) {
-            Alert.showInfoDialog("The field \"brand\" cannot be left blank", "You must enter in the brand", e);
+            Alert.showAlertDialog("Brand is invalid", e);
             return;
         } catch (IllegalModelArgumentException e) {
-            Alert.showInfoDialog("The field \"model\" cannot be left blank", "You must enter in the model", e);
+            Alert.showAlertDialog("Model is invalid", e);
             return;
         }
 
         try {
             item = new Item(component, price, articleNumber);
         } catch (InvalidPriceArgumentException e) {
-            Alert.showInfoDialog("Wrong price", "The price must be higher than 0", e);
+            Alert.showAlertDialog("Price is invalid", e);
             return;
         }
 
         try {
             int qty = Integer.parseInt(txtQty.getText());
             item.setInStock(qty);
-        } catch (Exception e) {
-            Alert.showInfoDialog("Quantity must be a number", "Please make sure that the quantity only contain integers", e);
+        } catch (NumberFormatException e) {
+            Alert.showAlertDialog("Quantity must be a number", "Please make sure that the quantity only contain digits");
+            return;
+        } catch (InvalidInStockArgumentException e) {
+            Alert.showAlertDialog("In stock invalid", e);
             return;
         }
 
         try {
             Inventory.getInstance().addItem(item);
         } catch (ItemAlreadyExistsException e) {
-            Alert.showInfoDialog("An item with this article number exists already", "To update price or quantity for an item that already exists go back to inventory", e);
+            Alert.showAlertDialog("An item with this article number exists already", "To update price or quantity for an item that already exists go back to inventory");
             return;
         }
 

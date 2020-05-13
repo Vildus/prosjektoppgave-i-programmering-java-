@@ -19,7 +19,7 @@ class OrderRepositoryTest {
 
     private OrderRegister createTestOrderRegister() {
         OrderRegister orderRegister = OrderRegister.getInstance();
-        Customer.setCurrentCustomerID("sluttBruker1");
+        Customer.setCurrentCustomerID("customer1");
 
         ArrayList<OrderLine> order1Lines = new ArrayList<>();
         order1Lines.add(new OrderLine(234435, 5, 1560.90));
@@ -52,7 +52,7 @@ class OrderRepositoryTest {
     }
 
     @Test
-    void testReadOrderRegister() throws Exception {
+    void testReadOrderRegister() {
         OrderRegister orderRegister1 = this.createTestOrderRegister();
         OrderRegister orderRegister2;
 

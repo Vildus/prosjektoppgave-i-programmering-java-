@@ -26,9 +26,9 @@ public class OrderRegister {
     }
 
     public List<Order> getOrders(String customerID) {
-        return this.orders.stream().filter((order -> {
-            return order.getCustomerID().equals(customerID);
-        })).collect(Collectors.toList());
+        return this.orders.stream().filter((order ->
+            order.getCustomerID().equals(customerID)
+        )).collect(Collectors.toList());
     }
 
     public void addOrder(Order order) {

@@ -22,8 +22,6 @@ public class ShoppingBagController {
 
     public final static String TITLE = "Shopping bag";
 
-    private Scene scene;
-
     private OrderRepository orderRepository;
 
     private InventoryRepository inventoryRepository;
@@ -83,7 +81,9 @@ public class ShoppingBagController {
 
     @FXML
     void checkOut(ActionEvent event) {
-        if (this.tvShoppingBag.getItems().size() > 0) {
+        if (this.tvShoppingBag.getItems().size() == 0) {
+            Alert.showInfoDialog("Your shopping bag is empty", "Add items to your shopping bag to proceed");
+        } else {
             OrderRegister orderRegister = OrderRegister.getInstance();
             ShoppingBag shoppingBag = ShoppingBag.getInstance();
             Order order = shoppingBag.createOrder();
@@ -102,10 +102,7 @@ public class ShoppingBagController {
             } catch (IOException e) {
                 Alert.showErrorDialog("Failed to save order register", e);
             }
-        } else {
-            Alert.showInfoDialog("Your shopping bag is empty", "Add items to your shopping bag to proceed");
         }
-
     }
 
     private void initializeTableView() {
@@ -120,12 +117,10 @@ public class ShoppingBagController {
 
         ShoppingBagController self = this;
 
-
         Callback<TableColumn<ShoppingBagItem, Void>, TableCell<ShoppingBagItem, Void>> removeItemCellFactory = new Callback<TableColumn<ShoppingBagItem, Void>, TableCell<ShoppingBagItem, Void>>() {
             @Override
             public TableCell<ShoppingBagItem, Void> call(final TableColumn<ShoppingBagItem, Void> param) {
                 final TableCell<ShoppingBagItem, Void> cell = new TableCell<ShoppingBagItem, Void>() {
-
 
                     private final Button btnRemove = new Button("Remove");
 
@@ -135,10 +130,8 @@ public class ShoppingBagController {
                             ShoppingBag shoppingBag = ShoppingBag.getInstance();
                             shoppingBag.removeItem(shoppingBagItem);
                             self.updateShoppingBagView();
-
                         });
                     }
-
 
                     @Override
                     public void updateItem(Void item, boolean empty) {
@@ -167,12 +160,12 @@ public class ShoppingBagController {
 
     private Scene createOrderConfirmationScene(Order order) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("orderConfirmation.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/orderConfirmation.fxml"));
             OrderConfirmationController orderConfirmationController = new OrderConfirmationController(order, () -> {
                 this.sceneChanger.change(TITLE, this.tvShoppingBag.getScene());
             });
             loader.setController(orderConfirmationController);
-            return new Scene(loader.load(), 1000, 600);
+            return new Scene(loader.load(), Common.SCENE_WIDTH, Common.SCENE_HEIGHT);
         } catch (IOException e) {
             Alert.showErrorDialog("Unexpected error", e);
             //If this happens it means that fxml is corrupt or not found

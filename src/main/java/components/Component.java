@@ -1,5 +1,8 @@
 package components;
 
+import components.exceptions.IllegalBrandArgumentException;
+import components.exceptions.IllegalModelArgumentException;
+
 import java.io.Serializable;
 
 public abstract class Component implements Serializable {
@@ -7,6 +10,7 @@ public abstract class Component implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String brand;
+
     private String model;
 
     public Component(String brand, String model) {

@@ -7,6 +7,7 @@ public class Screen extends Component implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final String CATEGORY = "Screen";
+
     private int screenSize; // in inches
 
     public Screen(String brand, String model, int screenSize) {

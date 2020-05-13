@@ -20,6 +20,7 @@ public class OrderRepository {
 
     // path to store orders.csv and all [order_id].csv files
     private Path directory;
+
     private DateStringConverter dateStringConverter = new DateStringConverter("dd/MM/yyyy HH:mm:ss");
 
     public OrderRepository(Path directory) {
@@ -85,9 +86,6 @@ public class OrderRepository {
         return orderRegister;
     }
 
-    // getOrderLinesPath gets the path where orderlines for orderNumber is saved on disk
-    // Lager en path fordi det er den samme pathen vi skal lese og skrive fra. Da slipper vi
-    // å skrive den to ganger og minsker risiko for stavefeil i strengen "order_%d.csv"
     private Path getOrderLinesPath(int orderNumber) {
         return Paths.get(this.directory.toString(), String.format("order_%d.csv", orderNumber));
     }
