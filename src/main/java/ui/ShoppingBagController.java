@@ -72,6 +72,7 @@ public class ShoppingBagController {
     @FXML
     public void initialize() {
         this.initializeTableView();
+        this.updateShoppingBagView();
     }
 
     @FXML
@@ -81,26 +82,28 @@ public class ShoppingBagController {
 
     @FXML
     void checkOut(ActionEvent event) {
-        OrderRegister orderRegister = OrderRegister.getInstance();
-        ShoppingBag shoppingBag = ShoppingBag.getInstance();
-        orderRegister.addOrder(shoppingBag.createOrder());
-        try {
-            // orderRegister and inventory must be saved at the same time
-            // for consistency. Also if inventory save fails we should rollback
-            // the orderRegister save, but for simplicity we assume it all goes well
-            this.orderRepository.save(orderRegister);
-            this.inventoryRepository.save(Inventory.getInstance());
+        if (this.tvShoppingBag.getItems().size() > 0) {
+            OrderRegister orderRegister = OrderRegister.getInstance();
+            ShoppingBag shoppingBag = ShoppingBag.getInstance();
+            orderRegister.addOrder(shoppingBag.createOrder());
+            try {
+                // orderRegister and inventory must be saved at the same time
+                // for consistency. Also if inventory save fails we should rollback
+                // the orderRegister save, but for simplicity we assume it all goes well
+                this.orderRepository.save(orderRegister);
+                this.inventoryRepository.save(Inventory.getInstance());
 
-            Scene orderConfirmationScene = this.createOrderConfirmationScene();
-            this.sceneChanger.change(OrderConfirmationController.TITLE, orderConfirmationScene);
-        } catch (IOException e) {
-            Alert.showErrorDialog("Failed to save order register", e);
+                Scene orderConfirmationScene = this.createOrderConfirmationScene();
+                this.sceneChanger.change(OrderConfirmationController.TITLE, orderConfirmationScene);
+                shoppingBag.clear();
+                this.updateShoppingBagView();
+            } catch (IOException e) {
+                Alert.showErrorDialog("Failed to save order register", e);
+            }
+        } else {
+            Alert.showInfoDialog("Your shopping bag is empty", "Add items to your shopping bag to proceed");
         }
-    }
 
-    private void updateTableViewItems() {
-        List<ShoppingBagItem> shoppingBagItems = ShoppingBag.getInstance().getShoppingBagItems();
-        this.tvShoppingBag.getItems().setAll(shoppingBagItems);
     }
 
     // LAGE DENNE
@@ -130,7 +133,7 @@ public class ShoppingBagController {
                             ShoppingBagItem shoppingBagItem = this.getTableView().getItems().get(getIndex());
                             ShoppingBag shoppingBag = ShoppingBag.getInstance();
                             shoppingBag.removeItem(shoppingBagItem);
-                            self.updateTableViewItems();
+                            self.updateShoppingBagView();
 
                         });
                     }
@@ -152,20 +155,23 @@ public class ShoppingBagController {
 
         colRemoveItem.setCellFactory(removeItemCellFactory);
 
-        this.updateTableViewItems();
-
-        this.lblTotalPrice.setText(String.format("%.2f NOK", ShoppingBag.getInstance().getTotalPrice()));
+        this.updateShoppingBagView();
     }
 
+    private void updateShoppingBagView() {
+        ShoppingBag shoppingBag = ShoppingBag.getInstance();
+        this.tvShoppingBag.getItems().setAll(shoppingBag.getShoppingBagItems());
+        this.lblTotalPrice.setText(String.format("%.2f NOK", shoppingBag.getTotalPrice()));
+    }
 
     private Scene createOrderConfirmationScene() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("orderConfirmation.fxml"));
-            OrderConfirmationController orderConfirmationController = new OrderConfirmationController(this.sceneCloser, () -> {
+            OrderConfirmationController orderConfirmationController = new OrderConfirmationController(() -> {
                 this.sceneChanger.change(TITLE, this.tvShoppingBag.getScene());
             });
             loader.setController(orderConfirmationController);
-            return new Scene(loader.load(), 1000, 800);
+            return new Scene(loader.load(), 1000, 600);
         } catch (IOException e) {
             Alert.showErrorDialog("Unexpected error", e);
             //If this happens it means that fxml is corrupt or not found
