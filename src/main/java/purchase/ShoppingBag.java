@@ -79,5 +79,8 @@ public class ShoppingBag {
         return order;
     }
 
+    public void clear() {
+        this.shoppingBagItems.clear();
+    }
 
 }
