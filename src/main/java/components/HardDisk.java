@@ -1,8 +1,8 @@
 package components;
 
 public class HardDisk extends Component {
-    public static final String CATEGORY = "HardDisk";
-    private String type; //HDD eller SDD
+    public static final String CATEGORY = "Hard Disk";
+    private String type; //HDD or SDD
 
     public HardDisk(String brand, String model, String type) {
         super(brand, model);
