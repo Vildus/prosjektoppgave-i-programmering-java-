@@ -11,8 +11,7 @@
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1"
             xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TableView fx:id="tvInventory" layoutX="44.0" layoutY="128.0" prefHeight="435.0" prefWidth="912.0"
-                   styleClass="tableView">
+        <TableView fx:id="tvInventory" layoutX="44.0" layoutY="128.0" prefHeight="435.0" prefWidth="912.0">
             <columns>
                 <TableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="-1.0" text="Category"/>
                 <TableColumn fx:id="colArticleNumber" minWidth="-1.0" maxWidth="4000.0" prefWidth="-1.0" text="Article number"/>
@@ -27,8 +26,7 @@
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
         </TableView>
-        <TextField fx:id="txtFilter" layoutX="44.0" layoutY="83.0" onKeyTyped="#txtFilterKeyTyped" promptText="Search"
-                   styleClass="textField">
+        <TextField fx:id="txtFilter" layoutX="44.0" layoutY="83.0" onKeyTyped="#txtFilterKeyTyped" promptText="Search">
             <font>
                 <Font size="14.0"/>
             </font>
