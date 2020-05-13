@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -50,9 +49,7 @@ public class EditItemController {
 
 
     private void initCloseButton() {
-        this.btnClose = new Button("Close");
-        //Syntaks for å hente referanse til en metode. Kan ikke sende metode inni metode(SetonAction er en metode). Hvis man
-        //skulle sendt inn en metode måtte det vært en lamda
+        this.btnClose = Common.createButton("Close");
         this.btnClose.setOnAction(this::handleClose);
         int rowCount = this.getRowCount();
         this.gridPane.add(this.btnClose, 2, rowCount + 1);
@@ -63,14 +60,12 @@ public class EditItemController {
     }
 
     private void initUpdateItemButton() {
-        this.btnUpdate = new Button("Update item");
+        this.btnUpdate = Common.createButton("Update item");
         this.btnUpdate.setOnAction(this::updateItem);
         int rowCount = this.getRowCount();
         this.gridPane.add(this.btnUpdate, 1, rowCount - 1);
     }
 
-
-    //TODO: Implementer metoden under når man trykker på oppdater
 
     private void updateItem(ActionEvent actionEvent) {
         double price;
@@ -105,29 +100,30 @@ public class EditItemController {
     private void initVBox() {
         this.vb = new VBox();
         this.vb.setPadding(new Insets(80, 50, 50, 80));
-        //vb.setSpacing(10); mellom elementene
+        this.vb.setSpacing(10);
     }
 
     private void initGridPane() {
         this.gridPane = new GridPane();
-        this.gridPane.setPrefWidth(600);
-        this.gridPane.setPrefHeight(400);
+        this.gridPane.setPrefWidth(1000);
+        this.gridPane.setPrefHeight(600);
         this.gridPane.setHgap(10);
-        this.gridPane.setVgap(10);
+        this.gridPane.setVgap(30);
         this.initInputFields();
         this.vb.getChildren().add(this.gridPane);
     }
 
     private TextField createLabelInputGridPane(String label, int row) {
-        this.gridPane.add(new Label(label), 0, row);
-        TextField textField = new TextField();
+        this.gridPane.add(Common.createLabel(label), 0, row);
+        TextField textField = Common.createTextField();
         this.gridPane.add(textField, 1, row);
         return textField;
     }
 
+
     private void initInputFields() {
-        this.txtPrice = this.createLabelInputGridPane("Price", 0);
-        this.txtInStock = this.createLabelInputGridPane("In stock", 1);
+        this.txtPrice = this.createLabelInputGridPane("Price:", 0);
+        this.txtInStock = this.createLabelInputGridPane("In stock:", 1);
 
         this.txtPrice.setText("" + item.getPrice());
         this.txtInStock.setText("" + item.getInStock());

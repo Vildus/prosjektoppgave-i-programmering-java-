@@ -92,7 +92,7 @@ public class AddItemController {
     }
 
     private void initAddItemButton() {
-        this.btnAddItem = new Button("Add to inventory");
+        this.btnAddItem = Common.createButton("Add to inventory");
         this.btnAddItem.setOnAction(this::addItemToInventory);
         int rowCount = this.getRowCount();
         this.gridPane.add(this.btnAddItem, 1, rowCount - 1);
@@ -270,7 +270,7 @@ public class AddItemController {
 
 
     private void initCloseButton() {
-        this.btnClose = new Button("Cancel");
+        this.btnClose = Common.createButton("Cancel");
         //Syntaks for å hente referanse til en metode. Kan ikke sende metode inni metode(SetonAction er en metode). Hvis man
         //skulle sendt inn en metode måtte det vært en lamda
         this.btnClose.setOnAction(this::handleCancel);
@@ -374,8 +374,8 @@ public class AddItemController {
     }
 
     private TextField createLabelInputGridPane(String label, int row) {
-        this.gridPane.add(new Label(label), 0, row);
-        TextField textField = new TextField();
+        this.gridPane.add(Common.createLabel(label), 0, row);
+        TextField textField = Common.createTextField();
         this.gridPane.add(textField, 1, row);
         return textField;
     }
