@@ -29,7 +29,7 @@
                 <Font size="36.0" />
             </font>
         </Label>
-        <Button layoutX="804.0" layoutY="485.0" mnemonicParsing="false" onAction="#checkOut" text="Go to checkout">
+        <Button layoutX="804.0" layoutY="485.0" mnemonicParsing="false" onAction="#checkOut" text="Complete order">
          <font>
             <Font size="18.0" />
          </font></Button>
@@ -43,7 +43,7 @@
                 <Font size="18.0" />
             </font>
         </Label>
-        <Button layoutX="580.0" layoutY="485.0" mnemonicParsing="false" onAction="#close" prefHeight="35.0" prefWidth="186.0" text="Continue shopping">
+        <Button layoutX="580.0" layoutY="485.0" mnemonicParsing="false" onAction="#close" prefHeight="35.0" prefWidth="186.0" text="Go back to shopping">
          <font>
             <Font size="18.0" />
          </font></Button>
