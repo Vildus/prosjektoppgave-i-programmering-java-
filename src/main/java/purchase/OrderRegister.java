@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class OrderRegister {
 
-    private static final OrderRegister INSTANCE = new OrderRegister();
+    private static OrderRegister instance;
 
     private List<Order> orders;
 
@@ -15,12 +15,19 @@ public class OrderRegister {
     }
 
     public static OrderRegister getInstance() {
-        return INSTANCE;
+        if (instance == null) {
+            instance = new OrderRegister();
+        }
+        return instance;
     }
 
-    public List<Order> getOrders(String customerNumber) {
+    public List<Order> getOrders() {
+        return this.orders;
+    }
+
+    public List<Order> getOrders(String customerID) {
         return this.orders.stream().filter((order -> {
-            return order.getCustomerNumber().equals(customerNumber);
+            return order.getCustomerID().equals(customerID);
         })).collect(Collectors.toList());
     }
 
@@ -38,5 +45,11 @@ public class OrderRegister {
         }
         return String.format("%s",
                 String.join("\n", strOrders));
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        // singleton objects should not be cloned
+        throw new CloneNotSupportedException();
     }
 }

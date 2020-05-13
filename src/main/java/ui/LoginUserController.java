@@ -3,11 +3,7 @@ package ui;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
@@ -46,6 +42,8 @@ public class LoginUserController {
         if (this.txtSuperUserName.getText().matches(userName) && this.txtSuperUserPassword.getText().matches(password)) {
             Scene inventoryScene = this.createInventoryScene();
             this.sceneChanger.change(InventoryController.TITLE, inventoryScene);
+            this.txtSuperUserName.clear();
+            this.txtSuperUserPassword.clear();
         } else {
             Alert.showInfoDialog("User name or password was wrong", "Hint: try \"super\" as user name and \"user\" as password");
         }
@@ -58,6 +56,7 @@ public class LoginUserController {
             Customer.setCurrentCustomerID(userID);
             Scene customerScene = this.createCustomerScene();
             this.sceneChanger.change(CustomerController.TITLE, customerScene);
+            this.txtUserName.clear();
         } catch (IllegalCustomerIDException e) {
             Alert.showInfoDialog("Illegal user ID", "You must enter an ID that contains between 5-15 characters or digits");
         }
@@ -90,7 +89,6 @@ public class LoginUserController {
             throw new RuntimeException();
         }
     }
-
 }
 
 

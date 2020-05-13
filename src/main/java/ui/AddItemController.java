@@ -11,7 +11,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -42,8 +41,9 @@ public class AddItemController {
     //GraphicCard input
     TextField txtGraphicCardMemory;
 
-    //Harddisc input
-    TextField txtHarddiscType;
+    //HardDisk input
+    TextField txtHardDiskType;
+    TextField txtHardDiskSize;
 
     //Keyboard input
     TextField txtKeyBoardInterfaceType;
@@ -92,7 +92,7 @@ public class AddItemController {
     }
 
     private void initAddItemButton() {
-        this.btnAddItem = new Button("Add to inventory");
+        this.btnAddItem = Common.createButton("Add to inventory");
         this.btnAddItem.setOnAction(this::addItemToInventory);
         int rowCount = this.getRowCount();
         this.gridPane.add(this.btnAddItem, 1, rowCount - 1);
@@ -138,8 +138,15 @@ public class AddItemController {
                     break;
 
                 case HardDisk.CATEGORY:
-                    String harddiscType = this.txtHarddiscType.getText();
-                    component = new HardDisk(brand, model, harddiscType);
+                    String hardDiskType = this.txtHardDiskType.getText();
+                    Integer hardDiskSize;
+                    try {
+                        hardDiskSize = Integer.parseInt(this.txtHardDiskSize.getText());
+                    } catch (NumberFormatException e) {
+                        Alert.showInfoDialog("Hard disk size must be a number", "Please make sure that the hard disk size only contain integers", e);
+                        return;
+                    }
+                    component = new HardDisk(brand, model, hardDiskType, hardDiskSize);
                     break;
 
                 case Keyboard.CATEGORY:
@@ -193,9 +200,9 @@ public class AddItemController {
                         return;
                     }
 
-                    double processorClockRate;
+                    int processorClockRate; // in hertz
                     try {
-                        processorClockRate = Double.parseDouble(txtProcessorClockRate.getText());
+                        processorClockRate = Integer.parseInt(txtProcessorClockRate.getText());
                     } catch (NumberFormatException e) {
                         Alert.showInfoDialog("Clock rate  must be a number", "Please make sure that clock rate only contain integers", e);
                         return;
@@ -270,9 +277,7 @@ public class AddItemController {
 
 
     private void initCloseButton() {
-        this.btnClose = new Button("Cancel");
-        //Syntaks for å hente referanse til en metode. Kan ikke sende metode inni metode(SetonAction er en metode). Hvis man
-        //skulle sendt inn en metode måtte det vært en lamda
+        this.btnClose = Common.createButton("Cancel");
         this.btnClose.setOnAction(this::handleCancel);
         int rowCount = this.getRowCount();
         this.gridPane.add(this.btnClose, 2, rowCount + 1);
@@ -282,7 +287,6 @@ public class AddItemController {
     private void initVBox() {
         this.vb = new VBox();
         this.vb.setPadding(new Insets(80, 50, 50, 80));
-        //vb.setSpacing(10); mellom elementene
     }
 
     private void initGridPane() {
@@ -298,7 +302,7 @@ public class AddItemController {
                 this.initGraphicCardInput();
                 break;
             case HardDisk.CATEGORY:
-                this.initHarddiscInput();
+                this.initHardDiskInput();
                 break;
             case Keyboard.CATEGORY:
                 this.initKeyboardInput();
@@ -337,8 +341,9 @@ public class AddItemController {
         this.txtGraphicCardMemory = this.createLabelInputGridPane("Memory", 5);
     }
 
-    private void initHarddiscInput() {
-        this.txtHarddiscType = this.createLabelInputGridPane("Type (HDD/SSD)", 5);
+    private void initHardDiskInput() {
+        this.txtHardDiskType = this.createLabelInputGridPane("Type (HDD/SSD)", 5);
+        this.txtHardDiskSize = this.createLabelInputGridPane("Size (MB)", 6);
     }
 
     private void initKeyboardInput() {
@@ -374,8 +379,8 @@ public class AddItemController {
     }
 
     private TextField createLabelInputGridPane(String label, int row) {
-        this.gridPane.add(new Label(label), 0, row);
-        TextField textField = new TextField();
+        this.gridPane.add(Common.createLabel(label), 0, row);
+        TextField textField = Common.createTextField();
         this.gridPane.add(textField, 1, row);
         return textField;
     }

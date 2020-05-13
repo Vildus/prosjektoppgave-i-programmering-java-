@@ -8,31 +8,36 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #487A7B;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TableView fx:id="tvInventory" layoutX="45.0" layoutY="226.0" prefHeight="535.0" prefWidth="912.0" style="-fx-background-color: #D6D2C4; -fx-border-color: #1B365D; -fx-border: 20px solid;" styleClass="tableView">
+        <TableView fx:id="tvInventory" layoutX="44.0" layoutY="128.0" prefHeight="435.0" prefWidth="912.0"
+                   styleClass="tableView">
             <columns>
-                <TableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="-1.0" style="-fx-background-color: #D6D2C4;" styleClass="colCategory" text="Category" />
-                <TableColumn fx:id="colArticleNumber" minWidth="-1.0" prefWidth="-1.0" style="-fx-background-color: #D6D2C4;" styleClass="colArticleNumber" text="Article number" />
-                <TableColumn fx:id="colBrand" minWidth="-1.0" prefWidth="-1.0" style="-fx-background-color: #D6D2C4;" styleClass="colBrand" text="Brand" />
-                <TableColumn fx:id="colModel" minWidth="-1.0" prefWidth="-1.0" style="-fx-background-color: #D6D2C4;" styleClass="colModel" text="Model" />
-                <TableColumn fx:id="colPrice" minWidth="-1.0" prefWidth="-1.0" style="-fx-background-color: #D6D2C4;" styleClass="colPrice" text="Price NOK" />
-                <TableColumn fx:id="colInStock" minWidth="-1.0" prefWidth="-1.0" style="-fx-background-color: #D6D2C4;" styleClass="colInStock" text="InStock" />
-                <TableColumn fx:id="colEditDelete" minWidth="-1.0" prefWidth="-1.0" style="-fx-background-color: #D6D2C4;" styleClass="colEdit" text="" />
+                <TableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="-1.0" text="Category"/>
+                <TableColumn fx:id="colArticleNumber" minWidth="-1.0" maxWidth="4000.0" prefWidth="-1.0" text="Article number"/>
+                <TableColumn fx:id="colBrand" minWidth="-1.0" prefWidth="-1.0" text="Brand"/>
+                <TableColumn fx:id="colModel" minWidth="-1.0" prefWidth="-1.0" text="Model"/>
+                <TableColumn fx:id="colDesc" maxWidth="10000.0" minWidth="-1.0" prefWidth="-1.0" text="Description"/>
+                <TableColumn fx:id="colPrice" minWidth="-1.0" prefWidth="-1.0" text="Price NOK"/>
+                <TableColumn fx:id="colInStock" maxWidth="3000.0" minWidth="-1.0" prefWidth="-1.0" text="InStock"/>
+                <TableColumn fx:id="colEditDelete" minWidth="-1.0" prefWidth="-1.0" text=""/>
             </columns>
             <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
             </columnResizePolicy>
         </TableView>
-        <TextField fx:id="txtFilter" layoutX="45.0" layoutY="176.0" onKeyTyped="#txtFilterKeyTyped" promptText="Search" style="-fx-background-color: #D6D2C4; -fx-border-color: #1B365D;" styleClass="textField">
+        <TextField fx:id="txtFilter" layoutX="44.0" layoutY="83.0" onKeyTyped="#txtFilterKeyTyped" promptText="Search"
+                   styleClass="textField">
             <font>
-                <Font size="14.0" />
+                <Font size="14.0"/>
             </font>
         </TextField>
-        <ComboBox fx:id="cbCreateNewItem" layoutX="45.0" layoutY="76.0" onAction="#cbCreateNewItemAction" prefWidth="200.0" style="-fx-background-color: #D6D2C4; -fx-border-color: #1B365D;" />
-        <Button layoutX="871.0" layoutY="32.0" mnemonicParsing="false" onAction="#signOut" style="-fx-background-color: #D6D2C4; -fx-border-color: #1B365D;" text="Sign out">
+        <ComboBox fx:id="cbCreateNewItem" layoutX="44.0" layoutY="23.0" onAction="#cbCreateNewItemAction"
+                  prefWidth="200.0"/>
+        <Button layoutX="871.0" layoutY="32.0" mnemonicParsing="false" onAction="#signOut" text="Sign out">
             <font>
-                <Font size="18.0" />
+                <Font size="18.0"/>
             </font>
         </Button>
     </children>

@@ -8,7 +8,6 @@ public class FilterTableViewItemPredicate implements Predicate<Item> {
 
     private String search;
 
-
     public FilterTableViewItemPredicate(String search) {
         this.search = search;
     }
@@ -25,7 +24,7 @@ public class FilterTableViewItemPredicate implements Predicate<Item> {
                 return true;
             }
         } catch (Exception e) {
-            //Her er det ikke noe å gjøre fordi det er ikke nødvendigvis en feil. Vil at koden skal fortsette
+            //Nothing to do. It's not necessarily wrong. Want the code to continue
         }
         if (item.getComponentBrand().toLowerCase().startsWith(this.search.toLowerCase())) {
             return true;
@@ -39,7 +38,7 @@ public class FilterTableViewItemPredicate implements Predicate<Item> {
                 return true;
             }
         } catch (Exception e) {
-            //Her er det ikke noe å gjøre fordi det er ikke nødvendigvis en feil. Vil at koden skal fortsette
+            //Nothing to do. It's not necessarily wrong. Want the code to continue
         }
         try {
             int searchInStock = Integer.parseInt(search);
@@ -47,7 +46,7 @@ public class FilterTableViewItemPredicate implements Predicate<Item> {
                 return true;
             }
         } catch (Exception e) {
-            //Her er det ikke noe å gjøre fordi det er ikke nødvendigvis en feil. Vil at koden skal fortsette
+            //Nothing to do. It's not necessarily wrong. Want the code to continue
         }
         return false;
     }

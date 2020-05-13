@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+      prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <GridPane>
             <columnConstraints>
@@ -19,30 +20,24 @@
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES"/>
-                <RowConstraints percentHeight="70.0" vgrow="SOMETIMES"/>
+                <RowConstraints percentHeight="90.0" vgrow="SOMETIMES"/>
             </rowConstraints>
             <children>
+                <TextArea fx:id="txtOrderInfo" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                    <font>
+                        <Font size="14.0"/>
+                    </font>
+                </TextArea>
                 <Label alignment="TOP_LEFT" prefHeight="24.0" prefWidth="194.0" text="Order Confirmation"
                        textAlignment="CENTER">
                     <font>
                         <Font size="24.0"/>
                     </font>
                 </Label>
-                <Label fx:id="lblOrderInfo" alignment="TOP_LEFT" prefWidth="511.0" GridPane.rowIndex="1">
-                    <font>
-                        <Font size="18.0"/>
-                    </font>
-                </Label>
                 <ButtonBar>
                     <buttons>
                         <Button alignment="CENTER_RIGHT" mnemonicParsing="false" onAction="#returnToShopping"
-                                text="Continue Shopping">
-                            <font>
-                                <Font size="18.0"/>
-                            </font>
-                        </Button>
-                        <Button alignment="TOP_LEFT" mnemonicParsing="false" onAction="#signOut" prefHeight="35.0"
-                                text="Sign out">
+                                text="Close">
                             <font>
                                 <Font size="18.0"/>
                             </font>

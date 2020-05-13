@@ -1,9 +1,13 @@
 package components;
 
-public class Mouse extends Component {
-    public static final String CATEGORY = "Mouse";
+import java.io.Serializable;
 
-    private String interfaceType; // USB eller bluetooth
+public class Mouse extends Component implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public static final String CATEGORY = "Mouse";
+    private String interfaceType; // USB or bluetooth
 
     public Mouse(String brand, String model, String interfaceType) {
         super(brand, model);
@@ -13,6 +17,11 @@ public class Mouse extends Component {
     @Override
     public String getCategory() {
         return CATEGORY;
+    }
+
+    @Override
+    public String getShortDescription() {
+        return String.format("%s", this.interfaceType);
     }
 
     public String getInterfaceType() {

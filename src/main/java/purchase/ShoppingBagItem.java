@@ -42,6 +42,4 @@ public class ShoppingBagItem {
     public int getQty() {
         return this.qty;
     }
-
-
 }

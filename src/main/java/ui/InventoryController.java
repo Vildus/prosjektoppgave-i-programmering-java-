@@ -44,6 +44,9 @@ public class InventoryController {
     private TableColumn<Item, String> colModel;
 
     @FXML
+    private TableColumn<Item, String> colDesc;
+
+    @FXML
     private TableColumn<Item, Double> colPrice;
 
     @FXML
@@ -55,14 +58,10 @@ public class InventoryController {
     @FXML
     private TextField txtFilter;
 
-
-    //TODO: Lage en path. global path.
-
     public InventoryController(SceneChanger sceneChanger, SceneCloser sceneCloser) {
         this.sceneChanger = sceneChanger;
         this.sceneCloser = sceneCloser;
     }
-
 
     private void initializeComboBox() {
         this.cbCreateNewItem.setPromptText("Add new item to inventory");
@@ -89,7 +88,6 @@ public class InventoryController {
                 Screen.CATEGORY);
     }
 
-
     @FXML
     public void initialize() {
         this.initializeTableView();
@@ -102,13 +100,12 @@ public class InventoryController {
         this.colArticleNumber.setCellValueFactory(new PropertyValueFactory<>("articleNumber"));
         this.colBrand.setCellValueFactory(new PropertyValueFactory<>("componentBrand"));
         this.colModel.setCellValueFactory(new PropertyValueFactory<>("componentModel"));
+        this.colDesc.setCellValueFactory(new PropertyValueFactory<>("shortDescription"));
         this.colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         this.colInStock.setCellValueFactory(new PropertyValueFactory<>("inStock"));
 
         InventoryController self = this;
 
-        // Lager knapp inne i tableview-celler hvor det er data. Kode tatt fra nettet - skjønner den ikke selv men det funker :p
-        //google it!
         Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
             @Override
             public TableCell<Item, Void> call(final TableColumn<Item, Void> param) {
@@ -198,14 +195,13 @@ public class InventoryController {
         this.tvInventory.getItems().setAll(items);
     }
 
-
     private Scene createEditItemScene(Item item) {
         try {
             EditItemController editItemController = new EditItemController(item, () -> {
                 this.sceneChanger.change(TITLE, this.tvInventory.getScene());
                 this.updateTableViewItems(Inventory.getInstance().getItems());
             });
-            return new Scene(editItemController.getRoot(), 600, 400);
+            return new Scene(editItemController.getRoot(), 1000, 600);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();
@@ -219,7 +215,7 @@ public class InventoryController {
                 this.updateTableViewItems(Inventory.getInstance().getItems());
                 this.cbCreateNewItem.setValue(null);
             });
-            return new Scene(addItemController.getRoot(), 600, 400);
+            return new Scene(addItemController.getRoot(), 1000, 600);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();

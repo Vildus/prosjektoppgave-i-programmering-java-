@@ -5,14 +5,6 @@ import inventory.Item;
 import java.util.*;
 
 public class ShoppingBag {
-    //Starte med en tom shoppingbag. Når en ny bruker kommer inn lager man en ny bag for den brukeren
-    //Når antall går til 0.. må være noe logikk som fjerner item fra shopping bag
-
-
-    //Hva om det er flere brukere som handler samtidig?
-    //Denne logikken kan vi ta senere. Eller skal vi tillate kun en bruker som shopper samtidig
-    // da slipper vi flere shoppingbag instanser og problem med varebeholdning som vi må skrive logikk for.
-    // Da må vi skrive dette i oppgaven: Dette programmet tillater kun en som handler om gangen
 
     private static final ShoppingBag INSTANCE = new ShoppingBag();
 
@@ -37,15 +29,13 @@ public class ShoppingBag {
             throw new ItemAvailableStockException(shoppingBagItem.getItem().getArticleNumber(), shoppingBagItem.getQty(), inStock);
         }
 
-        int foundIndex = -1; //dette er indeksen til det item som har samme artikkelnummer som det som kommer inn
+        int foundIndex = -1;
         for (int i = 0; i < this.shoppingBagItems.size(); i++) {
             if (this.shoppingBagItems.get(i).getArticleNumber() == shoppingBagItem.getItem().getArticleNumber()) {
                 foundIndex = i;
                 break;
             }
         }
-
-        //Hvis founIndex er 0 eller mer så inneholder den en index til det item som er lik det som sendes inn
         if (foundIndex >= 0) {
             this.shoppingBagItems.set(foundIndex, shoppingBagItem);
         } else {
@@ -70,7 +60,6 @@ public class ShoppingBag {
         for (ShoppingBagItem shoppingBagItem : this.shoppingBagItems) {
             OrderLine orderLine = new OrderLine(shoppingBagItem.getArticleNumber(), shoppingBagItem.getQty(), shoppingBagItem.getPrice());
             orderLines.add(orderLine);
-
             // update inventory item in stock amount
             Item item = shoppingBagItem.getItem();
             item.setInStock(item.getInStock() - shoppingBagItem.getQty());
@@ -79,5 +68,7 @@ public class ShoppingBag {
         return order;
     }
 
-
+    public void clear() {
+        this.shoppingBagItems.clear();
+    }
 }

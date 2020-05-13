@@ -12,12 +12,13 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TableView fx:id="tvCustomerInventory" layoutX="54.0" layoutY="152.0" prefHeight="350.0" prefWidth="900.0">
+        <TableView fx:id="tvCustomerInventory" layoutX="51.0" layoutY="217.0" prefHeight="300.0" prefWidth="900.0">
             <columns>
                 <TableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="-1.0" text="Category" />
-                <TableColumn fx:id="colArticleNumber" minWidth="-1.0" prefWidth="-1.0" text="Article Number" />
+                <TableColumn fx:id="colArticleNumber" maxWidth="4000.0" minWidth="-1.0" prefWidth="-1.0" text="Article Number" />
                 <TableColumn fx:id="colBrand" minWidth="-1.0" prefWidth="-1.0" text="Brand" />
                 <TableColumn fx:id="colModel" minWidth="-1.0" prefWidth="-1.0" text="Model" />
+                <TableColumn fx:id="colDesc" maxWidth="10000.0" minWidth="-1.0" prefWidth="-1.0" text="Description" />
                 <TableColumn fx:id="colPrice" minWidth="-1.0" prefWidth="-1.0" text="Price" />
                 <TableColumn fx:id="colQty" minWidth="-1.0" prefWidth="-1.0" text="Qty" />
             </columns>
@@ -25,39 +26,85 @@
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>
         </TableView>
-        <Button layoutX="782.0" layoutY="529.0" mnemonicParsing="false" onAction="#goToShoppingBag" text="Go to shopping bag">
-         <font>
-            <Font size="18.0" />
-         </font></Button>
-        <HBox fx:id="hbNav" layoutX="45.0" layoutY="67.0" prefHeight="60.0" prefWidth="911.0" spacing="10.0">
+        <Button layoutX="784.0" layoutY="537.0" mnemonicParsing="false" onAction="#goToShoppingBag" text="Go to shopping bag">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+        <HBox fx:id="hbNav" layoutX="46.0" layoutY="112.0" prefHeight="60.0" prefWidth="911.0" spacing="10.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#navGraphicCard" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Graphic Card" textOverrun="CLIP" />
-                <Button mnemonicParsing="false" onAction="#navHardDisk" prefHeight="75.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="Hard Disk" />
-                <Button mnemonicParsing="false" onAction="#navKeyboard" prefHeight="60.0" prefWidth="151.0" styleClass="menu-bar" stylesheets="@customer.css" text="Keyboard" />
-                <Button mnemonicParsing="false" onAction="#navMotherboard" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Motherboard" />
-                <Button mnemonicParsing="false" onAction="#navMouse" prefHeight="72.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="Mouse" />
-                <Button mnemonicParsing="false" onAction="#navPowerSupply" prefHeight="60.0" prefWidth="172.0" styleClass="menu-bar" stylesheets="@customer.css" text="Power Supply" />
-                <Button mnemonicParsing="false" onAction="#navProcessor" prefHeight="75.0" prefWidth="155.0" styleClass="menu-bar" stylesheets="@customer.css" text="Processor" />
-                <Button mnemonicParsing="false" onAction="#navRAM" prefHeight="75.0" prefWidth="148.0" styleClass="menu-bar" stylesheets="@customer.css" text="RAM" />
-                <Button mnemonicParsing="false" onAction="#navScreen" prefHeight="75.0" prefWidth="145.0" styleClass="menu-bar" stylesheets="@customer.css" text="Screen">
+                <Button mnemonicParsing="false" onAction="#navGraphicCard" prefHeight="60.0" prefWidth="172.0" style="-fx-background-color: #A9A9A9#A9A9A9 #A9A9A9#A9A9A9;" styleClass="menu-bar" stylesheets="@customer.css" text="Graphic Card" textOverrun="CLIP">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#navHardDisk" prefHeight="75.0" prefWidth="148.0" style="-fx-background-color: #A9A9A9#A9A9A9 #A9A9A9#A9A9A9;" styleClass="menu-bar" stylesheets="@customer.css" text="Hard Disk">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#navKeyboard" prefHeight="60.0" prefWidth="151.0" style="-fx-background-color: #A9A9A9#A9A9A9 #A9A9A9#A9A9A9;" styleClass="menu-bar" stylesheets="@customer.css" text="Keyboard">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#navMotherboard" prefHeight="60.0" prefWidth="172.0" style="-fx-background-color: #A9A9A9#A9A9A9 #A9A9A9#A9A9A9;" styleClass="menu-bar" stylesheets="@customer.css" text="Motherboard">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#navMouse" prefHeight="72.0" prefWidth="148.0" style="-fx-background-color: #A9A9A9#A9A9A9 #A9A9A9#A9A9A9;" styleClass="menu-bar" stylesheets="@customer.css" text="Mouse">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#navPowerSupply" prefHeight="60.0" prefWidth="172.0" style="-fx-background-color: #A9A9A9#A9A9A9 #A9A9A9#A9A9A9;" styleClass="menu-bar" stylesheets="@customer.css" text="Power Supply">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#navProcessor" prefHeight="75.0" prefWidth="155.0" style="-fx-background-color: #A9A9A9#A9A9A9 #A9A9A9#A9A9A9;" styleClass="menu-bar" stylesheets="@customer.css" text="Processor">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#navRAM" prefHeight="75.0" prefWidth="148.0" style="-fx-background-color: #A9A9A9#A9A9A9 #A9A9A9#A9A9A9;" styleClass="menu-bar" stylesheets="@customer.css" text="RAM">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#navScreen" prefHeight="75.0" prefWidth="145.0" style="-fx-background-color: #A9A9A9#A9A9A9 #A9A9A9#A9A9A9;" styleClass="menu-bar" stylesheets="@customer.css" text="Screen">
                     <cursor>
                         <Cursor fx:constant="DEFAULT" />
                     </cursor>
+                    <font>
+                        <Font size="14.0" />
+                    </font>
                 </Button>
             </children>
             <padding>
                 <Insets left="10.0" right="10.0" top="10.0" />
             </padding>
         </HBox>
-      <Button layoutX="870.0" layoutY="25.0" mnemonicParsing="false" onAction="#signOut" text="Sign out">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-      <Label layoutX="399.0" layoutY="28.0" text="Build your computer">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
+        <Button layoutX="865.0" layoutY="25.0" mnemonicParsing="false" onAction="#signOut" text="Sign out">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+        <Label layoutX="399.0" layoutY="28.0" text="Build your computer">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Button fx:id="btnViewOrderHistory" layoutX="513.0" layoutY="537.0" mnemonicParsing="false" onAction="#handleGotoOrderHistory" text="View your order history">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+        <Label layoutX="417.0" layoutY="74.0" text="Choose category from menu">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Label>
     </children>
 </AnchorPane>

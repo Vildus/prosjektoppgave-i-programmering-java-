@@ -1,9 +1,13 @@
 package components;
 
-public class RAM extends Component {
-    public static final String CATEGORY = "RAM";
+import java.io.Serializable;
 
-    private int memory;
+public class RAM extends Component implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public static final String CATEGORY = "RAM";
+    private int memory; // in MB
 
     public RAM(String brand, String model, int memory) {
         super(brand, model);
@@ -13,6 +17,11 @@ public class RAM extends Component {
     @Override
     public String getCategory() {
         return CATEGORY;
+    }
+
+    @Override
+    public String getShortDescription() {
+        return String.format("%d MB", this.memory);
     }
 
     public int getMemory() {

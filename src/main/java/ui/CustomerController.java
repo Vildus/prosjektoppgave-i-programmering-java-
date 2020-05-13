@@ -47,6 +47,9 @@ public class CustomerController {
     private TableColumn<Item, String> colModel;
 
     @FXML
+    private TableColumn<Item, String> colDesc;
+
+    @FXML
     private TableColumn<Item, Double> colPrice;
 
     @FXML
@@ -65,9 +68,16 @@ public class CustomerController {
     }
 
     @FXML
+    void handleGotoOrderHistory(ActionEvent event) {
+        Scene orderHistoryScene = this.createOrderHistoryScene();
+        this.sceneChanger.change(OrderHistoryController.TITLE, orderHistoryScene);
+    }
+
+    @FXML
     void signOut(ActionEvent event) {
         this.scenecloser.close();
     }
+
 
     @FXML
     void navGraphicCard(ActionEvent event) {
@@ -132,10 +142,8 @@ public class CustomerController {
         this.colArticleNumber.setCellValueFactory(new PropertyValueFactory<>("articleNumber"));
         this.colBrand.setCellValueFactory(new PropertyValueFactory<>("componentBrand"));
         this.colModel.setCellValueFactory(new PropertyValueFactory<>("componentModel"));
+        this.colDesc.setCellValueFactory(new PropertyValueFactory<>("shortDescription"));
         this.colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-        CustomerController self = this;
-
 
         Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
             @Override
@@ -153,7 +161,8 @@ public class CustomerController {
                             try {
                                 int parseQty = Integer.parseInt(txtQty.getText());
                                 ShoppingBag.getInstance().addItem(new ShoppingBagItem(item, parseQty));
-                                Alert.showConfirmationDialog("Added to shoppingbag", String.format("%d pcs of articlenumber: %d is added to shopping bag", parseQty, item.getArticleNumber()));
+                                Alert.showInfoDialog("Added to shoppingbag", String.format("%d pcs of articlenumber: %d is added to shopping bag", parseQty, item.getArticleNumber()));
+                                this.txtQty.setText("1");
                             } catch (ItemAvailableStockException e) {
                                 Alert.showInfoDialog("Out of stock", "We are sorry, this item is out of stock", e);
                             } catch (NumberFormatException e) {
@@ -206,6 +215,20 @@ public class CustomerController {
                 this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
             }, this.sceneChanger);
             loader.setController(shoppingBagController);
+            return new Scene(loader.load(), 1000, 600);
+        } catch (Exception e) {
+            Alert.showErrorDialog("Unexpected error", e);
+            throw new RuntimeException();
+        }
+    }
+
+    private Scene createOrderHistoryScene() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("orderHistory.fxml"));
+            OrderHistoryController orderHistoryController = new OrderHistoryController(() -> {
+                this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
+            });
+            loader.setController(orderHistoryController);
             return new Scene(loader.load(), 1000, 600);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);

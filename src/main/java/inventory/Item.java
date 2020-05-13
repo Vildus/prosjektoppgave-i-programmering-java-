@@ -27,6 +27,10 @@ public class Item implements Serializable {
         return this.component.getModel();
     }
 
+    public String getShortDescription() {
+        return this.component.getShortDescription();
+    }
+
     public String getComponentCategory() {
         return this.component.getCategory();
     }
@@ -35,7 +39,6 @@ public class Item implements Serializable {
         return this.inStock;
     }
 
-    // en måte å sette en stock på!
     public void setInStock(int inStock) {
         if (inStock < 0) {
             throw new InvalidInStockArgumentException("In stock cannot be lower than 0");
@@ -61,5 +64,4 @@ public class Item implements Serializable {
     public void setArticleNumber(int articleNumber) {
         this.articleNumber = articleNumber;
     }
-
 }

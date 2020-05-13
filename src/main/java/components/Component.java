@@ -3,6 +3,9 @@ package components;
 import java.io.Serializable;
 
 public abstract class Component implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String brand;
     private String model;
 
@@ -12,6 +15,8 @@ public abstract class Component implements Serializable {
     }
 
     public abstract String getCategory();
+
+    public abstract String getShortDescription();
 
     public String getBrand() {
         return this.brand;
@@ -34,10 +39,6 @@ public abstract class Component implements Serializable {
         }
         this.model = model;
     }
-
-
-
-
 }
 
 

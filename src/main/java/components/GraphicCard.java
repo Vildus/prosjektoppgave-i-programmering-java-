@@ -1,21 +1,27 @@
 package components;
 
-public class GraphicCard extends Component {
-    public static final String CATEGORY = "Graphic Card";
-    private int memory; //i megabyte
+import java.io.Serializable;
 
+public class GraphicCard extends Component implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public static final String CATEGORY = "Graphic Card";
+    private int memory; // megabytes
 
     public GraphicCard(String brand, String model, int memory) {
         super(brand, model);
         this.memory = memory;
     }
 
-    //TODO: Skrive logikk på alle komponenter så vi kun godtar gyldige attributter.
-    //TODO: Eksempel: Harddisk kan bare være HDD eller SDD. Memory kan være et intervall
-
     @Override
     public String getCategory() {
         return CATEGORY;
+    }
+
+    @Override
+    public String getShortDescription() {
+        return String.format("%d MB", this.memory);
     }
 
     public int getMemory() {
