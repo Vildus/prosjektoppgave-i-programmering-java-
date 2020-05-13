@@ -2,7 +2,7 @@ package components;
 
 public class Screen extends Component {
     public static final String CATEGORY = "Screen";
-    private int screenSize; // in inch (tommer)
+    private int screenSize; // in inches
 
     public Screen(String brand, String model, int screenSize) {
         super(brand, model);

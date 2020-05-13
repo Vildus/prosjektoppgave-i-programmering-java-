@@ -3,7 +3,7 @@ package components;
 public class Mouse extends Component {
     public static final String CATEGORY = "Mouse";
 
-    private String interfaceType; // USB eller bluetooth
+    private String interfaceType; // USB or bluetooth
 
     public Mouse(String brand, String model, String interfaceType) {
         super(brand, model);

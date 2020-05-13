@@ -2,7 +2,7 @@ package components;
 
 public class Keyboard extends Component {
     public static final String CATEGORY = "Keyboard";
-    private String interfaceType; //USB eller bluetooth
+    private String interfaceType; //USB or bluetooth
 
     public Keyboard(String brand, String model, String interfaceType) {
         super(brand, model);

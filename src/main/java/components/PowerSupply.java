@@ -2,7 +2,7 @@ package components;
 
 public class PowerSupply extends Component {
     public static final String CATEGORY = "Power Supply";
-    private int effect; //i vatt
+    private int effect; //in watt
     private double inputVoltage;
     private double outputVoltage;
 
