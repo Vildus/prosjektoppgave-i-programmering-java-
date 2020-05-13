@@ -60,7 +60,7 @@
                   <Insets left="20.0" top="20.0" />
                </padding>
             </Label>
-            <Label fx:id="lblCustomerID" prefHeight="23.0" prefWidth="79.0" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+            <Label fx:id="lblCustomerID" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
