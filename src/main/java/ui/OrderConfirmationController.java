@@ -2,7 +2,6 @@ package ui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import purchase.Customer;
 import purchase.ShoppingBag;
@@ -15,27 +14,20 @@ public class OrderConfirmationController {
 
     public static final String TITLE = "Order confirmation";
 
-    private SceneCloser handleSignOut;
 
-    private SceneCloser handleReturnToShoppingbag;
+    private SceneCloser sceneCloser;
 
-    public OrderConfirmationController(SceneCloser handleSignOut, SceneCloser handleReturnToShopping) {
-        this.handleSignOut = handleSignOut;
-        this.handleReturnToShoppingbag = handleReturnToShopping;
+    public OrderConfirmationController(SceneCloser sceneCloser) {
+        this.sceneCloser = sceneCloser;
     }
 
     @FXML
     private Label lblOrderInfo;
 
-    @FXML
-    void signOut(ActionEvent event) {
-        this.handleSignOut.close();
-    }
 
     @FXML
     void returnToShopping(ActionEvent event) {
-        //TODO: DENNE FUNKER IKKE: TROR DET ER FORDI CLOSE IKKE ER IMPLIMENTERT I DATA STORE
-        this.handleReturnToShoppingbag.close();
+        this.sceneCloser.close();
     }
 
     @FXML
@@ -64,6 +56,5 @@ public class OrderConfirmationController {
         this.lblOrderInfo.setText(String.format("Customer ID: %s\n\nOrder info:\n\n%s", customerID, output));
     }
 
-    //String.format("Customer ID: %s") +
 
 }
