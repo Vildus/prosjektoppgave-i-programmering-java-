@@ -14,7 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import purchase.ItemAvailableStockException;
-import purchase.Order;
 import purchase.ShoppingBag;
 import purchase.ShoppingBagItem;
 
@@ -46,6 +45,9 @@ public class CustomerController {
 
     @FXML
     private TableColumn<Item, String> colModel;
+
+    @FXML
+    private TableColumn<Item, String> colDesc;
 
     @FXML
     private TableColumn<Item, Double> colPrice;
@@ -140,10 +142,8 @@ public class CustomerController {
         this.colArticleNumber.setCellValueFactory(new PropertyValueFactory<>("articleNumber"));
         this.colBrand.setCellValueFactory(new PropertyValueFactory<>("componentBrand"));
         this.colModel.setCellValueFactory(new PropertyValueFactory<>("componentModel"));
+        this.colDesc.setCellValueFactory(new PropertyValueFactory<>("shortDescription"));
         this.colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-        CustomerController self = this;
-
 
         Callback<TableColumn<Item, Void>, TableCell<Item, Void>> cellFactory = new Callback<TableColumn<Item, Void>, TableCell<Item, Void>>() {
             @Override

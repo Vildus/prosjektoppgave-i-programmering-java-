@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import ui.Alert;
 import ui.LoadingDataStoreController;
 import ui.LoginUserController;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -37,7 +38,7 @@ public class Main extends Application {
 
         try {
             OrderRepository orderRepository = new OrderRepository();
-            orderRepository.read();
+            orderRepository.read(); // because OrderRegister is a singleton we ignore the return value
         } catch (FileNotFoundException e) {
             // This is ok, first time we open application
         } catch (Exception e) {
@@ -116,7 +117,7 @@ public class Main extends Application {
             item2.setInStock(10);
             Inventory.getInstance().addItem(item2);
 
-            Component component3 = new HardDisk("HP", "Elite", "HDD");
+            Component component3 = new HardDisk("HP", "Elite", "HDD", 500);
             Item item3 = new Item(component3, 600, 7564738);
             item3.setInStock(14);
             Inventory.getInstance().addItem(item3);
@@ -131,7 +132,7 @@ public class Main extends Application {
             item5.setInStock(30);
             Inventory.getInstance().addItem(item5);
 
-            Component component6 = new Processor("HP", "Elite gaming", 10, 20.5);
+            Component component6 = new Processor("HP", "Elite gaming", 10, 2000);
             Item item6 = new Item(component6, 1200, 7564734);
             item6.setInStock(10);
             Inventory.getInstance().addItem(item6);
@@ -164,8 +165,6 @@ public class Main extends Application {
         } catch (ItemAlreadyExistsException e) {
             //dette går fint. Kun test
         }
-
     }
-
 }
 

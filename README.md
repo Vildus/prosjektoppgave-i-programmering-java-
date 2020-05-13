@@ -1,15 +1,18 @@
-# prosjektoppgave
-prosjektoppgave i programutvikling
+# Prosjektoppgave
 
-Til sensor
+Prosjektoppgave i programutvikling
 
-Brukerinfo for superbruker:
+## Til sensor
 
-Username: super
-Password: user
+### Superbruker login
 
-Brukerinfo for sluttbruker:
+| Username | Password |
+| -------- | -------- |
+| super    | user     |
 
-Her er det mulig å skrive inn eget brukernavn som du selv definerer (må inneholde 5-15 bokstaver og/eller tall).
+### Sluttbruker login
 
-Bruker ID sluttbruker1 og sluttbruker2 inneholder allerede eksempeldata under Order History
+Her er det mulig å skrive inn eget brukernavn som du selv definerer 
+(må inneholde 5-15 bokstaver og/eller tall).
+
+Bruker ID `customer1` og `customer2` inneholder allerede eksempeldata under `Order History`.

@@ -44,6 +44,9 @@ public class InventoryController {
     private TableColumn<Item, String> colModel;
 
     @FXML
+    private TableColumn<Item, String> colDesc;
+
+    @FXML
     private TableColumn<Item, Double> colPrice;
 
     @FXML
@@ -97,6 +100,7 @@ public class InventoryController {
         this.colArticleNumber.setCellValueFactory(new PropertyValueFactory<>("articleNumber"));
         this.colBrand.setCellValueFactory(new PropertyValueFactory<>("componentBrand"));
         this.colModel.setCellValueFactory(new PropertyValueFactory<>("componentModel"));
+        this.colDesc.setCellValueFactory(new PropertyValueFactory<>("shortDescription"));
         this.colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         this.colInStock.setCellValueFactory(new PropertyValueFactory<>("inStock"));
 
@@ -190,7 +194,6 @@ public class InventoryController {
     private void updateTableViewItems(List<Item> items) {
         this.tvInventory.getItems().setAll(items);
     }
-
 
     private Scene createEditItemScene(Item item) {
         try {

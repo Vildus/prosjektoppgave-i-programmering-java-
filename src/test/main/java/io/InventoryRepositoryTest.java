@@ -38,7 +38,7 @@ class InventoryRepositoryTest {
         Inventory inventory = Inventory.getInstance();
 
         inventory.addItem(new Item(new GraphicCard("Dell", "XR100", 120), 2.30, 4567));
-        inventory.addItem(new Item(new HardDisk("Dell", "HDD200", "SSD"), 20.40, 123453));
+        inventory.addItem(new Item(new HardDisk("Dell", "HDD200", "SSD", 500), 20.40, 123453));
         inventory.addItem(new Item(new Keyboard("Dell", "Razor", "bluetooth"), 120, 123451));
         inventory.addItem(new Item(new Motherboard("Dell", "FEOKF", "123inches"), 23.50, 1234));
         inventory.addItem(new Item(new Mouse("Dell", "WODK", "bluetooth"), 400, 46565634));

@@ -1,6 +1,11 @@
 package components;
 
-public class PowerSupply extends Component {
+import java.io.Serializable;
+
+public class PowerSupply extends Component implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     public static final String CATEGORY = "Power Supply";
     private int effect; //in watt
     private double inputVoltage;
@@ -16,6 +21,11 @@ public class PowerSupply extends Component {
     @Override
     public String getCategory() {
         return CATEGORY;
+    }
+
+    @Override
+    public String getShortDescription() {
+        return String.format("%d W, I: %.1f V, O: %.1f V", this.effect, this.inputVoltage, this.outputVoltage);
     }
 
     public int getEffect() {

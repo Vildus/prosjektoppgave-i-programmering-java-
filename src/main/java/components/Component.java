@@ -16,6 +16,8 @@ public abstract class Component implements Serializable {
 
     public abstract String getCategory();
 
+    public abstract String getShortDescription();
+
     public String getBrand() {
         return this.brand;
     }
@@ -37,10 +39,6 @@ public abstract class Component implements Serializable {
         }
         this.model = model;
     }
-
-
-
-
 }
 
 
