@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import purchase.Order;
 import purchase.OrderRegister;
 import purchase.ShoppingBag;
 import purchase.ShoppingBagItem;
@@ -85,7 +86,8 @@ public class ShoppingBagController {
         if (this.tvShoppingBag.getItems().size() > 0) {
             OrderRegister orderRegister = OrderRegister.getInstance();
             ShoppingBag shoppingBag = ShoppingBag.getInstance();
-            orderRegister.addOrder(shoppingBag.createOrder());
+            Order order = shoppingBag.createOrder();
+            orderRegister.addOrder(order);
             try {
                 // orderRegister and inventory must be saved at the same time
                 // for consistency. Also if inventory save fails we should rollback
@@ -93,7 +95,7 @@ public class ShoppingBagController {
                 this.orderRepository.save(orderRegister);
                 this.inventoryRepository.save(Inventory.getInstance());
 
-                Scene orderConfirmationScene = this.createOrderConfirmationScene();
+                Scene orderConfirmationScene = this.createOrderConfirmationScene(order);
                 this.sceneChanger.change(OrderConfirmationController.TITLE, orderConfirmationScene);
                 shoppingBag.clear();
                 this.updateShoppingBagView();
@@ -164,10 +166,10 @@ public class ShoppingBagController {
         this.lblTotalPrice.setText(String.format("%.2f NOK", shoppingBag.getTotalPrice()));
     }
 
-    private Scene createOrderConfirmationScene() {
+    private Scene createOrderConfirmationScene(Order order) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("orderConfirmation.fxml"));
-            OrderConfirmationController orderConfirmationController = new OrderConfirmationController(() -> {
+            OrderConfirmationController orderConfirmationController = new OrderConfirmationController(order, () -> {
                 this.sceneChanger.change(TITLE, this.tvShoppingBag.getScene());
             });
             loader.setController(orderConfirmationController);
