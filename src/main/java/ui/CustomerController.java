@@ -13,7 +13,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
-import purchase.ItemAvailableStockException;
+import purchase.exceptions.ItemAvailableStockException;
 import purchase.ShoppingBag;
 import purchase.ShoppingBagItem;
 
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CustomerController {
 
-    public static final String TITLE = "Data Store";
+    public static final String TITLE = "Computer shop";
 
     private SceneChanger sceneChanger;
 
@@ -55,7 +55,6 @@ public class CustomerController {
     @FXML
     private TableColumn<Item, Void> colQty;
 
-
     public CustomerController(SceneChanger sceneChanger, SceneCloser sceneCloser) {
         this.sceneChanger = sceneChanger;
         this.scenecloser = sceneCloser;
@@ -77,7 +76,6 @@ public class CustomerController {
     void signOut(ActionEvent event) {
         this.scenecloser.close();
     }
-
 
     @FXML
     void navGraphicCard(ActionEvent event) {
@@ -129,15 +127,12 @@ public class CustomerController {
         this.initializeTableView();
     }
 
-
     private void filterTableViewByComponentCategory(String category) {
         List<Item> items = Inventory.getInstance().getItemsByComponentCategory(category);
         this.tvCustomerInventory.getItems().setAll(items);
     }
 
-
     private void initializeTableView() {
-        // her binder vi opp getComponentCategory til cellen i tabellen
         this.colCategory.setCellValueFactory(new PropertyValueFactory<>("componentCategory"));
         this.colArticleNumber.setCellValueFactory(new PropertyValueFactory<>("articleNumber"));
         this.colBrand.setCellValueFactory(new PropertyValueFactory<>("componentBrand"));
@@ -152,7 +147,6 @@ public class CustomerController {
 
                     private final TextField txtQty = new TextField("1");
 
-
                     private final Button btnBuy = new Button("Buy");
 
                     {
@@ -164,13 +158,14 @@ public class CustomerController {
                                 Alert.showInfoDialog("Added to shoppingbag", String.format("%d pcs of articlenumber: %d is added to shopping bag", parseQty, item.getArticleNumber()));
                                 this.txtQty.setText("1");
                             } catch (ItemAvailableStockException e) {
-                                Alert.showInfoDialog("Out of stock", "We are sorry, this item is out of stock", e);
+                                Alert.showInfoDialog("Quantity not available", "We are sorry, this quantity is not available", e);
                             } catch (NumberFormatException e) {
-                                Alert.showInfoDialog("Quantity must be a number", "Please make sure that the quantity is an integer", e);
+                                Alert.showAlertDialog("Quantity must be a number", "Please make sure that the quantity is an integer");
+                            } catch (IllegalArgumentException e) {
+                                Alert.showErrorDialog("Unexpected error", e);
                             }
                         });
                     }
-
 
                     private final GridPane gridPane = new GridPane();
 
@@ -183,7 +178,6 @@ public class CustomerController {
                         gridPane.add(txtQty, 0, 1);
                         gridPane.add(btnBuy, 1, 1);
                     }
-
 
                     @Override
                     public void updateItem(Void item, boolean empty) {
@@ -202,20 +196,14 @@ public class CustomerController {
         colQty.setCellFactory(cellFactory);
     }
 
-
-    private void updateTableViewItems(List<Item> items) {
-        this.tvCustomerInventory.getItems().setAll(items);
-    }
-
-
     private Scene createShoppingBagScene() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("shoppingBag.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/shoppingBag.fxml"));
             ShoppingBagController shoppingBagController = new ShoppingBagController(() -> {
                 this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
             }, this.sceneChanger);
             loader.setController(shoppingBagController);
-            return new Scene(loader.load(), 1000, 600);
+            return new Scene(loader.load(), Common.SCENE_WIDTH, Common.SCENE_HEIGHT);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();
@@ -224,12 +212,12 @@ public class CustomerController {
 
     private Scene createOrderHistoryScene() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("orderHistory.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/orderHistory.fxml"));
             OrderHistoryController orderHistoryController = new OrderHistoryController(() -> {
                 this.sceneChanger.change(TITLE, this.tvCustomerInventory.getScene());
             });
             loader.setController(orderHistoryController);
-            return new Scene(loader.load(), 1000, 600);
+            return new Scene(loader.load(), Common.SCENE_WIDTH, Common.SCENE_HEIGHT);
         } catch (Exception e) {
             Alert.showErrorDialog("Unexpected error", e);
             throw new RuntimeException();

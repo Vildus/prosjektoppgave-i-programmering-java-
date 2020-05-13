@@ -7,6 +7,7 @@ public class RAM extends Component implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final String CATEGORY = "RAM";
+
     private int memory; // in MB
 
     public RAM(String brand, String model, int memory) {

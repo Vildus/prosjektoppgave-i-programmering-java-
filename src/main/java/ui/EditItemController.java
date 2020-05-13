@@ -1,7 +1,7 @@
 package ui;
 
-import inventory.InvalidInStockArgumentException;
-import inventory.InvalidPriceArgumentException;
+import inventory.exceptions.InvalidInStockArgumentException;
+import inventory.exceptions.InvalidPriceArgumentException;
 import inventory.Inventory;
 import inventory.Item;
 import io.InventoryRepository;
@@ -32,14 +32,11 @@ public class EditItemController {
     TextField txtPrice;
     TextField txtInStock;
 
-
-    // This means we cannot create an Edit item controller without an item
-    // as it does not make sense to have a "view" (javafx view) without an item to edit
-    // this also means we cannot declare the controller in the fxml file / no "fx:controller=ui/EditItemController"
     public EditItemController(Item item, SceneCloser closer) {
         this.item = item;
         this.closer = closer;
         this.initVBox();
+        this.initHeader();
         this.initGridPane();
         this.initCloseButton();
         this.initUpdateItemButton();
@@ -49,6 +46,10 @@ public class EditItemController {
         return this.vb;
     }
 
+    private void initHeader() {
+        String header = String.format("Edit item: %d", this.item.getArticleNumber());
+        this.vb.getChildren().add(Common.createHeader(header));
+    }
 
     private void initCloseButton() {
         this.btnClose = Common.createButton("Close");
@@ -68,35 +69,34 @@ public class EditItemController {
         this.gridPane.add(this.btnUpdate, 1, rowCount - 1);
     }
 
-
     private void updateItem(ActionEvent actionEvent) {
         double price;
         try {
             price = Double.parseDouble(this.txtPrice.getText());
         } catch (NumberFormatException e) {
-            Alert.showInfoDialog("Price must be a number", "Please make sure that the price is a number", e);
+            Alert.showAlertDialog("Price must be a number", "Please make sure that the price is a number");
             return;
         }
 
-        int insStock;
+        int inStock;
         try {
-            insStock = Integer.parseInt(this.txtInStock.getText());
+            inStock = Integer.parseInt(this.txtInStock.getText());
         } catch (NumberFormatException e) {
-            Alert.showInfoDialog("Instock must be a number", "Please make sure that instock is an integer", e);
+            Alert.showAlertDialog("Instock must be a number", "Please make sure that instock is an integer");
             return;
         }
 
         try {
             this.item.setPrice(price);
         } catch (InvalidPriceArgumentException e) {
-            Alert.showInfoDialog("Invalid price", "Price must be above 0", e);
+            Alert.showAlertDialog("Invalid price", e);
             return;
         }
 
         try {
-            this.item.setInStock(insStock);
+            this.item.setInStock(inStock);
         } catch (InvalidInStockArgumentException e) {
-            Alert.showInfoDialog("Invalid in stock", "In stock cannot be negative", e);
+            Alert.showAlertDialog("Invalid in stock", e);
             return;
         }
 
@@ -108,7 +108,6 @@ public class EditItemController {
             Alert.showErrorDialog("Failed to save file", e);
         }
     }
-
 
     private void initVBox() {
         this.vb = new VBox();
@@ -133,15 +132,12 @@ public class EditItemController {
         return textField;
     }
 
-
     private void initInputFields() {
         this.txtPrice = this.createLabelInputGridPane("Price:", 0);
         this.txtInStock = this.createLabelInputGridPane("In stock:", 1);
-
         this.txtPrice.setText("" + item.getPrice());
         this.txtInStock.setText("" + item.getInStock());
     }
-
 
     private int getRowCount() {
         int numRows = this.gridPane.getRowConstraints().size();
@@ -156,7 +152,6 @@ public class EditItemController {
         }
         return numRows;
     }
-
 }
 
 

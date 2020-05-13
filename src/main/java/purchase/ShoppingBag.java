@@ -1,12 +1,13 @@
 package purchase;
 
 import inventory.Item;
+import purchase.exceptions.ItemAvailableStockException;
 
 import java.util.*;
 
 public class ShoppingBag {
 
-    private static final ShoppingBag INSTANCE = new ShoppingBag();
+    private static ShoppingBag instance;
 
     private List<ShoppingBagItem> shoppingBagItems;
 
@@ -15,14 +16,17 @@ public class ShoppingBag {
     }
 
     public static ShoppingBag getInstance() {
-        return INSTANCE;
+        if (instance == null) {
+            instance = new ShoppingBag();
+        }
+        return instance;
     }
 
     public List<ShoppingBagItem> getShoppingBagItems() {
         return this.shoppingBagItems;
     }
 
-    //addItem will overwrite if the same item is already added
+    //addItem will overwrite if the same item is already in shopping bag
     public void addItem(ShoppingBagItem shoppingBagItem) throws ItemAvailableStockException {
         int inStock = shoppingBagItem.getItem().getInStock();
         if (inStock < shoppingBagItem.getQty()) {
@@ -36,6 +40,7 @@ public class ShoppingBag {
                 break;
             }
         }
+
         if (foundIndex >= 0) {
             this.shoppingBagItems.set(foundIndex, shoppingBagItem);
         } else {
@@ -64,8 +69,7 @@ public class ShoppingBag {
             Item item = shoppingBagItem.getItem();
             item.setInStock(item.getInStock() - shoppingBagItem.getQty());
         }
-        Order order = new Order(orderLines, new Date(), Customer.getCurrentCustomerID());
-        return order;
+        return new Order(orderLines, new Date(), Customer.getCurrentCustomerID());
     }
 
     public void clear() {

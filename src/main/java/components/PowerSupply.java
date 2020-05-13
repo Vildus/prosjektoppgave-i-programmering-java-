@@ -7,8 +7,11 @@ public class PowerSupply extends Component implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final String CATEGORY = "Power Supply";
+
     private int effect; //in watt
+
     private double inputVoltage;
+
     private double outputVoltage;
 
     public PowerSupply(String brand, String model, int effect, double inputVoltage, double outputVoltage) {

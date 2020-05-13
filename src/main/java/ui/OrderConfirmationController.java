@@ -27,7 +27,6 @@ public class OrderConfirmationController {
     @FXML
     private TextArea txtOrderInfo;
 
-
     @FXML
     void returnToShopping(ActionEvent event) {
         this.sceneCloser.close();
@@ -55,7 +54,7 @@ public class OrderConfirmationController {
         Date date = this.order.getDate();
         String output = "";
         output = output + String.join("\n", lines) +
-                String.format("\n\n\nTotal order price: %.2f NOK", ShoppingBag.getInstance().getTotalPrice());
+                String.format("\n\n\nTotal order price: %.2f NOK\n\n", ShoppingBag.getInstance().getTotalPrice());
         this.txtOrderInfo.setText(String.format("Customer ID: %s\n\nOrder number: %d\nDate: %s\n\nOrder info:\n\n%s", customerID, orderNumber, date, output));
     }
 }

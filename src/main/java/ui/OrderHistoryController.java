@@ -23,7 +23,6 @@ public class OrderHistoryController {
         this.sceneCloser = sceneCloser;
     }
 
-
     @FXML
     private Button btnClose;
 
@@ -53,9 +52,7 @@ public class OrderHistoryController {
         this.initializeTableView();
     }
 
-
     private void initializeTableView() {
-        // her binder vi opp getComponentCategory til cellen i tabellen
         this.colOrderNumber.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
         this.colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         this.colTotalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));

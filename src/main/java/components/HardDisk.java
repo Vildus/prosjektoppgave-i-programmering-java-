@@ -7,7 +7,9 @@ public class HardDisk extends Component implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final String CATEGORY = "Hard Disk";
+
     private String type; //HDD or SDD
+
     private int size; // in MB
 
     public HardDisk(String brand, String model, String type, int size) {

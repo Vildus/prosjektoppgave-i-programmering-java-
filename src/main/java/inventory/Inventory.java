@@ -1,6 +1,6 @@
 package inventory;
 
-import ui.FilterTableViewItemPredicate;
+import inventory.exceptions.ItemAlreadyExistsException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -52,8 +52,7 @@ public class Inventory implements Serializable {
     }
 
     public List<Item> filter(String search) {
-        //Leser strømmen til strømmen ikke returnerer noe mer og konverter til obeservable arraylist
-        Stream<Item> filteredStream = items.stream().filter(new FilterTableViewItemPredicate(search));
+        Stream<Item> filteredStream = items.stream().filter(new InventorySearchFilter(search));
         return filteredStream.collect(Collectors.toCollection(ArrayList::new));
     }
 

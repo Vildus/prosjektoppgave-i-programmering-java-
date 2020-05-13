@@ -6,7 +6,10 @@ public class ShoppingBagItem {
     private Item item;
     private int qty;
 
-    public ShoppingBagItem(Item item, int qty) {
+    public ShoppingBagItem(Item item, int qty) throws IllegalArgumentException {
+        if (item == null) {
+            throw new IllegalArgumentException("Item cannot be null");
+        }
         this.item = item;
         this.qty = qty;
     }

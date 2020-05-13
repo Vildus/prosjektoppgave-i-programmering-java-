@@ -5,22 +5,21 @@ import components.Keyboard;
 import components.Mouse;
 import inventory.Inventory;
 import inventory.Item;
-import inventory.ItemAlreadyExistsException;
+import inventory.exceptions.ItemAlreadyExistsException;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import purchase.exceptions.ItemAvailableStockException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ShoppingBagTest {
-    Inventory inventory;
 
-    public ShoppingBagTest() throws ItemAlreadyExistsException {
-        this.inventory = this.createTestInventory();
+    @BeforeAll
+    static void setupTests() throws ItemAlreadyExistsException {
+        createTestInventory();
     }
 
-
-    //Legge til varer i shopping bagen. Regne ut totalpris, fjerne og justere antall?
-
-    private Inventory createTestInventory() throws ItemAlreadyExistsException {
+    private static void createTestInventory() throws ItemAlreadyExistsException {
         Inventory inventory = Inventory.getInstance();
         Component component1 = new Mouse("Dell", "1", "USB");
         Item item1 = new Item(component1, 120.0, 7234567);
@@ -31,39 +30,36 @@ class ShoppingBagTest {
         Item item2 = new Item(component2, 500, 7564739);
         item2.setInStock(10);
         inventory.addItem(item2);
-
-        return inventory;
     }
 
-
-    //Tester total price samt oppdatering av antall og totalprice igjen
-
     @Test
-    void testGetTotalPrice() throws ItemAvailableStockException {
+    void testGetTotalPrice() throws ItemAvailableStockException, IllegalArgumentException {
+        Inventory inventory = Inventory.getInstance();
         ShoppingBag shoppingBag = ShoppingBag.getInstance();
-        shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7234567), 3));
-        shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7564739), 2));
+        shoppingBag.addItem(new ShoppingBagItem(inventory.findItemByArticleNumber(7234567), 3));
+        shoppingBag.addItem(new ShoppingBagItem(inventory.findItemByArticleNumber(7564739), 2));
         double totalPrice1 = shoppingBag.getTotalPrice();
         assertEquals(1360.0, totalPrice1);
 
-        //Oppdaterer antall for å teste at total price oppdateres
-        shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7234567), 1));
-        shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7564739), 1));
+        shoppingBag.addItem(new ShoppingBagItem(inventory.findItemByArticleNumber(7234567), 1));
+        shoppingBag.addItem(new ShoppingBagItem(inventory.findItemByArticleNumber(7564739), 1));
         double totalPrice2 = shoppingBag.getTotalPrice();
         assertEquals(620, totalPrice2);
     }
 
-
-    //teste at man legger til flere varer enn tilgjengelig og får exception som man vil ha
     @Test
     void testAvailableStock() {
+        Inventory inventory = Inventory.getInstance();
         ShoppingBag shoppingBag = ShoppingBag.getInstance();
         assertThrows(
-                //assertThrows tar to arguments: 1.arg = den exception man vil ha. 2.argument = lamda(metoden)
+                IllegalArgumentException.class,
+                () -> {
+                    shoppingBag.addItem(new ShoppingBagItem(inventory.findItemByArticleNumber(7234569), 42));
+                });
+        assertThrows(
                 ItemAvailableStockException.class,
                 () -> {
-                    shoppingBag.addItem(new ShoppingBagItem(this.inventory.findItemByArticleNumber(7234567), 11));
+                    shoppingBag.addItem(new ShoppingBagItem(inventory.findItemByArticleNumber(7234567), 42));
                 });
     }
-
 }
