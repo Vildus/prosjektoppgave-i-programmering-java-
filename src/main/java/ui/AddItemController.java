@@ -101,6 +101,14 @@ public class AddItemController {
     }
 
     private void addItemToInventory(ActionEvent actionEvent) {
+        if (!this.verifyNonEmpty(new TextField[]{
+                this.txtBrand,
+                this.txtModel,
+                this.txtPrice,
+                this.txtArticleNumber,
+        })) {
+            return;
+        }
         //Component input
         Component component;
         String brand = this.txtBrand.getText();
@@ -128,6 +136,11 @@ public class AddItemController {
         try {
             switch (componentCategory) {
                 case GraphicCard.CATEGORY:
+                    if (!this.verifyNonEmpty(new TextField[]{
+                            this.txtGraphicCardMemory,
+                    })) {
+                        return;
+                    }
                     int graphicCardMemory;
                     try {
                         graphicCardMemory = Integer.parseInt(this.txtGraphicCardMemory.getText());
@@ -139,6 +152,12 @@ public class AddItemController {
                     break;
 
                 case HardDisk.CATEGORY:
+                    if (!this.verifyNonEmpty(new TextField[]{
+                            this.txtHardDiskType,
+                            this.txtHardDiskSize,
+                    })) {
+                        return;
+                    }
                     String hardDiskType = this.txtHardDiskType.getText();
                     Integer hardDiskSize;
                     try {
@@ -151,21 +170,43 @@ public class AddItemController {
                     break;
 
                 case Keyboard.CATEGORY:
+                    if (!this.verifyNonEmpty(new TextField[]{
+                            this.txtKeyBoardInterfaceType,
+                    })) {
+                        return;
+                    }
                     String keyboardInterfaceType = txtKeyBoardInterfaceType.getText();
                     component = new Keyboard(brand, model, keyboardInterfaceType);
                     break;
 
                 case Motherboard.CATEGORY:
+                    if (!this.verifyNonEmpty(new TextField[]{
+                            this.txtMotherboardSizeCategory,
+                    })) {
+                        return;
+                    }
                     String motherboardSizeCategory = txtMotherboardSizeCategory.getText();
                     component = new Motherboard(brand, model, motherboardSizeCategory);
                     break;
 
                 case Mouse.CATEGORY:
+                    if (!this.verifyNonEmpty(new TextField[]{
+                            this.txtMouseInterfaceType,
+                    })) {
+                        return;
+                    }
                     String mouseInterfaceType = txtMouseInterfaceType.getText();
                     component = new Mouse(brand, model, mouseInterfaceType);
                     break;
 
                 case PowerSupply.CATEGORY:
+                    if (!this.verifyNonEmpty(new TextField[]{
+                            this.txtPowerSupplyEffect,
+                            this.txtPowerSupplyInputVoltage,
+                            this.txtPowerSupplyOutputVoltage,
+                    })) {
+                        return;
+                    }
                     int effect;
                     try {
                         effect = Integer.parseInt(txtPowerSupplyEffect.getText());
@@ -193,6 +234,13 @@ public class AddItemController {
                     break;
 
                 case Processor.CATEGORY:
+                    if (!this.verifyNonEmpty(new TextField[]{
+                            this.txtProcessorCount,
+                            this.txtProcessorCount,
+                            this.txtProcessorClockRate,
+                    })) {
+                        return;
+                    }
                     int processorCount;
                     try {
                         processorCount = Integer.parseInt(txtProcessorCount.getText());
@@ -212,6 +260,11 @@ public class AddItemController {
                     break;
 
                 case RAM.CATEGORY:
+                    if (!this.verifyNonEmpty(new TextField[]{
+                            this.txtRAMMemory,
+                    })) {
+                        return;
+                    }
                     int ramMemory;
                     try {
                         ramMemory = Integer.parseInt(txtRAMMemory.getText());
@@ -223,6 +276,11 @@ public class AddItemController {
                     break;
 
                 case Screen.CATEGORY:
+                    if (!this.verifyNonEmpty(new TextField[]{
+                            this.txtScreenSize,
+                    })) {
+                        return;
+                    }
                     int screenSize;
                     try {
                         screenSize = Integer.parseInt(txtScreenSize.getText());
@@ -276,6 +334,17 @@ public class AddItemController {
         } catch (IOException e) {
             Alert.showErrorDialog("Failed to save file", e);
         }
+    }
+
+    private boolean verifyNonEmpty(TextField[] fields) {
+        for (TextField tf : fields) {
+            String content = tf.getText();
+            if (content.trim().isEmpty()) {
+                Alert.showAlertDialog("Missing fields", "Please fill in all fields");
+                return false;
+            }
+        }
+        return true;
     }
 
 
