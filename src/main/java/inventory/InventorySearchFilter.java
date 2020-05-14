@@ -18,13 +18,8 @@ public class InventorySearchFilter implements Predicate<Item> {
         }
 
         // article number
-        try {
-            int searchArticleNumber = Integer.parseInt(search);
-            if (item.getArticleNumber() == searchArticleNumber) {
-                return true;
-            }
-        } catch (Exception e) {
-            // We want to search more
+        if ((""+item.getArticleNumber()).startsWith(search)) {
+            return true;
         }
 
         // brand
