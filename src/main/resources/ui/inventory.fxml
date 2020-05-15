@@ -8,13 +8,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1"
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <TableView fx:id="tvInventory" layoutX="44.0" layoutY="128.0" prefHeight="435.0" prefWidth="912.0">
             <columns>
                 <TableColumn fx:id="colCategory" minWidth="-1.0" prefWidth="-1.0" text="Category"/>
-                <TableColumn fx:id="colArticleNumber" minWidth="-1.0" maxWidth="4000.0" prefWidth="-1.0" text="Article number"/>
+                <TableColumn fx:id="colArticleNumber" minWidth="-1.0" maxWidth="4000.0" prefWidth="-1.0"
+                             text="Article number"/>
                 <TableColumn fx:id="colBrand" minWidth="-1.0" prefWidth="-1.0" text="Brand"/>
                 <TableColumn fx:id="colModel" minWidth="-1.0" prefWidth="-1.0" text="Model"/>
                 <TableColumn fx:id="colDesc" maxWidth="10000.0" minWidth="-1.0" prefWidth="-1.0" text="Description"/>
