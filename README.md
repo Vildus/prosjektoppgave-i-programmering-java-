@@ -1,6 +1,6 @@
 # Prosjektoppgave
 
-Prosjektoppgave i programutvikling
+Prosjektoppgave i programutvikling 2. semsester
 
 ## Til sensor
 
